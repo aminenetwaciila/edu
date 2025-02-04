@@ -1,0 +1,7 @@
+{
+  "name": "edu",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
