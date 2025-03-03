@@ -1,0 +1,46 @@
+ion-card-header {
+    h5{
+        ion-icon {
+            padding-top:  0;
+            padding-bottom: 0;
+        }
+    }
+}
+
+.statsGrid{
+    text-align: center;
+    ion-row{
+        ion-col{
+            h1{
+                font-size: 40px;
+                font-weight: 800;
+            }
+            h4{
+                padding: 0px;
+                font-size: 18px;
+            }
+        }
+    }
+}
+
+.no-y-padding{
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+
+ion-card {
+    padding: 0;
+    margin: 0;
+    text-align: center;
+    ion-icon{
+        padding: 10px 0px;
+    }
+    ion-card-header {
+        padding-top: 0px;
+        padding-bottom: 8px;
+    }
+}
+
+ion-grid{
+    width: 100%;
+}

@@ -1,0 +1,39 @@
+
+ion-content {
+    --background: var(--ion-color-light);
+}
+
+ion-item {
+  margin: 2%;
+  border-radius: 10px;
+  --border-radius: 10px;
+}
+
+
+.container1 { 
+    height: 200px;
+    position: relative;
+  }
+  
+  .vertical-center {
+    width: 100%;
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    text-align: center;
+  }
+
+
+.fs-100 {
+    font-size: 100px;
+  }
+
+  .fs-10 {
+    font-size: 10px;
+  }
+
+ion-label {
+  font-weight: 300;
+}

@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button>
+      </ion-menu-button>
+    </ion-buttons>
+    <ion-title>Ma progression</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  
+  <ion-item lines="none" class="ion-text-center bg-none" style="width: 100%;" *ngIf="mesmatieres == null">
+    <ion-spinner style="margin: auto;" color="primary"></ion-spinner>
+  </ion-item>
+
+  <div class="d-flex f-wrap w-100 h-100">
+    <div class="w-50 br-5 h-200 color-light m-2 p-2 ion-activatable ripple-parent" *ngFor="let matiere of mesmatieres; let i = index;" (click)="openListSeance(matiere)">
+      <h4><ion-text color="primary">{{ matiere?.Composante }} - {{ matiere?.Section }}</ion-text></h4>
+      <p class="fs-11">{{ matiere?.Crs_Code }}</p>
+      <p class="fs-12">{{ matiere?.Crs_Nom }}</p>
+      <p>Progression: <b>{{ matiere?.nbSeancesEffectuee }}/{{ matiere?.Comp_NbrSeance}}</b></p>
+      <ion-progress-bar [value]="matiere?.Comp_NbrSeance ? (matiere?.nbSeancesEffectuee / matiere?.Comp_NbrSeance) : 0"></ion-progress-bar>
+      <ion-ripple-effect></ion-ripple-effect>
+    </div>
+  </div>
+
+</ion-content>

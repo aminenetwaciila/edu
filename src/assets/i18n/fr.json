@@ -1,0 +1,167 @@
+{
+    "MENU": {
+        "LANGUE_TEXT": "Langues"
+    },
+    "INTRO": {
+        "WELCOME": "Bienvenue",
+        "SLOGAN_PART1": "Rejoignez nous dans",
+        "SLOGAN_PART2": "l'espace digitale d'Universiapolis",
+        "BTN_TEXT": "Créer un compte",
+        "HAVE_ACCOUNT": "Vous avez déjà un compte ?",
+        "SIGN_IN_BTN": "identifiez-vous"
+    },
+    "SIGNIN": {
+        "TITLE": "S'identifier",
+        "WELCOME": "Bienvenue",
+        "SUBTITLE": "Bonjour, connectez-vous pour continuer",
+        "USERNAME_TEXT": "Nom d'utilisateur",
+        "USERNAME_PLACEHOLDER": "Entrez votre nom d'utilisateur",
+        "PASSWORD_TEXT": "Mot de passe",
+        "PASSWORD_PLACEHOLDER": "Entrez votre mot de passe",
+        "REMEMBER_TEXT": "Se souvenir de moi",
+        "FORGOT_PASSWORD": "Mot de passe oublié ?",
+        "SIGNIN_SUBMIT": "Se connecter",
+        "NO_ACCOUNT": "Vous n'avez pas de compte ?",
+        "SIGN_IN_BTN": "S'inscrire"
+    },
+    "SUPPORT": {
+        "TITLE": "Support",
+        "TEXT": "Obtenez de l'assistance en appellant le numéro : ",
+        "CALL": "Appeler",
+        "SUCCESS": "L'appel est effectuée avec succès",
+        "ERROR": "Impossible de lancer l'appel",
+        "COPIED": "Copié dans le presse-papier"
+    },
+    "TTR": {
+        "COMMON": {
+            "LOADING": "Chargement ...",
+            "ACCOUNT_ERR": "Erreur de chargement des données du compte tuteur, veuillez reconnecter !",
+            "YEAR": "Année",
+            "SEMESTER": "Semestre",
+            "CHOOSE_YEAR": "Choisissez une année",
+            "CHOOSE_SEMESTER": "Choisissez un semestre",
+            "CHOOSE": "Choisir",
+            "CANCEL": "Annuler",
+            "NO_YEARS": "Aucune année n'est disponible",
+            "NO_SEMESTER": "Aucun semestre n'est disponible",
+            "NO_MARKS": "Aucune note n'est disponible",
+            "FILL_SEMESTER_YEAR": "Choisissez d'abord une année et un semestre.",
+            "SEMESTER_STATUS": "Validation du semestre",
+            "MODULE": "Module",
+            "SEMESTER_MEAN": "Moyenne du semestre",
+            "ABSENCES": "Absences",
+            "ABSENCES_NBR_SEM": "Nombre d'absences au semester"
+        },
+        "ERRORS": {
+            "GENERIC": "Une erreur est survenue, veuilez réessayer plus-tard.",
+            "NO_INTERNET_CONNECTION": "Aucune connexion internet n'est disponible !!"
+        },
+        "TAB1": {
+            "TITLE": "Actualités",
+            "READ_MORE": "Voir plus",
+            "LOADING_MORE": "Chargement de plus d'actualités...",
+            "FEED_NOT_FOUND": "Cannot find requested post !",
+            "ADD_COMMENT": "Commenter",
+            "NO_POSTS": "Aucune actualité trouvée",
+            "WRITE_COMMENT_PHD": "Ecrivez votre commentaire ..."
+        },
+        "TAB2": {
+            "TITLE": "Mes enfants",
+            "ADD_CHILD": "Ajouter les enfants à suivre",
+            "PROVED": "Approuvés",
+            "NOT_PROVED": "Pas encore approuvés",
+            "ADD_CHILDREN_BY_MAT": "Ajouter les enfants",
+            "CHILD_MATRICULE": "Matricule de l'enfant",
+            "HOW_TO": "Ajouter les matricules des enfants, cliquez sur (+) pour ajouter plusieur, et après envoyez toutes les matricules. ",
+            "ERROR_ADDING_CHILDREN": "Une erreur est survenue lors de l'envoi des matricules, veuillez réessayer.",
+            "SUCCESS_ADDING_CHILDREN": "Les matricules sont envoyées avec succès.",
+            "MATRICULE_ERR_HEADER": "Erreur de matricules",
+            "MATRICULE_ERR_SUB8HEADER": "Les matrcules suivantes sont erronées",
+            "MATRICULE_TOBE_SENT": "Les matricules à envoyer",
+            "COULDNT_LOAD_CHILDREN": "Impossible de charger les enfants, veuillez réessayer.",
+            "NOT_PROVED_DESC": "Les enfants suivants ne sont pas encore approuvés, Vous ne pourez pas voir leurs infos.",
+            "DASHBOARD": {
+                "PEDAGOGY": "Pédagogie",
+                "PLANNING": "Emploi du temps",
+                "ABSENCE": "Absences",
+                "NOTES": "Notes",
+                "ENCADRANTS": "Encadrants",
+                "CHAT": "Encadrants",
+                "INFOS": "Infos",
+                "INCIDENTS": "Appréciations",
+                "SEMESTER": "Semestre",
+                "NIVEAUX": {
+                    "1": "1ère année",
+                    "2": "2éme année",
+                    "3": "3éme année",
+                    "4": "4éme année",
+                    "5": "5éme année"
+                }
+            },
+            "INFOS": {
+                "FNAME": "Prénom",
+                "LNAME": "Nom",
+                "BIRTHDATE": "Date de naissance",
+                "MATRICULE": "Matricule",
+                "EMAIL": "Adresse email",
+                "PHONE": "Téléphone",
+                "ADDRESS": "Adresse",
+                "CINOUPASS": "CIN ou Passport",
+                "CITY": "Ville",
+                "COUNTRY": "Pays",
+                "SCHOOL": "Ecole",
+                "SEMESTER": "Semestre",
+                "SPECIALITY": "Specialité",
+                "GENDER": "Sexe",
+                "F": "Féminin",
+                "M": "Masculin"
+            },
+            "MARKS": {
+                "FETCH_ERROR": "Une erreur est survenue lors du chargement des notes, veuillez réessayer ultiérement.",
+                "SEMESTER_MENTION": "Mention du semestre",
+                "MODULE_ELMS_MARKS": "Notes des éléments du module",
+                "MODULE_MARK": "Note du module",
+                "MODULE_STATUS": "Validation du module",
+                "ELEM_MARK": "Note de l'élément"
+            },
+            "ABSENCE": {
+                "FETCH_ERROR": "Une erreur est survenue lors du chargement des absences, veuillez réessayer ultiérement.",
+                "SUM_ABS_DUR": "Total d'heures d'absence pour ce semestre",
+                "ABS_TOTAL": "Total nombre d'absences",
+                "ABS_TOTAL_HR": "Total heures d'absence",
+                "ABS_BY_ELM": "Absences par élément de module" 
+            },
+            "PLANNING":{
+                "FETCH_ERROR": "Une erreur est survenue lors du chargement de l'emploi du temps, veuillez réessayer ultiérement.",
+                "DAY": "Jour",
+                "HOUR": "Heure",
+                "MODULE": "Module",
+                "ROOM": "Salle",
+                "TEACHER": "Enseignant",
+                "GROUP": "Groupe",
+                "NO_PLANNING": "Aucun emploi du temps n'est disponible pour ce semestre."
+            } 
+        },
+        "TAB3": {
+            "TITLE": "Mon profile",
+            "ACCOUNT_DETAILS": "Mon compte",
+            "LANG": "Langue",
+            "EN": "Anglais",
+            "FR": "Français",
+            "HELP": "Aide",
+            "SUPPORT": "Support",
+            "LOGOUT": "Se déconnecter",
+            "FIELDS": {
+                "PHOTO": "Photo",
+                "LNAME": "Nom",
+                "FNAME": "Prénom",
+                "ADRESS": "Addresse",
+                "EMAIL1": "Email 1",
+                "TEL1": "Téléphone 1"
+            }
+        },
+        "NOTIFS": {
+            "TITLE": "Notifications"
+        }
+    }
+}

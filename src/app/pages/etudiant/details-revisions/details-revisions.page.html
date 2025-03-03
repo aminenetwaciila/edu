@@ -1,0 +1,52 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start" >
+      <ion-button (click)="close()">
+        Annuler
+      </ion-button>
+    </ion-buttons>
+    <!-- <ion-title>Details revision</ion-title> -->
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-card  *ngFor="let mat of matchoose; let i = index;">
+    <ion-item lines="full">
+      <ion-label class="ion-text-wrap">
+        <span class="fs-10">{{mat?.Crs_Code}}</span> - {{mat?.Crs_Nom}}
+      </ion-label>
+      </ion-item>
+      <ng-container>
+        <ng-container *ngFor="let eval of mat?.evals; let j = index;">
+          <ion-item [lines]="eval.open ? 'none' : 'full'">
+            <ion-label class="ion-text-wrap">
+              <ion-text>
+                <h2>{{eval?.ElemEval_Dim}}</h2>
+                <p *ngIf="(eval?.revision != null && eval?.revision != '' && eval.open == false)">{{ eval?.revision }}</p>
+              </ion-text>
+            </ion-label>
+            <ion-button fill="clear" [color]="eval.revision ? 'primary' : 'dark'" class="fs-10" (click)="eval.open = true;">{{ eval?.revision == null || eval?.revision == '' ? 'Saisir' : 'Modifier' }} votre commentaire</ion-button>
+          </ion-item>
+          <ion-item lines="full" *ngIf="eval.open">
+            <ion-textarea placeholder="Rédiger votre commentaire" [(ngModel)]="eval.revision"></ion-textarea>
+            
+            <ion-buttons slot="end">
+              <ion-button (click)="eval.open = false;">
+                <ion-icon name="save"></ion-icon>
+              </ion-button>
+            </ion-buttons>
+          </ion-item>
+        </ng-container>
+      </ng-container>
+  </ion-card>
+</ion-content>
+
+<ion-footer >
+  <ion-toolbar>
+    <ion-button expand="block" fill="clear" (click)="saveRevision();" [disabled]="!isSaveEnabled()">
+      Valider&nbsp;
+      <ion-icon name="checkmark-circle"></ion-icon>
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>

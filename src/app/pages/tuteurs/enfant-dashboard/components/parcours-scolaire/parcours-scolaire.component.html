@@ -1,0 +1,107 @@
+<ion-card class="ion-no-padding">
+  <ion-card-content class="ion-no-padding">
+    <ion-accordion-group>
+      <ion-accordion value="first">
+        <ion-item slot="header" color="white">
+          <ion-icon name="analytics-outline" slot="start"></ion-icon>
+          <ion-label>Parcours scolaire</ion-label>
+        </ion-item>
+        <div class="ion-no-padding" slot="content">
+          <ng-container *ngIf="loading">
+            <ion-spinner
+              class="myspinner center-spinner scalled greeny"
+              name="crescent"
+            ></ion-spinner>
+          </ng-container>
+
+          <ng-container *ngIf="!loading">
+            <ion-item lines="none">
+              <ion-label class="toggleLabel">
+                Afficher le parcours complet
+              </ion-label>
+              <ion-toggle [(ngModel)]="parcourEntier"></ion-toggle>
+            </ion-item>
+            <ion-list>
+              <ion-item-group>
+                <ng-container
+                  *ngFor="let niveau of niveaux; let niveauIndex = index"
+                >
+                  <ng-container
+                    *ngIf="niveau.att || (!niveau.att && parcourEntier)"
+                  >
+                    <ion-item-divider
+                      [class]="niveau.att ? '' : 'notActivated'"
+                    >
+                      <ion-label slot="start">
+                        Niveau : {{ "TTR.TAB2.DASHBOARD.NIVEAUX."+niveau.n|translate }}
+                      </ion-label>
+                      <ion-label *ngIf="niveau.att" slot="end">{{ niveau.items[0].Ann_Nom }}</ion-label>
+                    </ion-item-divider>
+                    <ion-item
+                      *ngFor="
+                        let semester of niveau.items;
+                        let semIndex = index
+                      "
+                      [lines]="semIndex % 2 == 0 ? 'full' : 'none'"
+                      [class]="
+                        semester._complete
+                          ? 'no-x-padding'
+                          : 'notActivated no-x-padding'
+                      "
+                    >
+                      <ion-grid class="no-x-padding">
+                        <ion-row
+                          (click)="
+                            forward( semester.Ann_Nom, semester.Sms_Nom )
+                          "
+                        >
+                          <ion-col size="auto" class="alignMiddle">
+                            <ion-label class="text-center semesterLabel">
+                              <strong>{{ semester.Sms_Nom }}</strong>
+                            </ion-label>
+                          </ion-col>
+                          <ion-col class="myPadding Pdetails">
+                            <ion-row>
+                              <ion-col>Moyenne</ion-col>
+                              <ion-col>
+                                {{ semester.SmsMoyenne || '-' }} / 20
+                              </ion-col>
+                            </ion-row>
+                            <ion-row>
+                              <ion-col>Mention</ion-col>
+                              <ion-col>{{ semester.SmsMention || '-' }}</ion-col>
+                            </ion-row>
+                          </ion-col>
+                          <ion-col
+                            size="1"
+                            *ngIf="semester._valide != null"
+                            class="alignMiddle"
+                          >
+                            <ion-icon
+                              *ngIf="semester._valide === true"
+                              color="success"
+                              size="large"
+                              name="checkbox-outline"
+                            ></ion-icon>
+                            <ion-icon
+                              *ngIf="semester._valide === false"
+                              color="danger"
+                              size="large"
+                              name="close-circle-outline"
+                            ></ion-icon>
+                          </ion-col>
+                        </ion-row>
+                      </ion-grid>
+                    </ion-item>
+                  </ng-container>
+                </ng-container>
+                <ion-item-divider></ion-item-divider>
+              </ion-item-group>
+            </ion-list>
+            
+          </ng-container>
+        </div>
+      </ion-accordion>
+    </ion-accordion-group>
+  </ion-card-content>
+</ion-card>

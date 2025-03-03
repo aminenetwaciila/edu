@@ -1,0 +1,67 @@
+.ripple-parent {
+    position: relative;
+    overflow: hidden;
+}
+
+ion-card-title {
+    font-size: 15px;
+}
+
+ion-card {
+    box-shadow: none;
+    margin: 2%;
+}
+
+ion-card-content {
+    font-size: 17px;
+}
+
+ion-item {
+    --border-color: var(--ion-color-light)!important;
+}
+
+ion-list {
+    background: var(--ion-color-light)!important;
+}
+
+
+.bg-white {
+    background-color: var(--ion-color-white)!important;
+}
+
+.b-radius {
+    border-radius: 5px!important;
+    margin: 2% 0;
+    overflow: hidden;
+}
+
+.m-2 {
+    margin: 2%;
+    border-radius: 5px!important;
+}
+
+
+#nodata {
+    height: 100%;
+    width: 100%;
+    position: relative;
+  }
+
+  .vertical-center {
+    margin: 0;
+    text-align: center;
+    position: absolute;
+    top: 25%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+
+    ion-img {
+        width: 50%;
+        margin: auto;
+        margin-bottom: 5%;
+    }
+  }
+  ion-label {
+    font-weight: 300;
+  }
+  

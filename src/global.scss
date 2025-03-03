@@ -34,4 +34,210 @@
 
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
-@import "@ionic/angular/css/palettes/dark.system.css";
+// @import "@ionic/angular/css/palettes/dark.system.css";
+
+
+
+
+
+.ion-color-white {
+  --ion-color-base: var(--ion-color-white) !important;
+  --ion-color-base-rgb: var(--ion-color-white-rgb) !important;
+  --ion-color-contrast: var(--ion-color-white-contrast) !important;
+  --ion-color-contrast-rgb: var(--ion-color-white-contrast-rgb) !important;
+  --ion-color-shade: var(--ion-color-white-shade) !important;
+  --ion-color-tint: var(--ion-color-white-tint) !important;
+}
+
+.d-flex {
+    display: flex;
+}
+
+.justif-content {
+  justify-content: space-between;
+}
+
+.f-wrap {
+    flex-wrap: wrap;
+}
+
+.w-50 {
+    width: 46%;
+    max-width: 46%;
+}
+
+.br-5 {
+    border-radius: 5px;
+}
+
+.h-200 {
+    height: 200px;
+}
+
+.w-100 {
+    width: 100%;
+}
+
+.p-2 {
+    padding: 2%;
+}
+
+.fs-11 {
+    font-size: 11px;
+}
+.fs-12 {
+    font-size: 12px;
+}
+
+.h-100 {
+    height: 100%;
+}
+
+.m-2 {
+    margin: 2%;
+}
+
+.color-light {
+    background-color: var(--ion-color-light);
+}
+
+
+.complete {
+  color: #fff;
+  background-color: #18b99b;
+}
+
+.annule {
+  color: #fff;
+  background-color: #a7a7a7;
+}
+
+.autre {
+  color: #fff;
+  background-color: #007ad9;
+}
+
+
+
+
+
+  /*** **/
+
+  .fc-theme-standard .fc-scrollgrid
+  {
+    border: 0!important;
+  }
+.fc .fc-toolbar.fc-header-toolbar {
+    margin-bottom: 0.5em!important;
+}
+
+.fc-toolbar button {
+    position: relative!important;
+}
+
+.fc .fc-toolbar>*>* {
+  float: left;
+  margin-left: .75em!important;
+  color: var(--ion-color-dark)!important;
+  text-transform: capitalize!important;
+}
+
+#page .fc .fc-toolbar>*>:first-child {
+  margin-left: 0!important;
+}
+.fc-toolbar .fc-state-active, .fc-toolbar .ui-state-active {
+  z-index: 4!important;
+}
+
+  .fc button {
+    border: none!important;
+    border-radius: 30px!important;
+    position: relative!important;
+    padding: 6px 12px!important;
+    font-weight: 400!important;
+    letter-spacing: 0!important;
+    will-change: box-shadow,transform!important;
+    -webkit-transition: box-shadow .2s cubic-bezier(.4,0,1,1),background-color .2s cubic-bezier(.4,0,.2,1)!important;
+    transition: box-shadow .2s cubic-bezier(.4,0,1,1),background-color .2s cubic-bezier(.4,0,.2,1)!important;
+}
+
+.fc button, .fc button.btn-primary {
+//   box-shadow: 0 2px 2px 0 rgba(156,39,176,.14), 0 3px 1px -2px rgba(156,39,176,.2), 0 1px 5px 0 rgba(156,39,176,.12)!important;
+}
+
+.fc button, .fc button.active, .fc button.active:focus, .fc button.active:hover, .fc button.btn-primary, .fc button.btn-primary.active, .fc button.btn-primary.active:focus, .fc button.btn-primary.active:hover, .fc button.btn-primary:active, .fc button.btn-primary:active:focus, .fc button.btn-primary:active:hover, .fc button.btn-primary:focus, .fc button.btn-primary:hover, .fc button:active, .fc button:active:focus, .fc button:active:hover, .fc button:focus, .fc button:hover, .open>.fc button.btn-primary.dropdown-toggle, .open>.fc button.btn-primary.dropdown-toggle:focus, .open>.fc button.btn-primary.dropdown-toggle:hover, .open>.fc button.dropdown-toggle, .open>.fc button.dropdown-toggle:focus, .open>.fc button.dropdown-toggle:hover {
+  background-color: transparent !important;
+//   var(--ion-color-primary)
+  color:  var(--ion-color-primary)!important;
+}
+
+.fc-toolbar .fc-left h2 {
+  color: var(--ion-color-primary)!important;
+  font-weight: 300!important;
+}
+
+.fc-toolbar h2 {
+  margin: 0!important;
+  font-size: 1.2em!important;
+  margin-left: 2%!important;
+}
+
+.fc-view-container *, .fc-view-container :after, .fc-view-container :before {
+  box-sizing: content-box!important;
+}
+
+#page .fc th {
+  text-align: right!important;
+  color: #999!important;
+}
+.fc td, .fc th {
+  border-style: solid!important;
+  border-width: 1px!important;
+  padding: 0!important;
+  vertical-align: top!important;
+}
+.fc-unthemed .fc-content, .fc-unthemed .fc-divider, .fc-unthemed .fc-list-heading td, .fc-unthemed .fc-list-view, .fc-unthemed .fc-popover, .fc-unthemed .fc-row, .fc-unthemed tbody, .fc-unthemed td, .fc-unthemed th, .fc-unthemed thead {
+  border-color: #ddd!important;
+}
+
+#page .fc .fc-day, .timeGridFC .fc .fc-day{
+  border: 0.1px solid var(--ion-color-primary)!important;
+}
+
+
+#page .fc-theme-standard td, .fc-theme-standard th
+ {
+  border: 0!important;
+ }
+ .timeGridFC .fc-theme-standard td, .timeGridFC .fc-theme-standard th {
+  border: 0.5px solid var(--ion-color-primary) !important;
+ }
+#page .fc .fc-col-header-cell-cushion, .timeGridFC .fc .fc-col-header-cell-cushion {
+  color: #222!important;
+  text-transform: capitalize!important;
+}
+
+#page .fc .fc-daygrid-day-number, .timeGridFC .fc .fc-daygrid-day-number {
+  color: var(--ion-color-dark)!important;
+  font-weight: 100;
+}
+
+#page .fc-day-today, .timeGridFC .fc-day-today{
+    background-color: rgba(42, 129, 104,.2)!important;
+    color: #fff!important;
+  }
+
+#page .fc th{
+  text-align: right!important;
+  font-size: 11px;
+  // color: #999!important;
+}
+
+#page .fc-col-header-cell , .timeGridFC .fc-col-header-cell{
+  border: 0!important;
+  // background-color: var(--ion-color-light)!important;
+}
+
+#page .fc-direction-ltr .fc-button-group>.fc-button:not(:first-child), .timeGridFC .fc-direction-ltr .fc-button-group>.fc-button:not(:first-child){
+  margin-left: 1px!important;
+}

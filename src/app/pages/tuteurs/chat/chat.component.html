@@ -1,0 +1,36 @@
+<ion-app style="overflow: hidden">
+  <ion-header style="overflow: hidden; height: auto;">
+    <ion-item [lines]="'full'" detail="false">
+      <ion-avatar slot="start">
+        <img [src]="'https://via.placeholder.com/50x50/120'" />
+      </ion-avatar>
+      <ion-label>
+        <h2> Prof. Hamza xxxx </h2>
+        <p> Professeur de Programmation POO en C++ </p>
+        <small> Département informatique </small>
+      </ion-label>
+    </ion-item>
+  </ion-header>
+
+  <ion-content [fullscreen]="false" [scrollEvents]="true" [scrollY]="true" (ionScrollStart)="logScrollStart()"
+    (ionScroll)="logScrolling($event)" (ionScrollEnd)="logScrollEnd()">
+    <ion-item-group class="messages-item-group">
+
+      <ion-item-sliding class="message-item-sliding" [id]="'message_1'" #slidingItem>
+        <!-- User message -->
+        <app-user-message [isLastMessage]="false" [isLastUserMessage]="false"
+          [userAvatar]="'https://via.placeholder.com/50x50/120'" [message]="'salam'" [createdAt]="'22-6-2022'">
+        </app-user-message>
+
+        <!-- My message -->
+        <app-my-message [message]="'salam'" [createdAt]="'22-6-2022'">
+        </app-my-message>
+
+      </ion-item-sliding>
+    </ion-item-group>
+  </ion-content>
+
+  <ion-footer class="ion-no-border">
+    <div appMessagesDetailFooter></div>
+  </ion-footer>
+</ion-app>

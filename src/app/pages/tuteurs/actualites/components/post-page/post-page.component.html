@@ -1,0 +1,73 @@
+<ion-app style="overflow: hidden">
+  <ion-header style="overflow: hidden; height: auto;">
+    <ion-toolbar color="primary" >
+      <ion-button slot="start" color="light" fill="clear" (click)="back()" routerDirection="back">
+        <ion-icon name="chevron-back-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+      <ion-title>
+        {{ actualite?.Act_Titre }}
+      </ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content>
+    <ion-refresher slot="fixed" class="greeny" (ionRefresh)="doRefresh($event)">
+      <ion-refresher-content>
+      </ion-refresher-content>
+    </ion-refresher>
+
+    <ion-card *ngIf="actualite">
+      <ion-card-content>
+        <div class="post-body" [innerHtml]="actualite?.Act_contenu">
+        </div>
+      </ion-card-content>
+
+      <div class="photos" *ngIf="actualite?.medias.length>0">
+        <swiper-container [slidesPerView]="1" [navigation]="true" [pagination]="{dynamicBullets: true}" #myswiper>
+          <ng-template *ngFor="let media of actualite.medias" swiperSlide>
+            <ion-img *ngIf="media.ActMed_type=='image'" (click)="previewImage(media.ActMed_adresse)" [src]="media.ActMed_adresse"></ion-img>
+          </ng-template>
+        </swiper-container>
+      </div>
+      <ion-item lines="full" class="ion-no-padding no-padding" style="margin-left: 10px; margin-right: 0; padding-right: 0;">
+        <ion-buttons style="margin: 0;" slot="end">
+          <ion-button color="medium" class="no-padding" disabled>
+            <ion-icon size="small" slot="end" name="time-outline"></ion-icon>
+            <small> {{ actualite?.Act_created_at|date }} </small>
+          </ion-button>
+        </ion-buttons>
+        <ion-label> <ion-icon slot="start" name="chatbubbles-outline"></ion-icon> {{ "TTR.TAB1.ADD_COMMENT"|translate }}</ion-label>
+      </ion-item>
+      <ion-item fill="none">
+        <ion-textarea [(ngModel)]="commentModel" id="commentInput" placeholder="{{ 'TTR.TAB1.WRITE_COMMENT_PHD'|translate }}">
+        </ion-textarea>
+        <ion-button slot="end" fill="clear" [disabled]="commentModel.length==0||submitting" style="align-self: center;" (click)="comment()" >
+          <ion-icon name="send-outline" slot="end"></ion-icon>
+        </ion-button>
+      </ion-item>
+    </ion-card>
+
+    <ion-card  *ngFor="let comment of actualite?.comments" >
+      <ion-card-header>
+        <ion-item lines="none">
+          <ion-avatar slot="start">
+            <img [src]="comment.Pers_Photo??default_avatar" />
+          </ion-avatar>
+          <ion-label>
+            <h2>{{ comment.UserName }}</h2>
+          </ion-label>
+          <ion-label slot="end">
+            <small> {{ comment.ActCom_created_at|date }} </small>
+          </ion-label>
+        </ion-item>
+      </ion-card-header>
+      <ion-card-content>
+        <p class="ion-padding  comment">
+          {{ comment.ActCom_contenu }}
+        </p>
+      </ion-card-content>
+    </ion-card>
+
+  </ion-content>
+
+</ion-app>

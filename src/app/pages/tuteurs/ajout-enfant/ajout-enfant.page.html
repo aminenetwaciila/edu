@@ -1,0 +1,58 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-button slot="start" fill="clear" color="light" style="margin: 0;" (click)="exit()" routerDirection="back">
+      <ion-icon name="chevron-back-outline" slot="icon-only"></ion-icon>
+    </ion-button>
+    <ion-title> {{ "TTR.TAB2.ADD_CHILD"|translate }} </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content>
+  <div class="container">
+    <ion-item lines="none">
+      <ion-text color="medium" class="ion-padding-top ion-padding-bottom text-justify">
+        {{ "TTR.TAB2.HOW_TO"|translate }}
+      </ion-text>
+    </ion-item>
+
+    <ion-item lines="none" class="myItem">
+      <ion-input 
+        [(ngModel)]="fieldMatricule" maxlength="12" class="m-0" type="text" placeholder='{{ "TTR.TAB2.CHILD_MATRICULE"|translate }}'
+      ></ion-input>
+      <ion-button fill="clear" color="primary" class="m-0" (click)="addMatricule()">
+        <ion-icon color="primary" slot="icon-only" name="add-circle-sharp"></ion-icon>
+      </ion-button>
+    </ion-item>
+
+
+
+
+    <ion-item lines="none">
+
+      <ion-grid *ngIf="matricules.length">
+        <ion-row>
+          <p class="text-label">
+            <ion-text> {{ "TTR.TAB2.MATRICULE_TOBE_SENT"|translate }} : </ion-text>
+          </p>
+        </ion-row>
+        <ion-row class="ion-no-padding">
+          <ion-col size="6" *ngFor="let matricule of matricules">
+            <ion-chip class="w-100">
+              <ion-label class="chip-label"> {{ matricule.matricule }} </ion-label>
+              <ion-icon name="trash-outline" class="ms-auto" color="danger"
+                (click)="deleteMatricule(matricule.matricule)"></ion-icon>
+            </ion-chip>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
+
+    <div class="buttons">
+      <ion-button [disabled]="matricules.length==0" fill="solid" (click)="submitMatricules()">
+        <ion-icon slot="start" name="arrow-forward-circle-outline"></ion-icon>
+        {{ "TTR.TAB2.ADD_CHILDREN_BY_MAT"|translate }}
+      </ion-button>
+    </div>
+  </div>
+</ion-content>

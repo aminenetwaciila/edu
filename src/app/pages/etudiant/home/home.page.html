@@ -1,0 +1,60 @@
+<ion-header translucent="true">
+  <ion-toolbar mode="md" color="primary">
+     <ion-buttons slot="start" >
+      <ion-menu-button color="dark"></ion-menu-button>
+    </ion-buttons>
+
+    
+    <ion-title color="dark">{{ userData?.NomComplet | uppercase }} </ion-title>
+
+    <ion-buttons slot="end">
+      
+      <ion-button color="dark">
+        <ion-icon name="notifications"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-avatar slot="end" (click)="menutoggle()">
+      <ion-img src="https://edu.universiapolis.ma/Images/abs_poly1920/{{userData?.Etd_Matricule}}.jpg"></ion-img>
+    </ion-avatar>
+   
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen="true">
+  <ion-header collapse="condense">
+    <ion-toolbar mode="md" color="light">
+      <ion-title color="primary">Bonjour, <b>{{ userData?.NomComplet | uppercase }}</b>  </ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-item-divider mode="ios" sticky="true">
+    <ion-label class="ion-text-wrap">
+      <h5>{{"Semestre " + (etudiant?.ds?.smsActuel?.annee ? etudiant?.ds?.smsActuel?.Sms_Nom: 'ND')}}, Niveau: {{(etudiant?.ds?.smsActuel?.annee ? etudiant?.ds?.smsActuel?.annee : 'ND')}} <sup>{{ etudiant?.ds?.smsActuel?.sup ? etudiant?.ds?.smsActuel?.sup : ''}}</sup> année, Spécialité: {{(etudiant?.ds?.smsActuel.Spec_Name ? etudiant?.ds?.smsActuel.Spec_Name : "ND")}}</h5>
+      <span><span>Absences: </span><span >{{ (etudiant?.ds?.smsActuel?.absences != null ? etudiant?.ds?.smsActuel?.absences : '-') }}</span></span>
+    </ion-label>
+  </ion-item-divider>
+
+  <ion-item lines="none"  color="light" class="ion-text-center bg-none" style="width: 100%;" *ngIf="etudiant == null">
+    <ion-spinner style="margin: auto;" color="primary"></ion-spinner>
+  </ion-item>
+
+  <ion-list>
+    <ng-container *ngFor="let date of etudiant?.ds?.fiches">
+      <ion-list-header mode="md">
+        <ion-label color="medium">
+          {{date?.dateString ? date?.dateString : '-'}}
+        </ion-label>
+      </ion-list-header>
+      <ion-item lines="none" color="" *ngFor="let eve of date?.events">
+        <ion-label class="ion-text-wrap">
+         <h2><b><ion-text color="dark">{{ eve?.type | titlecase }}</ion-text></b></h2>
+         <p *ngIf="eve?.Crs_Nom">{{ eve?.Crs_Nom?.length <  50 ? eve?.Crs_Nom : eve?.Crs_Nom.slice(0, 50) + '...' }}</p>
+         <p *ngFor="let doc of eve?.docTypes">{{ doc }}</p>
+         <p *ngIf="eve.REV_Etat">Etat: {{ eve?.REV_Etat }}</p>
+        </ion-label>
+        <ion-text class="fs-10" *ngIf="eve?.type == 'absence'">{{eve?.heured}} - {{eve?.heuref}}</ion-text>
+      </ion-item>
+    </ng-container>
+  </ion-list>
+</ion-content>

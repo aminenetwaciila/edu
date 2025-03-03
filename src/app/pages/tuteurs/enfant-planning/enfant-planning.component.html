@@ -1,0 +1,11 @@
+<ng-container *ngIf="loading">
+  <ion-spinner class="myspinner center-spinner scalled greeny" name="crescent"></ion-spinner>
+</ng-container>
+<ng-container *ngIf="!loading">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  <div class="calendar">
+    <full-calendar [options]="calendarOptions"></full-calendar>
+  </div>
+</ng-container>

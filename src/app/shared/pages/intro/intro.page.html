@@ -1,0 +1,78 @@
+<ion-content>
+  <div id="page">
+    <div class="header">
+      <div class="header-content">
+
+        <!-- <swiper-container #swiper [loop]="true" [autoplay]="true" [config]="config"> -->
+        <swiper-container #swiper [slidesPerView]="1" [loop]="true" [modules]="swiperModules" [autoplay]="true">
+
+          <swiper-slide swiperSlide>
+            <img src="../../../../assets/images/logo-univ.png">
+          </swiper-slide>
+          <swiper-slide swiperSlide>
+            <img src="../../../../assets/images/Polytechnique.png">
+          </swiper-slide>
+          <swiper-slide swiperSlide>
+            <img src="../../../../assets/images/ISIAM.png">
+          </swiper-slide>
+          <swiper-slide swiperSlide>
+            <img src="../../../../assets/images/Universiahealth.png">
+          </swiper-slide>
+          <swiper-slide swiperSlide>
+            <img src="../../../../assets/images/Suphdroit.png">
+          </swiper-slide>
+          <swiper-slide swiperSlide>
+            <img src="../../../../assets/images/Suphcom.png">
+          </swiper-slide>
+
+          <!-- <ng-template swiperSlide>
+            <img src="../../../../assets/images/logo-univ.png">
+          </ng-template>
+          <ng-template swiperSlide>
+            <img src="../../../../assets/images/Polytechnique.png">
+          </ng-template>
+          <ng-template swiperSlide>
+            <img src="../../../../assets/images/ISIAM.png">
+          </ng-template>
+          <ng-template swiperSlide>
+            <img src="../../../../assets/images/Universiahealth.png">
+          </ng-template>
+          <ng-template swiperSlide>
+            <img src="../../../../assets/images/Suphdroit.png">
+          </ng-template>
+          <ng-template swiperSlide>
+            <img src="../../../../assets/images/Suphcom.png">
+          </ng-template> -->
+
+          <!-- <img src="../../../assets/images/logo-univ.png"> -->
+
+        </swiper-container>
+
+
+
+      </div>
+
+    </div>
+    <div class="body">
+      <div>
+        <h1><strong>{{ 'INTRO.WELCOME' | translate }}</strong></h1>
+      </div>
+      <div class="slogan">
+        <p>{{ 'INTRO.SLOGAN_PART1' | translate }}</p>
+        <h5><strong>{{ 'INTRO.SLOGAN_PART2' | translate }}</strong></h5>
+      </div>
+      <div class="btns">
+        <ion-button mode='ios' size="small" expand="block" (click)="gotosignup()" color="primary">
+          {{ 'INTRO.BTN_TEXT' | translate }}
+        </ion-button>
+      </div>
+    </div>
+  </div>
+</ion-content>
+
+<ion-footer class="ion-no-border">
+  <ion-toolbar no-border translucent="true" mode="ios" color="white">
+    <p><ion-text color="primary">{{ 'INTRO.HAVE_ACCOUNT' | translate }}<ion-text color="primary" (click)="gotosignin()"> <strong>
+            {{ 'INTRO.SIGN_IN_BTN' | translate }}</strong></ion-text></ion-text></p>
+  </ion-toolbar>
+</ion-footer>

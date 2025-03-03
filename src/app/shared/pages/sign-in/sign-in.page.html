@@ -1,0 +1,105 @@
+<ion-header class="ion-no-border">
+  <div class="bubble1"></div>
+  <div class="bubble2"></div>
+  <ion-toolbar no-border translucent="true" color="primary">
+  </ion-toolbar>
+  <ion-toolbar no-border translucent="true" color="primary" mode="md">
+    <ion-title> {{ 'SIGNIN.TITLE' | translate }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div id="page">
+
+
+    <div id="title">
+      <h2> {{ 'SIGNIN.WELCOME' | translate }}</h2>
+      <p> {{ 'SIGNIN.SUBTITLE' | translate }}</p>
+    </div>
+
+    <div id="form">
+      <form [formGroup]="signin" class="form">
+
+        <p class="text-label"><ion-text> {{ 'SIGNIN.USERNAME_TEXT' | translate }}</ion-text> </p>
+        <ion-item lines="none">
+          <!-- <ion-icon slot="end" color="primary" name="person-circle-outline"></ion-icon> -->
+          <ion-input type="text" placeholder=" {{ 'SIGNIN.USERNAME_PLACEHOLDER' | translate }}" formControlName="Login"
+            [ngClass]="{ 'is-invalid': formSubmitted && f['Login'].errors }"></ion-input>
+          <ion-icon slot="end" name="checkmark-circle" [color]="'primary'" [hidden]="signin?.controls['Login'].status == 'INVALID'"></ion-icon>
+
+        </ion-item>
+        <p class="text-label"><ion-text> {{ 'SIGNIN.PASSWORD_TEXT' | translate }}</ion-text> </p>
+        <ion-item lines="none">
+          <ion-input [type]="passwordType" placeholder=" {{ 'SIGNIN.PASSWORD_PLACEHOLDER' | translate }}" formControlName="Password"></ion-input>
+          <ion-icon slot="end" [name]="passwordShown === true ? 'eye' : 'eye-off'" [color]="'medium'" item-end (click)="passwordToogle();$event.stopPropagation();"></ion-icon>
+          <ion-icon slot="end" name="checkmark-circle" [color]="'primary'" [hidden]="signin?.controls['Password'].status == 'INVALID'"
+            (click)="passwordToogle();$event.stopPropagation();"></ion-icon>
+        </ion-item>
+        <ion-item color="white" lines="none" class="form-item-no-back">
+          <ion-label class="text-label">{{ 'SIGNIN.REMEMBER_TEXT' | translate }}</ion-label>
+          <ion-checkbox slot="start" formControlName="remember"></ion-checkbox>
+        </ion-item>
+
+
+        <p class="text-label" (click)="forgotpassword();"><ion-text color="primary"><strong>{{ 'SIGNIN.FORGOT_PASSWORD' | translate }}</strong></ion-text> </p>
+
+        <div id="buttons">
+          <ion-button size="small" mode='ios' [disabled]="signin?.status == 'INVALID'" expand="block" (click)="login()" color="primary">
+            {{ 'SIGNIN.SIGNIN_SUBMIT' | translate }}
+          </ion-button>
+        </div>
+
+      </form>
+
+      <!-- <swiper-container id="swiper" #swiper [loop]="true" [autoplay]="true" [config]="config"> -->
+      <swiper-container #swiper [slidesPerView]="1" [loop]="true" [modules]="swiperModules" [autoplay]="true">
+        <!-- <ng-template swiperSlide>
+        <img src="../../../../assets/images/logo-univ.png">
+     </ng-template> -->
+        <swiper-slide>
+          <img src="../../../../assets/images/Polytechnique.png">
+        </swiper-slide>
+        <swiper-slide>
+          <img src="../../../../assets/images/ISIAM.png">
+
+        </swiper-slide>
+        <swiper-slide>
+          <img src="../../../../assets/images/Universiahealth.png">
+        </swiper-slide>
+        <swiper-slide>
+          <img src="../../../../assets/images/Suphdroit.png">
+        </swiper-slide>
+        <swiper-slide>
+          <img src="../../../../assets/images/Suphcom.png">
+        </swiper-slide>
+
+        <ng-template swiperSlide>
+          <img src="../../../../assets/images/Polytechnique.png">
+        </ng-template>
+        <ng-template swiperSlide>
+          <img src="../../../../assets/images/ISIAM.png">
+        </ng-template>
+        <ng-template swiperSlide>
+          <img src="../../../../assets/images/Universiahealth.png">
+        </ng-template>
+        <ng-template swiperSlide>
+          <img src="../../../../assets/images/Suphdroit.png">
+        </ng-template>
+        <ng-template swiperSlide>
+          <img src="../../../../assets/images/Suphcom.png">
+        </ng-template>
+
+      </swiper-container>
+
+    </div>
+
+  </div>
+</ion-content>
+
+<ion-footer class="ion-no-border">
+  <ion-toolbar color="white">
+    <p>{{ 'SIGNIN.NO_ACCOUNT' | translate }}
+      <ion-text color="primary" (click)="gotosignup()"><strong> {{ 'SIGNIN.SIGN_IN_BTN' | translate }}</strong></ion-text>
+    </p>
+  </ion-toolbar>
+</ion-footer>

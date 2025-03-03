@@ -1,9 +1,22 @@
 // This file can be replaced during build by using the `fileReplacements` array.
-// `ng build` replaces `environment.ts` with `environment.prod.ts`.
+// `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
+/* eslint-disable */
 
 export const environment = {
-  production: false
+  production: false,
+  url: 'https://edu.universiapolis.ma/',
+  celluleWebURL: 'https://edu.universiapolis.ma',
+  allowSubmitWithNotHandledEtudiants: false,
+  // tuteurApiUrl: 'http://universiapulse-001-site24.atempurl.com/',
+  // tuteurApiUrl: 'https://localhost:7017/',
+  tuteurApiUrl: 'https://upulse-edu.azurewebsites.net/',
+  // tuteurApiUrl : 'http://universiapulse-001-site24.atempurl.com/',
+  NumeroSupportTtr: "+212656125472",
+  upulseEdu: "https://localhost:7017",
+  // upulseEdu: "https://upulse-edu.azurewebsites.net",
+
+  version: '2.3.1',
 };
 
 /*
@@ -13,4 +26,4 @@ export const environment = {
  * This import should be commented out in production mode because it will have a negative impact
  * on performance if an error is thrown.
  */
-// import 'zone.js/plugins/zone-error';  // Included with Angular CLI.
+// import 'zone.js/dist/zone-error';  // Included with Angular CLI.

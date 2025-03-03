@@ -1,0 +1,53 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Mes résultats</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  <ion-item lines="none" color="light" class="ion-text-center bg-none" style="width: 100%;" *ngIf="etudiant == null">
+    <ion-spinner style="margin: auto;" color="primary"></ion-spinner>
+  </ion-item>
+
+  <ion-list>
+    <ng-container
+      *ngFor="let data of etudiant?.ds?.data.slice((etudiant?.ds?.data?.length - (etudiant?.ds?.smsActuel?.annee + addVal)), (etudiant?.ds?.data?.length)); let i = index;">
+      <ion-list-header mode="md">
+        <ion-label>
+          Niveau: {{data?.annee}}<sup>{{data?.sup}}</sup> année
+        </ion-label>
+        <ion-button shape="round" color="primary" *ngIf="(i === 0) && ((etudiant?.ds?.data?.length - (etudiant?.ds?.smsActuel?.annee + addVal)) > 0)"
+          (click)="addVal = (addVal + 1)">
+          <ion-icon name="chevron-up"></ion-icon>
+        </ion-button>
+      </ion-list-header>
+      <ion-item lines="none" *ngFor="let sms of data?.semestres; let j = index;" [disabled]="sms?.modules?.length === 0">
+        <ion-label class="ion-text-wrap">
+          <h2><b><ion-text color="primary">Semestre {{((sms?.Sms_Nom != "" && sms?.Sms_Nom != null) ? sms?.Sms_Nom : '-')}}</ion-text></b> - <span
+              class="fs-10">{{sms?.Ann_Nom}}</span></h2>
+          <p> {{(sms?.SmsMoyenne != "" && sms?.SmsMoyenne != null ? sms?.SmsMoyenne : '-')}}/20</p>
+          <p>{{ (sms?.SmsMention != null ? sms?.SmsMention : '-') }}</p>
+        </ion-label>
+
+        <ion-button class="fs-10" fill="clear" color="dark" mode="ios" *ngIf="sms?.modules?.length > 0" (click)="opendetails(sms)">Voir détails</ion-button> &nbsp;
+
+        <span *ngIf="etudiant?.ds?.smsActuel?.Sms_Nom === sms?.Sms_Nom && !sms?.SmsValidation" style="font-size: 28px;">
+          <ion-icon slot="end" color="primary" name="reload"></ion-icon>
+        </span>
+        <span *ngIf="sms?.SmsValidation == 'Validé'" style="font-size: 28px;">
+          <ion-icon slot="end" color="primary" name="checkmark-circle"></ion-icon>
+        </span>
+        <span *ngIf="sms?.SmsValidation == 'Non validé'" style="font-size: 28px;">
+          <ion-icon slot="end" color="danger" name="remove-circle"></ion-icon>
+        </span>
+
+      </ion-item>
+    </ng-container>
+  </ion-list>
+</ion-content>

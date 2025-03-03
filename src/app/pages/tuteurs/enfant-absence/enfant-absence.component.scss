@@ -1,0 +1,148 @@
+ion-accordion-group {
+    margin: 0%;
+    padding: 4px;
+}
+
+ion-accordion {
+    :first-child {
+        margin-top: 0;
+    }
+    margin-top: 4%;
+    border: 1px solid #838383;
+    border-radius: 5px;
+}
+
+.moduleElementsHeader {
+    display: block;
+    position: relative;
+    padding: 6px 8px;
+    background-color: #f4f5f8;
+
+    small {
+        font-size: 13px;
+        color: gray;
+        padding: 4px 2px;
+    }
+
+    table {
+        width: 100%;
+        margin: 7px 0px 4px 0px;
+        vertical-align: middle;
+
+        tbody>tr {
+            :last-child {
+                text-align: center;
+            }
+
+            td {
+                padding: 4px 0px;
+            }
+        }
+    }
+
+    p {
+        margin: 7px auto;
+        text-align: center;
+    }
+}
+
+.total {
+    text-align: left;
+    background-color: lightgray;
+    width: 100%;
+    padding: 3px 10px;
+
+    h6 {
+        margin: 9px auto;
+    }
+}
+
+.main{
+    height: auto;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.content {
+    background-color: azure;
+    padding-bottom: 15px;
+
+    :first-child {
+        margin-top: 0px !important;
+    }
+
+    table {
+        width: 100%;
+        padding: 0px;
+        margin: 15px 0px 0px 0px;
+        text-align: center;
+        vertical-align: middle;
+        border: 2px solid black;
+
+        thead {
+            tr>th {
+                border: 2px solid black !important;
+                padding: 7px 0px;
+                text-align: center;
+            }
+        }
+
+        tbody>tr {
+            :first-child {
+                text-align: left;
+            }
+
+            td {
+                padding: 7px 5px;
+                border: 0.7px solid black;
+            }
+        }
+
+        tfoot>tr {
+            td {
+                padding: 7px 0px;
+                border: 2px solid black !important;
+            }
+        }
+    }
+}
+
+.valide {
+    color: green;
+}
+
+.non-valide {
+    color: red;
+}
+
+.fullH {
+    padding: 3rem 1rem;
+    text-align: center;
+
+    small {
+        color: grey;
+        font-size: 1.2rem;
+    }
+}
+
+.greeny {
+    --color: #18b99b;
+}
+
+.myspinner {
+    transform: scale(1.2);
+
+    &,
+    .center-spinner {
+        display: block;
+        margin: 8% auto;
+    }
+}
+
+ion-select-option {
+    text-align: center;
+}
+
+

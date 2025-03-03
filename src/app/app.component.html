@@ -1,3 +1,75 @@
 <ion-app>
-  <ion-router-outlet></ion-router-outlet>
+  <ion-split-pane contentId="main-content">
+    <ion-menu contentId="main-content" type="overlay">
+      <ion-content>
+        <ion-list id="inbox-list">
+
+          <ion-menu-toggle auto-hide="false">
+
+            <ng-container *ngIf="userData?.Role === 'intervenant';else second">
+              <ion-item color="primary" lines="none" class="mb-10" routerDirection="root" detail="false">
+                <!-- <ion-avatar slot="start">
+                  <img [src]="photo">
+                </ion-avatar> -->
+                <ion-label class="ion-text-wrap">
+                  <h2>{{ userData?.UserName }}</h2>
+                  <p>{{ userData?.Email }}</p>
+                </ion-label>
+              </ion-item>
+            </ng-container>
+            <ng-template #second>
+              <ng-container *ngIf="userData?.Role === 'etudiant';else third">
+                <ion-item color="primary" lines="full" class="mb-10" routerDirection="root" detail="false">
+                  <ion-avatar slot="start">
+                    <img [src]="photo">
+                  </ion-avatar>
+                  <ion-label class="ion-text-wrap">
+                    <h2>{{ userData?.NomComplet }}</h2>
+                    <p>{{ userData?.Email }}</p>
+                  </ion-label>
+                </ion-item>
+              </ng-container>
+            </ng-template>
+            <ng-template #third></ng-template>
+
+
+          </ion-menu-toggle>
+
+          <ng-container *ngFor="let page of appPages; let i = index;">
+            <ion-menu-toggle auto-hide="false">
+              <ion-item routerDirection="root" (click)="nav(page?.url)" lines="full" routerLinkActive="selected">
+                <ng-container *ngIf="page?.type == 'io'">
+                  <ion-icon slot="start" [name]="page?.icon" color="dark"></ion-icon>
+                </ng-container>
+                <ng-container *ngIf="page?.type == 'fa'">
+                  <fa-icon [icon]="icons[page?.icon]"></fa-icon>
+                </ng-container>
+                <!-- <ion-icon slot="start" [name]="page?.icon"></ion-icon> -->
+                <ion-label>{{ page?.title}}</ion-label>
+              </ion-item>
+            </ion-menu-toggle>
+          </ng-container>
+
+
+
+        </ion-list>
+
+      </ion-content>
+      <ion-footer>
+        <ion-item lines="none">
+          <ion-label>
+            <ion-icon name="language-outline" slot="start"></ion-icon>&nbsp;
+            <ion-text> {{ 'MENU.LANGUE_TEXT' | translate }} </ion-text>
+          </ion-label>
+          <ion-select #langselect [(ngModel)]="langChoose" (ionChange)="saveLanguage(langselect.value);">
+            <ion-select-option *ngFor="let lang of translate.getLangs()" [value]="lang">
+              {{lang}}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-footer>
+    </ion-menu>
+    <ion-router-outlet id="main-content"></ion-router-outlet>
+  </ion-split-pane>
 </ion-app>
+

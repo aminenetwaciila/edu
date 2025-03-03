@@ -1,0 +1,62 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button>
+      </ion-menu-button>
+    </ion-buttons>
+    <ion-title>Mes matières</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  <ion-item lines="none" class="ion-text-center bg-none" style="width: 100%;" *ngIf="mesmatieres == null">
+    <ion-spinner style="margin: auto;" color="primary"></ion-spinner>
+  </ion-item>
+  <ng-container *ngFor="let matiere of mesmatieres; let i = index;">
+    <ion-card button (click)="matiere.open = !matiere?.open" color="light">
+      <ion-card-header>
+        <ion-card-subtitle> {{ matiere.Crs_Code }}</ion-card-subtitle>
+        <ion-card-title>{{ matiere.Crs_Nom }} ({{ matiere.Sess_Nom }})</ion-card-title>
+      </ion-card-header>
+    
+      <ion-card-content *ngIf="matiere.open && matiere.Composantes && matiere.Composantes?.length > 0">
+        <ion-list>
+          <div *ngFor="let composante of matiere.Composantes" class="bg-white b-radius">
+            <ion-item detail="false" [lines]="composante?.open ? 'full' : 'none'" color="white" button (click)="(composante.open = !composante?.open);$event.stopPropagation();">
+              <ion-label>
+                {{ composante.Composante }}
+              </ion-label>
+            </ion-item>
+            <ion-list class="bg-white" color="white" lines="none" *ngIf="composante?.open">
+              <ion-item class="m-2" detail='false' color="light"  button *ngFor="let section of composante.Sections" (click)="onCompSecSelected(section.CompSec_Id);$event.stopPropagation();">
+                <ion-label>
+                  {{ section.Section }}
+                </ion-label>
+              </ion-item>
+              <!-- <ion-buttons slot="end">
+                <ion-button shape="round" color="primary" >
+                  {{ section.Section }}
+                </ion-button>
+              </ion-buttons> -->
+            </ion-list>
+          </div>
+          
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+    
+  </ng-container>
+
+  <div id="nodata" *ngIf="mesmatieres?.length == 0">
+    <div class="vertical-center">
+      <ion-img src="../../../assets/images/maintenance.svg"></ion-img>
+      <div>
+        <strong><ion-text color="primary">Aucune matière trouvée</ion-text></strong>
+      </div>
+    </div>
+  </div>
+
+</ion-content>

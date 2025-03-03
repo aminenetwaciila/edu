@@ -1,0 +1,104 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-back-button slot="start" text="" color="light"></ion-back-button>
+    <ion-title>
+      {{ "TTR.TAB3.ACCOUNT_DETAILS"|translate }}
+    </ion-title>
+    <ion-button
+      slot="end"
+      fill="clear"
+      (click)="enableEditting()"
+      [style]="{ visibility: editting ? 'hidden' : 'visible' }"
+      color="light"
+      style="margin: 0;"
+    >
+      <ion-icon name="create-outline" color="light" slot="icon-only"></ion-icon>
+    </ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="container">
+    <form [formGroup]="tuteurForm" class="form">
+  
+      <p class="text-label">
+        <ion-text> 
+          {{ "TTR.TAB3.FIELDS.PHOTO"|translate }} 
+        </ion-text>
+      </p>
+      <ion-item lines="none">
+        <ion-img [src]="tuteurForm.get('photo').value ?? default_avatar" class="avatar"></ion-img>
+      </ion-item>
+
+      <p class="text-label">
+        <ion-text> 
+          {{ "TTR.TAB3.FIELDS.FNAME"|translate }} 
+          <span *ngIf="editting" > * </span>
+        </ion-text>
+      </p>
+      <ion-item lines="none">
+        <ion-input type="text" placeholder="" formControlName="prenom" [readonly]="!editting" [ngClass]="{ 'is-invalid': formSubmitted && tuteurForm.get('prenom').errors }"></ion-input>
+        <ion-icon  slot="end" name="checkmark-circle"  [color]="'primary'" [hidden]="tuteurForm?.controls['prenom'].status == 'INVALID'|| !editting"></ion-icon>
+      </ion-item>
+
+      <p class="text-label">
+        <ion-text> 
+          {{ "TTR.TAB3.FIELDS.LNAME"|translate }} 
+          <span *ngIf="editting" > * </span>
+        </ion-text>
+      </p>
+      <ion-item lines="none">
+        <ion-input type="text" placeholder="" formControlName="nom" [readonly]="!editting" [ngClass]="{ 'is-invalid': formSubmitted && tuteurForm.get('nom').errors }"></ion-input>
+        <ion-icon  slot="end" name="checkmark-circle"  [color]="'primary'" [hidden]="tuteurForm?.controls['nom'].status == 'INVALID' || !editting"></ion-icon>
+      </ion-item> 
+
+      <p class="text-label">
+        <ion-text>
+          {{ "TTR.TAB3.FIELDS.ADRESS"|translate }} 
+          <span *ngIf="editting" > * </span>
+        </ion-text>
+      </p>
+      <ion-item lines="none">
+        <ion-input type="text" placeholder="" formControlName="adresse" [readonly]="!editting" [ngClass]="{ 'is-invalid': formSubmitted && tuteurForm.get('adresse').errors }"></ion-input>
+        <ion-icon  slot="end" name="checkmark-circle"  [color]="'primary'" [hidden]="tuteurForm?.controls['adresse'].status == 'INVALID' || !editting"></ion-icon>
+      </ion-item> 
+
+      <p class="text-label">
+        <ion-text>
+          {{ "TTR.TAB3.FIELDS.EMAIL1"|translate }} 
+          <span *ngIf="editting" > * </span>
+        </ion-text>
+       </p>
+      <ion-item lines="none">
+        <ion-input type="text" placeholder="" formControlName="email" [readonly]="!editting" [ngClass]="{ 'is-invalid': formSubmitted && tuteurForm.get('email').errors }"></ion-input>
+        <ion-icon  slot="end" name="checkmark-circle"  [color]="'primary'" [hidden]="tuteurForm?.controls['email'].status == 'INVALID' || !editting"></ion-icon>
+      </ion-item> 
+
+      <p class="text-label">
+        <ion-text> 
+          {{ "TTR.TAB3.FIELDS.TEL1"|translate }} 
+          <span *ngIf="editting" > * </span>
+         </ion-text>
+      </p>
+      <ion-item lines="none">
+        <ion-input type="text" placeholder="" formControlName="tel" [readonly]="!editting" [ngClass]="{ 'is-invalid': formSubmitted && tuteurForm.get('tel').errors }"></ion-input>
+        <ion-icon  slot="end" name="checkmark-circle"  [color]="'primary'" [hidden]="tuteurForm?.controls['tel'].status == 'INVALID' || !editting"></ion-icon>
+      </ion-item> 
+
+      
+
+      <div id="buttons" *ngIf="editting">
+        <ion-button [disabled]="tuteurForm?.status == 'INVALID'" color="primary">
+          <ion-icon name="save-outline" slot="start"></ion-icon>
+          Enregistrer
+        </ion-button>
+
+        <ion-button color="danger" (click)="disableEditting()" >
+          <ion-icon name="close-outline" *ngIf="editting" slot="start"  ></ion-icon>
+          Annuler
+        </ion-button>
+      </div>
+
+    </form>
+  </div>
+</ion-content>

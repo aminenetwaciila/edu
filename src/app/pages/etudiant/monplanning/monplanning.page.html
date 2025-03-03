@@ -1,0 +1,53 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Mon planning</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  <div id="page">
+    <div class="calendar">
+      <!-- <full-calendar [options]="calendarOptions"></full-calendar> -->
+      <full-calendar #calendar [options]="calendarOptions" [events]="dataSource" (eventClick)="eventClick($event)"></full-calendar>
+    </div>
+
+    <!-- <div class="list">
+      <ion-list *ngIf="events?.length > 0; else nordv">
+        <ng-container *ngFor="let event of events; let i = index;">
+          <ion-list-header *ngIf="i == 0">
+            <ion-label>
+              {{ event?.start | date: 'EEEE dd MMM yyyy' }}
+            </ion-label>
+          </ion-list-header>
+          <ion-item color="light" lines="none" >
+            <ion-label class="ion-text-wrap">
+              <h2> {{ event?.title }} </h2>
+              <p class="fs-12">De <b>{{ event?.start | date: 'HH:mm' }}</b> à <b>{{ event?.end | date: 'HH:mm' }}</b></p>
+            </ion-label>
+            <ion-icon slot="end" *ngIf="event?.className == 'complete'" name="checkmark-circle" color="primary"></ion-icon>
+          </ion-item>
+        </ng-container>
+      </ion-list>
+
+      <ng-template #nordv>
+        <ion-item lines="none">
+          <ion-label>
+            Voir liste des séances
+          </ion-label>
+          <ion-buttons slot="end">
+            <ion-button shape="round" fill="block">
+              <ion-icon name="list-outline"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-item>
+      </ng-template>
+    </div> -->
+  </div>
+
+</ion-content>

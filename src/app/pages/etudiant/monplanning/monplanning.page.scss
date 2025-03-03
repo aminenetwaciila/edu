@@ -1,0 +1,51 @@
+#page
+{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  // background-color: var(--ion-color-light);
+  border-radius: 10px;
+
+}
+
+.calendar {
+  width: 96%;
+  height: 100%;
+  margin: 2%;
+  margin-bottom: 0%;
+  background-color: white;
+}
+
+
+  full-calendar {
+    position: relative;
+    width: 100%;
+    height: 100%!important;
+    overflow: auto;
+  }
+
+  .list {
+    height: 5%;
+    overflow: auto;
+  }
+
+  h2 {
+    font-size: 15px;
+    font-weight: 300;
+  }
+
+  ion-item {
+    border-radius: 10px;
+    --border-radius: 10px;
+    margin: 2%;
+  }
+
+  .fs-12 {
+    font-size: 12px;
+  }
+
+ion-label {
+  font-weight: 300;
+}

@@ -1,0 +1,51 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Modifier une séance</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="close()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div id="page">
+
+    <div id="form">
+      <form [formGroup]="seanceForm" class="form">
+
+        <p class="text-label"><ion-text> Date</ion-text> </p>
+        <ion-datetime presentation="date" value="2012-12-15T13:47:20.789" locale="fr-FR" formControlName="date"></ion-datetime>
+
+        <p class="text-label"><ion-text> Heure de début / Heure de fin</ion-text> </p>
+        <div class="d-flex justif-content">
+          <div>
+            <ion-datetime presentation="time" value="2012-12-15T13:47:20.789" locale="fr-FR" formControlName="debut"></ion-datetime>
+          </div>
+          <div>
+            <ion-datetime presentation="time" value="2012-12-15T13:47:20.789" locale="fr-FR" formControlName="fin"></ion-datetime>
+          </div>
+        </div>
+
+        <p class="text-label"><ion-text> Salle </ion-text> </p>
+        <ion-item lines="none">
+          <ion-input type="text" placeholder="Salle" formControlName="salle" [ngClass]="{ 'is-invalid': formSubmitted && f['salle'].errors }"></ion-input>
+        </ion-item>
+        <p class="text-label"><ion-text> Remarque </ion-text> </p>
+        <ion-item lines="none">
+          <ion-textarea formControlName="remarque" [ngClass]="{ 'is-invalid': formSubmitted && f['remarque'].errors }"></ion-textarea>
+        </ion-item>
+
+
+      </form>
+    </div>
+  </div>
+</ion-content>
+<ion-footer class="ion-no-border">
+  <ion-toolbar>
+    <ion-button fill="clear" expand="block" (click)="save()">
+      Terminer &nbsp; <ion-icon name="checkmark"></ion-icon>
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>

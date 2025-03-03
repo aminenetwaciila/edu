@@ -1,0 +1,35 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="end">
+      <ion-button (click)="close()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ng-container>
+    <ion-list>
+      <ion-item lines="full">
+        <ion-label>
+          <h3>Ancienne Note</h3>
+          <p>{{ info?.REVEVAL_AncienneNote }}</p>
+        </ion-label>
+      </ion-item>
+      <ion-item lines="full">
+        <ion-label>
+          <h3>Votre commentaire</h3>
+          <p>{{ info?.REVEVAL_EtdComment }}</p>
+        </ion-label>
+      </ion-item>
+      <ion-item lines="full">
+        <ion-label>
+          <h3>Commentaire du prof.</h3>
+          <p>{{ info?.REVEVAL_EnsComment}} </p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </ng-container>
+  
+</ion-content>

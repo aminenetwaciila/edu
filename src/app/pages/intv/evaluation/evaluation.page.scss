@@ -1,0 +1,21 @@
+
+  #nodata {
+    height: 100%;
+    width: 100%;
+    position: relative;
+  }
+
+  .vertical-center {
+    margin: 0;
+    text-align: center;
+    position: absolute;
+    top: 25%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+
+    ion-img {
+        width: 50%;
+        margin: auto;
+        margin-bottom: 5%;
+    }
+  }

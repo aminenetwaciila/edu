@@ -1,0 +1,29 @@
+<ion-card>
+  <ion-card-header>
+    <ion-card-title>
+      {{ "SUPPORT.TITLE"|translate }}
+    </ion-card-title>
+  </ion-card-header>
+  <ion-card-content>
+
+    <ion-text>
+      <p>
+        {{ "SUPPORT.TEXT"|translate }}
+      </p>
+    </ion-text>
+
+    
+    <ion-item lines="none" class="ion-no-padding">
+      <ion-label> <pre> {{ phoneNumber }} </pre> </ion-label>
+      <ion-button slot="end" size="default" (click)="copyNumber()">
+        <ion-icon name="copy-outline"></ion-icon>
+      </ion-button>
+    </ion-item>
+    
+    <ion-button expand="full" color="secondary" (click)="makeCall()">
+      <ion-icon slot="start" name="call"></ion-icon>
+       {{ "SUPPORT.CALL"|translate }}
+    </ion-button>
+
+  </ion-card-content>
+</ion-card>

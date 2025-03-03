@@ -1,0 +1,87 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-button
+      slot="start"
+      fill="clear"
+      (click)="exit()"
+      color="light"
+      class="my-0 reduce-l"
+      routerDirection="back"
+    >
+      <ion-icon name="chevron-back-outline" slot="icon-only"></ion-icon>
+    </ion-button>
+
+    <ion-buttons 
+      class="my-0"
+      color="light"
+      >
+      <ion-button id="choix-etudiant" fill="clear">
+        <ion-label>
+          {{ enfant?.Pers_Prenom }}
+        </ion-label>
+        <ion-icon *ngIf="!sub" name="caret-down-outline"></ion-icon>
+        <ion-icon *ngIf="sub" name="caret-forward-outline"></ion-icon>
+      </ion-button>
+
+      <ion-button *ngIf="component" id="choix-component" fill="clear">
+        {{ "TTR.TAB2.DASHBOARD."+component|translate }}
+        <ion-icon name="caret-down-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-buttons slot="end">
+      <ion-button routerDirection="forward" class="my-0 reduce-r" color="light" id="notifsBtn" routerLink="/menuTtr/tabs/notifs">
+        <!-- <ion-badge color="danger"> 4 </ion-badge> # TODO Hidden for now -->
+        <ion-icon name="notifications-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+
+  <ion-popover trigger="choix-etudiant" dismissOnSelect="true" size="auto" alignment="center">
+    <ng-template>
+      <ion-content>
+        <ion-list lines="full">
+          <ng-container *ngFor="let enf of enfants">
+            <ion-item
+              [ngClass]="{'active': enf.Etd_Id==enfant.Etd_Id}"
+              [button]="enf.Etd_Id!=enfant.Etd_Id"
+              detail="false"
+              (click)="changeEnfant(enf)"
+            >
+              <ion-label> {{ enf.Pers_Prenom + " " + enf.Pers_Nom }} </ion-label>
+            </ion-item>
+          </ng-container>
+        </ion-list>
+      </ion-content>
+    </ng-template>
+  </ion-popover>
+
+  <ion-popover
+    *ngIf="component"
+    trigger="choix-component"
+    size="auto"
+    dismissOnSelect="true"
+    alignment="center"
+  >
+    <ng-template>
+      <ion-content>
+        <ion-list lines="full">
+          <ng-container *ngFor="let comp of components">
+            <ion-item
+              [ngClass]="{'active': comp==component}"
+              [button]="comp!=component"
+              detail="false"
+              (click)="navigateToComponent(comp)"
+            >
+              <ion-label> {{ "TTR.TAB2.DASHBOARD."+comp|translate }} </ion-label>
+            </ion-item>
+          </ng-container>
+        </ion-list>
+      </ion-content>
+    </ng-template>
+  </ion-popover>
+</ion-header>
+
+<ion-content>
+  <ion-router-outlet></ion-router-outlet>
+</ion-content>

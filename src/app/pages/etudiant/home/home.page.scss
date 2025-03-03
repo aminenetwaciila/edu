@@ -1,0 +1,41 @@
+.fs-10 {
+    font-size: 10px;
+}
+
+ion-content {
+    --background: var(--ion-color-light)!important;
+}
+
+ion-list {
+    background: transparent!important;
+}
+
+ion-item-divider {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background:  var(--ion-color-light)!important;
+    --background: var(--ion-color-light)!important;
+}
+ion-item {
+    border-radius: 10px;
+    margin: 2%;
+}
+
+ion-avatar {
+    width: 50px;
+    height: 50px;
+    margin: 1% 2%;
+}
+
+h2 {
+    font-size: 15px;
+}
+
+p {
+    color: #222;
+}
+
+
+ion-label {
+    font-weight: 300;
+}

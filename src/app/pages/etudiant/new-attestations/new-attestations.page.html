@@ -1,0 +1,37 @@
+<ion-header>
+  <ion-toolbar color="light">
+    <ion-buttons slot="end">
+      <ion-button (click)="close()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ng-container >
+    <h3 class="infoBoxTitle">
+      <strong>Choisissez les documents souhaitées</strong>
+    </h3>
+
+    <div class="h-100">
+      <ng-container *ngFor="let doc of documents; let i = index">
+        <ion-item lines="none" detail="false" button (click)="doc?.DocTyp_Id == '' ? pasdispo() : (doc.checked = !doc?.checked) "  [disabled]="doc?.DocTyp_Id == ''">
+          <ion-label>
+            <ion-text> {{ doc?.label }}</ion-text>
+          </ion-label>
+          <ion-icon color="primary" slot="end" name="checkmark" *ngIf="doc?.checked"></ion-icon>
+        </ion-item>
+      </ng-container>
+
+    </div>
+</ng-container>
+</ion-content>
+<ion-footer>
+  <ion-toolbar color="light" >
+    <ion-button expand="block" color="primary" fill="clear" [disabled]="!isSaveEnabled()" (click)="save()">
+      Valider&nbsp;&nbsp;
+      <ion-icon name="checkmark-circle"></ion-icon>
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>
