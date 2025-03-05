@@ -1,0 +1,14 @@
+
+
+
+for ios:
+must login with amadou@netwaciila.ma, sms sent to Cheikh
+
+
+
+for android:
+to generate .aap to google Console: upload-keystore.jks
+keystore password: 123456
+alias: upload
+key password: 123456
+
