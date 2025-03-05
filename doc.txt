@@ -12,3 +12,7 @@ keystore password: 123456
 alias: upload
 key password: 123456
 
+
+
+in case android jks was lost you can generate it with: (pwd: 123456)
+keytool -export -rfc -keystore upload-keystore.jks -alias upload -file upload_certificate.pem
