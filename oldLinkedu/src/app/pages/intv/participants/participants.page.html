@@ -1,0 +1,80 @@
+<ion-header>
+  <ion-toolbar color="white">
+    <ion-item color="white" lines="none">
+      <ion-label>
+        <h2><b>Liste des étudiants</b></h2>
+        <p>Séance: <b>{{ selectedSeance?.Sea_Nom }}</b></p>
+        <p>Effectif: <b>{{ etudiantDs?.length }}  étudiant(s)</b></p>
+      </ion-label>
+    </ion-item>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ng-container *ngIf="step == 0">
+    <ion-list>
+      <ion-item lines="none" detail="false" button (click)="onEtudiantClick(etudiant.EtdCrs_Id)" [color]="(etudiant.isAbsent != null && etudiant.isAbsent) ? 'danger' : (etudiant.isAbsent != null && !etudiant.isAbsent ? 'primary' : 'light')" *ngFor="let etudiant of filteredEtudiantsDataSource">
+        <ion-avatar slot="start">
+          <ion-img src="{{ etudiant.photo }}"></ion-img>
+        </ion-avatar>
+        <ion-label class="ion-text-wrap">
+          <ion-text>
+            <p>{{ etudiant?.Pers_Prenom }} {{ etudiant?.Pers_Nom }}</p>
+          </ion-text>
+        </ion-label>
+      </ion-item>
+      
+    </ion-list>
+  </ng-container>
+
+  <ng-container *ngIf="step == 1">
+    <form [formGroup]="PeriodeSalleForm" class="form">
+
+      <p class="text-label"><ion-text > Date</ion-text> </p>
+        <ion-datetime presentation="date" value="2012-12-15T13:47:20.789" locale="fr-FR" formControlName="date_modalPeriodeSalle"></ion-datetime>
+      <p class="text-label"><ion-text> Heure de début / Heure de fin</ion-text> </p>
+      <div class="d-flex justif-content">
+        <div>
+              <ion-datetime presentation="time" value="2012-12-15T13:47:20.789" locale="fr-FR" formControlName="hd_modalPeriodeSalle"></ion-datetime>
+        </div>
+        <div>
+            <ion-datetime presentation="time" value="2012-12-15T13:47:20.789" locale="fr-FR" formControlName="hf_modalPeriodeSalle"></ion-datetime>
+        </div>
+      </div>
+
+      <p class="text-label"><ion-text > Salle</ion-text> </p>
+      <ion-item lines="none">
+        <ion-input type="text" placeholder="" formControlName="salle_modalPeriodeSalle" [ngClass]="{ 'is-invalid': formSubmitted && f.salle_modalPeriodeSalle.errors }"></ion-input>
+        <ion-icon  slot="end" name="checkmark-circle"  [color]="'primary'" [hidden]="PeriodeSalleForm?.controls['salle_modalPeriodeSalle'].status == 'INVALID'"></ion-icon>
+      </ion-item>
+
+      <p class="text-label"><ion-text > Remarque</ion-text> </p>
+      <ion-item lines="none">
+        <ion-input type="text" placeholder="" formControlName="remarque_modalPeriodeSalle" [ngClass]="{ 'is-invalid': formSubmitted && f.remarque_modalPeriodeSalle.errors }"></ion-input>
+        <ion-icon  slot="end" name="checkmark-circle"  [color]="'primary'" [hidden]="PeriodeSalleForm?.controls['remarque_modalPeriodeSalle'].status == 'INVALID'"></ion-icon>
+      </ion-item>
+    
+
+    </form>
+  </ng-container>
+
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-buttons slot="end">
+      <ion-button color="primary" (click)="step == 0 ? close() : onModalPeriodeSalleClose()">
+        Annuler &nbsp;
+        <ion-icon name="close-circle-outline"></ion-icon>
+      </ion-button>
+      <ion-button *ngIf="!isAllowedToChangeAbsence" (click)="step == 0 ? onValiderAbsenceEtudiants() : onModalPeriodeSalleValider()">
+        Valider &nbsp;
+        <ion-icon name="checkmark-circle-outline"></ion-icon>
+      </ion-button>
+      <ion-button *ngIf="step == 0 && isAllowedToChangeAbsence" (click)="onModifierAbsenceEtudiants()">
+        Modifier &nbsp;
+        <ion-icon name="create"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>

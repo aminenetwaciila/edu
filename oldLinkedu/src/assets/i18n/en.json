@@ -1,0 +1,168 @@
+{
+    "MENU": {
+        "LANGUE_TEXT": "Languages"
+    },
+    "INTRO": {
+        "WELCOME": "Welcome",
+        "SLOGAN_PART1": "Join us in",
+        "SLOGAN_PART2": "Universiapolis digital space",
+        "BTN_TEXT": "Create an account",
+        "HAVE_ACCOUNT": "Already have an account ?",
+        "SIGN_IN_BTN": "Sign in"
+    },
+    "SIGNIN": {
+        "TITLE": "Sign In",
+        "WELCOME": "Welcome Back",
+        "SUBTITLE": "Hello there, sign in to continue",
+        "USERNAME_TEXT": "Username",
+        "USERNAME_PLACEHOLDER": "Enter your username",
+        "PASSWORD_TEXT": "Password",
+        "PASSWORD_PLACEHOLDER": "Enter your password",
+        "REMEMBER_TEXT": "Remember me",
+        "FORGOT_PASSWORD": "Forgotten password ?",
+        "SIGNIN_SUBMIT": "Sign in",
+        "NO_ACCOUNT": "Don't have an account ?",
+        "SIGN_IN_BTN": "Sign up"
+    },
+    "SUPPORT": {
+        "TITLE": "Support",
+        "TEXT": "Get assistance by calling the number : ",
+        "CALL": "Call",
+        "SUCCESS": "Your call has been successfully started",
+        "ERROR": "An error has occured, please try again later",
+        "COPIED": "Copied to clipboard"
+    },
+    "TTR": {
+        "COMMON": {
+            "LOADING": "Loading ...",
+            "ACCOUNT_ERR": "Error while getting account data, try to re-login !",
+            "YEAR": "Year",
+            "SEMESTER": "Semester",
+            "CHOOSE_YEAR": "Choose a year",
+            "CHOOSE_SEMESTER": "Choose a semester",
+            "CHOOSE": "Choose",
+            "CANCEL": "Cancel",
+            "NO_YEARS": "No year found",
+            "NO_SEMESTER": "No semester found",
+            "NO_MARKS": "No marks found",
+            "FILL_SEMESTER_YEAR": "Please fill semester and year",
+            "SEMESTER_STATUS": "Semester status",
+            "ABSENCES_NBR_SEM": "Number of absences in semester",
+            "SEMESTER_MEAN": "Semester mean",
+            "MODULE": "Subject",
+            "ABSENCES": "Absences"
+        },
+        "ERRORS": {
+            "GENERIC": "An error has occured, try again later.",
+            "NO_INTERNET_CONNECTION": "No internet connection !!"
+        },
+        "TAB1": {
+            "TITLE": "Feed",
+            "READ_MORE": "See More",
+            "LOADING_MORE": "Loading more feeds...",
+            "FEED_NOT_FOUND": "Cannot find requested post !",
+            "ADD_COMMENT": "Comment",
+            "NO_POSTS": "No posts found",
+            "WRITE_COMMENT_PHD": "Write your comment here ..."
+        },
+        "TAB2": {
+            "TITLE": "My children",
+            "ADD_CHILD": "Add children to follow",
+            "PROVED": "Approuved children",
+            "NOT_PROVED": "Not approuved children",
+            "ADD_CHILDREN_BY_MAT": "Add children",
+            "CHILD_MATRICULE": "Child Matricule",
+            "HOW_TO": "Add children matricules, click (+) to add many, then submit all matricules. ",
+            "ERROR_ADDING_CHILDREN": "Error while adding children, try again later.",
+            "SUCCESS_ADDING_CHILDREN": "Matricules were sent successfully.",
+            "MATRICULE_ERR_HEADER": "Matricules Error",
+            "MATRICULE_ERR_SUB8HEADER": "The next matricules are incorrecte",
+            "MATRICULE_TOBE_SENT": " Matricules to be sent",
+            "COULDNT_LOAD_CHILDREN": "Couldn't load children, try again later.",
+            "NOT_PROVED_DESC": "The following children are not approuved yet, you can't see their infos.",
+            "DASHBOARD": {
+                "PEDAGOGY": "Pedagogy",
+                "PLANNING": "Time table",
+                "ABSENCE": "Absences",
+                "NOTES": "Marks",
+                "ENCADRANTS": "Teachers",
+                "CHAT": "Teachers",
+                "INFOS": "Infos",
+                "INCIDENTS": "Appreciations",
+                "SEMESTER": "Semester",
+                "NIVEAUX": {
+                    "1": "1st year",
+                    "2": "2nd year",
+                    "3": "3rd year",
+                    "4": "4th year",
+                    "5": "5th year"
+                }
+            },
+            "INFOS": {
+                "FNAME": "First Name",
+                "LNAME": "Last Name",
+                "BIRTHDATE": "Birth Date",
+                "MATRICULE": "Matricule",
+                "EMAIL": "Email Address",
+                "PHONE": "Phone Number",
+                "ADDRESS": "Address",
+                "CINOUPASS": "CIN number or Passport",
+                "CITY": "City",
+                "COUNTRY": "Country",
+                "SCHOOL": "School",
+                "SEMESTER": "Semester",
+                "SPECIALITY": "Speciality",
+                "GENDER": "Sex",
+                "F": "Female",
+                "M": "Male"
+            },
+            "MARKS": {
+                "FETCH_ERROR": "Error while fetching marks, try again later.",
+                "SEMESTER_MENTION": "Semester mention",
+                "MODULE_ELMS_MARKS": "Subject elements marks",
+                "MODULE_MARK": "Subject's Mark",
+                "MODULE_STATUS": "Subject's status",
+                "ELEM_MARK": "Element's mark"
+            },
+            "ABSENCE": {
+                "FETCH_ERROR": "Error while fetching absences, try again later.",
+                "SUM_ABS_DUR": "Sum of semester's absences duration",
+                "ABS_TOTAL": "Total number of absences",
+                "ABS_TOTAL_HR": "Total Hours of absence",
+                "ABS_BY_ELM": "Absences by module element" 
+            }, 
+            "PLANNING":{
+                "FETCH_ERROR": "Error while fetching planning, try again later.",
+                "DAY": "Day",
+                "HOUR": "Hour",
+                "MODULE": "Subject",
+                "TEACHER": "Teacher",
+                "ROOM": "Room",
+                "GROUP": "Group",
+                "TYPE": "Type",
+                "NO_PLANNING": "No planning found for this semester"
+            } 
+        },
+        "TAB3": {
+            "TITLE": "My profile",
+            "ACCOUNT_DETAILS": "Account Details",
+            "LANG": "Language",
+            "EN": "English",
+            "FR": "French",
+            "HELP": "Help",
+            "SUPPORT": "Support",
+            "LOGOUT": "Log out",
+            "FIELDS": {
+                "PHOTO": "Photo",
+                "LNAME": "Last Name",
+                "FNAME": "First Name",
+                "ADRESS": "Adress",
+                "EMAIL1": "Email 1",
+                "TEL1": "Phone 1"
+            }
+        },
+        "NOTIFS": {
+            "TITLE": "Notifications"
+        }
+    }
+}

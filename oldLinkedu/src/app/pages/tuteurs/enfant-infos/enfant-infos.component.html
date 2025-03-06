@@ -1,0 +1,82 @@
+<div>
+  <ion-card class="ion-padding-bottom">
+    <ion-card-content>
+
+      <ion-item lines="none">
+        <ion-img style="margin: 0 auto" [src]="enfant?.Pers_Photo??'assets/images/student.png'">
+        </ion-img>
+      </ion-item>
+      
+      <ion-item lines="inset">
+        <ion-label position="stacked"> {{ "TTR.TAB2.INFOS.MATRICULE"|translate }} : </ion-label>
+        <ion-input placeholder="-" readonly="true" [value]="enfant?.Etd_Matricule|lowercase"></ion-input>
+      </ion-item>
+
+      <ion-item lines="inset">
+        <ion-label position="stacked"> {{ "TTR.TAB2.INFOS.LNAME"|translate }} : </ion-label>
+        <ion-input placeholder="-" readonly="true" [value]="enfant?.Pers_Nom"></ion-input>
+      </ion-item>
+
+      <ion-item lines="inset">
+        <ion-label position="stacked"> {{ "TTR.TAB2.INFOS.FNAME"|translate }} : </ion-label>
+        <ion-input placeholder="-" readonly="true" [value]="enfant?.Pers_Prenom"></ion-input>
+      </ion-item>
+
+      <ion-item lines="inset">
+        <ion-label position="stacked"> {{ "TTR.TAB2.INFOS.GENDER"|translate }} : </ion-label>
+        <ion-input placeholder="-" readonly="true" [value]=" ('TTR.TAB2.INFOS.'+getEnfantGender(enfant?.Sex_Id))|translate "></ion-input>
+      </ion-item>
+      
+      <ion-item lines="inset">
+        <ion-label position="stacked"> {{ "TTR.TAB2.INFOS.BIRTHDATE"|translate }} : </ion-label>
+        <ion-input placeholder="-" readonly="true" [value]="enfant?.Pers_DateNaissance|date:'dd/MM/yyyy'"></ion-input>
+      </ion-item>
+
+      <ion-item lines="inset">
+        <ion-label position="stacked"> {{ "TTR.TAB2.INFOS.CINOUPASS"|translate }} : </ion-label>
+        <ion-input placeholder="-" readonly="true" [value]="enfant?.Pers_CinouPass"></ion-input>
+      </ion-item>
+  
+      <ion-item lines="inset">
+        <ion-label position="stacked"> {{ "TTR.TAB2.INFOS.EMAIL"|translate }} : </ion-label>
+        <ion-input placeholder="-" readonly="true" [value]="enfant?.Crd_AdessCouriel1"></ion-input>
+      </ion-item>
+
+      <ion-item lines="inset">
+        <ion-label position="stacked"> {{ "TTR.TAB2.INFOS.PHONE"|translate }} : </ion-label>
+        <ion-input placeholder="-" readonly="true" [value]="enfant?.Crd_Cell1"></ion-input>
+      </ion-item>
+
+      <ion-item lines="inset">
+        <ion-label position="stacked"> {{ "TTR.TAB2.INFOS.ADDRESS"|translate }} : </ion-label>
+        <ion-textarea placeholder="-" readonly="true" [value]="enfant?.Crd_AdrLigne1" rows="2"></ion-textarea>
+      </ion-item>
+
+      <ion-item lines="inset">
+        <ion-label position="stacked">  {{ "TTR.TAB2.INFOS.CITY"|translate }} : </ion-label>
+        <ion-input placeholder="-" readonly="true" [value]="enfant?.Crd_Ville"></ion-input>
+      </ion-item>
+      
+      <ion-item lines="inset">
+        <ion-label position="stacked"> {{ "TTR.TAB2.INFOS.COUNTRY"|translate }} : </ion-label>
+        <ion-input placeholder="-" readonly="true" [value]="enfant?.Crd_Pays"></ion-input>
+      </ion-item>
+      
+      <ion-item lines="inset">
+        <ion-label position="stacked"> {{ "TTR.TAB2.INFOS.SCHOOL"|translate }} : </ion-label>
+        <ion-input placeholder="-" readonly="true" [value]="enfant?.ecole"></ion-input>
+      </ion-item>
+
+      <ion-item lines="inset">
+        <ion-label position="stacked"> {{ "TTR.TAB2.INFOS.SEMESTER"|translate }} : </ion-label>
+        <ion-input placeholder="-" readonly="true" [value]="enfant?.semester"></ion-input>
+      </ion-item>
+
+      <ion-item lines="inset">
+        <ion-label position="stacked"> {{ "TTR.TAB2.INFOS.SPECIALITY"|translate }} : </ion-label>
+        <ion-textarea placeholder="-" readonly="true" [value]="enfant?.specialite" rows="auto"></ion-textarea>
+      </ion-item>
+
+    </ion-card-content>
+  </ion-card>
+</div>

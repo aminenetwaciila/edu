@@ -1,0 +1,51 @@
+:host {
+
+  padding: 0 2%;
+  height: 100%;
+
+  .calendar {
+    height: 100%;
+    margin: 0;
+    width: 100%;
+    padding-bottom: 1rem;
+  }
+
+  full-calendar {
+    position: relative;
+    width: 100%;
+    height: 100% !important;
+    overflow: auto;
+  }
+
+  h2 {
+    font-size: 15px;
+    font-weight: 300;
+  }
+
+  ion-item {
+    border-radius: 10px;
+    --border-radius: 10px;
+    margin: 2%;
+  }
+
+  .fs-12 {
+    font-size: 12px;
+  }
+
+  ion-label {
+    font-weight: 300;
+  }
+}
+.greeny {
+  --color: #18b99b;
+}
+
+.myspinner {
+  transform: scale(1.2);
+
+  &,
+  .center-spinner {
+    display: block;
+    margin: 8% auto;
+  }
+}

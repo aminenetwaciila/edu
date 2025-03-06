@@ -1,0 +1,129 @@
+<div class="main">
+  <ion-list lines="full">
+    <ion-item>
+      <ion-label> {{ "TTR.COMMON.YEAR"|translate }} : </ion-label>
+      <ion-select [(ngModel)]="selectedYear" [disabled]="disableInputs" (ngModelChange)="updateSemesters()"
+        [placeholder]="'TTR.COMMON.CHOOSE_YEAR'|translate" [okText]="'TTR.COMMON.CHOOSE'|translate"
+        [cancelText]="'TTR.COMMON.CANCEL'|translate">
+        <ion-select-option *ngFor="let year of yearsAndSemesters" [value]="year.Ann_Id"> {{ year.Ann_Nom }}
+        </ion-select-option>
+        <ion-select-option disabled="true" *ngIf="yearsAndSemesters.length==0" [value]="null"> {{
+          'TTR.COMMON.NO_YEARS'|translate }}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label> {{ "TTR.COMMON.SEMESTER"|translate }} : </ion-label>
+      <ion-select [(ngModel)]="selectedSemester" [disabled]="this.selectedYear==null||disableInputs"
+        (ngModelChange)="updateNotes()" [placeholder]="'TTR.COMMON.CHOOSE_SEMESTER'|translate"
+        [okText]="'TTR.COMMON.CHOOSE'|translate" [cancelText]="'TTR.COMMON.CANCEL'|translate">
+        <ion-select-option *ngFor="let semester of semesters" [value]="semester.SpecSms_Id"> {{ semester.Sms_Nom }}
+        </ion-select-option>
+
+        <ion-select-option disabled="true" *ngIf="semesters.length==0" [value]="null"> {{
+          'TTR.COMMON.NO_SEMESTER'|translate }}
+        </ion-select-option>
+
+      </ion-select>
+    </ion-item>
+  </ion-list>
+
+  <ng-container *ngIf="!fetchedFirstTime">
+    <div class="fullH">
+      <small> {{ 'TTR.COMMON.FILL_SEMESTER_YEAR'|translate }} </small>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="fetchedFirstTime">
+    <ng-container *ngIf="loadingNotes">
+      <ion-spinner class="myspinner center-spinner scalled greeny" name="crescent"></ion-spinner>
+    </ng-container>
+    <ng-container *ngIf="!loadingNotes">
+
+      <ng-container *ngIf="!semesterNotes">
+        <div class="fullH">
+          <div>
+            <ion-icon name="alert-circle-outline"></ion-icon>
+          </div>
+          <small> {{ 'TTR.COMMON.NO_MARKS'|translate }} </small>
+        </div>
+      </ng-container>
+
+      <ng-container *ngIf="semesterNotes">
+        <div class="total">
+          <h6> <strong> {{ 'TTR.COMMON.SEMESTER_MEAN'|translate }} : </strong> {{ semesterNotes.moyenne_semestre }}
+          </h6>
+          <h6> <strong> {{ 'TTR.TAB2.MARKS.SEMESTER_MENTION'|translate }} : </strong> {{ semesterNotes.semester_mention
+            }} </h6>
+          <h6> <strong> {{ 'TTR.COMMON.SEMESTER_STATUS'|translate }} : </strong> {{ semesterNotes.status }} </h6>
+          <h6> <strong> {{ 'TTR.COMMON.ABSENCES_NBR_SEM'|translate }} : </strong> {{ countTotalAbsencies() }} </h6>
+        </div>
+
+        <ion-accordion-group [multiple]="true" #accordion [value]="openMenus"
+          (ionChange)="accordionGroupChange($event)">
+
+          <ion-accordion *ngFor="let module of semesterNotes.modules; let i=index" [value]="'accordion'+i" toggleIcon="caret-down-circle"
+            toggleIconSlot="end">
+            <ion-item slot="header" color="light">
+              <ion-label style="margin: 0;">
+                <strong> {{ 'TTR.COMMON.MODULE'|translate }} : </strong> {{ module.intitule_module }}
+              </ion-label>
+            </ion-item>
+            <ng-container>
+              <!-- *ngIf="!openMenus.includes('first')" -->
+              <div class="moduleElementsHeader" slot="header">
+                <small> {{ 'TTR.TAB2.MARKS.MODULE_ELMS_MARKS'|translate }} : </small>
+                <table style="margin-bottom: 1.5rem;">
+                  <tbody>
+                    <tr *ngFor="let ele of module.elements">
+                      <td><strong>{{ ele.intitule_element }}</strong></td>
+                      <td> {{ ele.note_element }}/20 </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <p> <strong> {{ 'TTR.COMMON.ABSENCES'|translate }} : </strong> {{ countModuleAbsencies(module) }}
+                </p>
+                <p> <strong> {{ 'TTR.TAB2.MARKS.MODULE_MARK'|translate }} : </strong> {{ module.moyenne_module }}/20
+                </p>
+                <p> <strong> {{ 'TTR.TAB2.MARKS.MODULE_STATUS'|translate }} : </strong> <span
+                    class="{{ checkValide(module.status)? 'valide':'non-valide' }}"> {{ module.status }} </span> </p>
+              </div>
+            </ng-container>
+            <div class="ion-padding content table" slot="content">
+
+              <table *ngFor="let ele of module.elements">
+                <thead>
+                  <tr>
+                    <th colspan="2"> {{ ele.intitule_element }} </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let eva of ele.evaluations">
+                    <td> <strong> {{ eva.ElemEval_Nom }} </strong> </td>
+                    <td> {{ eva.EtdCrsEval_Note }}/{{ eva.CrsEval_Pourcentage }} </td>
+                  </tr>
+                  <tr>
+                    <td> <strong> {{ 'TTR.COMMON.ABSENCES'|translate }} </strong> </td>
+                    <td> {{ ele.nbr_absence }} </td>
+                  </tr>
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td> <strong> {{ 'TTR.TAB2.MARKS.ELEM_MARK'|translate }} </strong> </td>
+                    <td> {{ ele.note_element }}/20</td>
+                  </tr>
+                </tfoot>
+              </table>
+
+
+            </div>
+          </ion-accordion>
+
+        </ion-accordion-group>
+      </ng-container>
+
+    </ng-container>
+
+  </ng-container>
+
+</div>

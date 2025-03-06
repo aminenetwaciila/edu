@@ -1,0 +1,68 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button mode="md" color="light" icon="chevron-back-outline"></ion-back-button>
+    </ion-buttons>
+    <ion-item color="primary">
+      <ion-label>
+        <h2> {{ matiere?.Crs_Code }} - {{ matiere?.Crs_Nom }} </h2>
+        <p>{{ matiere?.Composante }} - {{ matiere?.Section }}</p>
+      </ion-label>
+    </ion-item>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item *ngFor="let seance of seances; let i = index;">
+      <ion-text color="primary">{{ seance?.SeaEnum_Nom }}</ion-text> &nbsp;&nbsp;
+      <ion-label class="ion-text-wrap">
+        <ion-grid>
+          <ion-row>
+            <ion-col size="1">
+              <ion-icon color="primary" name="business-outline"></ion-icon>
+            </ion-col>
+            <ion-col>
+              Salle: {{ seance?.SalleEffective }}
+            </ion-col>
+          </ion-row>
+
+          <ion-row *ngIf="seance?.Sea_DateDebutEffective != null && seance?.Sea_DateFinEffeEffective != null ">
+            <ion-col size="1">
+              <ion-icon color="primary" name="calendar-outline"></ion-icon>
+            </ion-col>
+            <ion-col>
+              {{ seance?.Sea_DateDebutEffective | date: "dd/MM/yyyy" }} | {{ seance?.Sea_DateDebutEffective | date: "HH:mm" }} - {{ seance?.Sea_DateFinEffeEffective | date: "HH:mm" }}
+            </ion-col>
+          </ion-row>
+
+          <ion-row *ngIf="type == 'progression'">
+            <ion-col size="1">
+              <ion-icon color="primary" name="people-outline"></ion-icon>
+            </ion-col>
+            <ion-col>
+              {{ seance?.nbPresents }} présent(s) | {{ seance?.nbAbsents }} absent(s)
+            </ion-col>
+          </ion-row>
+
+        </ion-grid>
+      </ion-label>
+
+      <ion-button fill="clear" color="primary" (click)="updateSeanceModal(seance)"  *ngIf="type == 'progression'">
+        <ion-icon name="pencil-outline"></ion-icon>
+      </ion-button>
+
+      <ng-container *ngIf="type == 'matieres'">
+
+        <ion-button *ngIf="seance.Sea_DateEffective == null" fill="clear" color="primary" (click)="onSeanceSelected(seance.SeaEnum_Id)">
+          Gérer l'absence
+        </ion-button>
+
+        <ion-button *ngIf="seance.Sea_DateEffective != null" fill="clear" color="primary" (click)="onSeanceSelected(seance.SeaEnum_Id)" >
+          Consulter
+        </ion-button>
+      </ng-container>
+
+    </ion-item>
+  </ion-list>
+</ion-content>

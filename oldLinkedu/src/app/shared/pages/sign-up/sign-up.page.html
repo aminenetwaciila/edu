@@ -1,0 +1,143 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button mode="md" color="light" icon="chevron-back-outline"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Inscription</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div id="page">
+    <div>
+      <div *ngIf="profilChoosen == null" class="d-flex f-wrap w-100 h-100">
+        <div class="w-50 br-5 h-200 color-light m-2 p-2 ion-activatable ripple-parent" *ngFor="let profil of profils; let i = index;" (click)="chooseProfil(i)">
+          <div class="vertical-center">
+            <ion-icon color="primary" [name]="profil?.icon"></ion-icon>
+            <h6><ion-text color="primary">{{ profil?.title }}</ion-text></h6>
+          </div>
+          <ion-ripple-effect></ion-ripple-effect>
+        </div>
+      </div>
+    </div>
+    
+    <div *ngIf="profilChoosen != null" [ngSwitch]="profilChoosen" >
+      <div *ngSwitchCase="0">
+        <form [formGroup]="etudiantForm" class="form">
+  
+          <p class="text-label"><ion-text> Matricule *</ion-text> </p>
+          <ion-item lines="none">
+            <ion-input type="text" placeholder="Entrez votre matricule" formControlName="matricule"></ion-input>
+            <ion-button fill="clear" color="primary" expand="block" (click)="onSubmitRegisterEtudiantCheckMatricule()">
+              <ion-icon  slot="icon-only" name="add-circle" color="primary" ></ion-icon>
+            </ion-button>
+          </ion-item>
+
+          <ng-container *ngIf="step > 0">
+            <p class="text-label"><ion-text> Email *</ion-text> </p>
+            <ion-item lines="none">
+              <ion-input type="text" placeholder="" formControlName="email"  ></ion-input>
+              <ion-select placeholder="Choisir une option" formControlName="entite" class="selectElt">
+                <ion-select-option value="@universiapolis.ma">@universiapolis.ma</ion-select-option>
+                <ion-select-option value="@e-polytechnique.ma">@e-polytechnique.ma</ion-select-option>
+                <ion-select-option value="@isiam.ma">@isiam.ma</ion-select-option>
+                <ion-select-option value="@suphdroit.ma">@suphdroit.ma</ion-select-option>
+                <ion-select-option value="@suphcom.ma">@suphcom.ma</ion-select-option>
+                <ion-select-option value="@universiahealth.ma">@universiahealth.ma</ion-select-option>
+              </ion-select>
+            </ion-item>
+          </ng-container>
+          
+  
+          <div id="buttons">
+            <ion-button size="small" [disabled]="etudiantForm?.status == 'INVALID'" expand="block" (click)="onSubmitRegisterEtudiant()"  color="primary">
+              Enregistrer
+            </ion-button>
+          </div>
+  
+        </form>
+      </div>
+      <div *ngSwitchCase="1">
+        <form [formGroup]="tuteurForm" class="form">
+  
+          <p class="text-label"><ion-text> Prénom *</ion-text> </p>
+          <ion-item lines="none">
+            <ion-input type="text" placeholder="Entrez votre prénom"  formControlName="prenom" [ngClass]="{ 'is-invalid': formSubmitted && f.prenom.errors }"></ion-input>
+            <ion-icon  slot="end" name="checkmark-circle"  [color]="'primary'" [hidden]="tuteurForm?.controls['prenom'].status == 'INVALID'"></ion-icon>
+          </ion-item>
+          <p class="text-label"><ion-text> Nom *</ion-text> </p>
+          <ion-item lines="none">
+            <ion-input type="text" placeholder="Entrez votre nom"  formControlName="nom" [ngClass]="{ 'is-invalid': formSubmitted && f.nom.errors }"></ion-input>
+            <ion-icon  slot="end" name="checkmark-circle"  [color]="'primary'" [hidden]="tuteurForm?.controls['nom'].status == 'INVALID'"></ion-icon>
+          </ion-item> 
+  
+          <p class="text-label"><ion-text> Adresse *</ion-text> </p>
+          <ion-item lines="none">
+            <ion-input type="text" placeholder="Entrez votre adresse"  formControlName="adresse" [ngClass]="{ 'is-invalid': formSubmitted && f.adresse.errors }"></ion-input>
+            <ion-icon  slot="end" name="checkmark-circle"  [color]="'primary'" [hidden]="tuteurForm?.controls['adresse'].status == 'INVALID'"></ion-icon>
+          </ion-item> 
+  
+          <p class="text-label"><ion-text> Email *</ion-text> </p>
+          <ion-item lines="none">
+            <ion-input type="text" placeholder="Entrez votre email"  formControlName="email" [ngClass]="{ 'is-invalid': formSubmitted && f.email.errors }"></ion-input>
+            <ion-icon  slot="end" name="checkmark-circle"  [color]="'primary'" [hidden]="tuteurForm?.controls['email'].status == 'INVALID'"></ion-icon>
+          </ion-item> 
+  
+          <p class="text-label"><ion-text> Téléphone *</ion-text> </p>
+          <ion-item lines="none">
+            <ion-input type="text" placeholder="Entrez votre téléphone" formControlName="tel" [ngClass]="{ 'is-invalid': formSubmitted && f.tel.errors }"></ion-input>
+            <ion-icon  slot="end" name="checkmark-circle"  [color]="'primary'" [hidden]="tuteurForm?.controls['tel'].status == 'INVALID'"></ion-icon>
+          </ion-item> 
+   
+          <div class="separator">
+            &nbsp;&nbsp;Renseignez les matricules des étudiants que vous souhaitez suivre&nbsp;&nbsp;
+          </div> 
+  
+          <p class="text-label"><ion-text> Matricule *</ion-text> </p>
+          <ion-item lines="none">
+            <ion-input type="text" placeholder="Entrez un matricule" [(ngModel)]="matricule" [ngModelOptions]="{standalone: true}" ></ion-input>
+            <ion-button fill="clear" color="primary" expand="block" (click)="addMatricule()">
+              <ion-icon  slot="icon-only" name="add-circle" color="primary" ></ion-icon>
+            </ion-button>
+          </ion-item>
+          
+          <ion-grid *ngIf="matricules.length">
+            <ion-row>
+              <p class="text-label"><ion-text> Les matricules insérées : </ion-text> </p>
+            </ion-row>
+            <ion-row>
+              <ion-col size="6" *ngFor="let matricule of matricules">
+                <ion-chip class="w-100">
+                  <ion-label> {{ matricule }} </ion-label>
+                  <ion-icon name="close-circle" class="ms-auto" color="danger" (click)="removeTuteurMatricule(matricule)"></ion-icon>
+                </ion-chip>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+
+
+          <div id="buttons">
+            <ion-button size="small" [disabled]="tuteurForm?.status == 'INVALID'" expand="block" (click)="onSubmitRegisterTuteur()" color="primary">
+              Enregistrer
+            </ion-button>
+          </div>
+  
+        </form>
+      </div>
+      <div *ngSwitchCase="2">
+        <div class="vertical-center">
+          <ion-img src="../../../../assets/images/contact.svg" style="width: 200px; height: 200px;"></ion-img><br>
+          Veuillez contacter l'administration pour créer votre compte
+        </div>
+      </div>
+  
+      <div *ngSwitchCase="3">
+        <div class="vertical-center">
+          <ion-img src="../../../../assets/images/redirection.svg" style="width: 200px; height: 200px;"></ion-img><br>
+          Vous serez redirigé dans l'espace d'admission dans  {{countdown | i18nPlural: countdownMapping }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+</ion-content>

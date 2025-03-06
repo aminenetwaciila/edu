@@ -1,0 +1,72 @@
+<div>
+  <ion-list lines="full">
+    <ion-item>
+      <ion-label>Année : </ion-label>
+      <ion-select
+        [value]="'2021-2022'"
+        placeholder="Choisir l'année"
+        okText="Choisir"
+        cancelText="Annuler"
+      >
+        <ion-select-option value="2021-2022">2021-2022</ion-select-option>
+        <ion-select-option value="2020-2021">2020-2021</ion-select-option>
+        <ion-select-option value="2019-2020">2019-2020</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Semestre : </ion-label>
+      <ion-select
+        [value]="'1'"
+        placeholder="Choisir le semestre"
+        okText="Choisir"
+        cancelText="Annuler"
+      >
+        <ion-select-option value="1">Semestre 1</ion-select-option>
+        <ion-select-option value="2">Semestre 2</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Matière : </ion-label>
+      <ion-select
+        [value]="'all'"
+        placeholder="Choisir la matière"
+        okText="Choisir"
+        cancelText="Annuler"
+      >
+        <ion-select-option value="all">Toutes les matières</ion-select-option>
+        <ion-select-option value="maths">Mathématiques</ion-select-option>
+        <ion-select-option value="langs">Langues</ion-select-option>
+      </ion-select>
+    </ion-item>
+  </ion-list>
+
+  <ion-card *ngFor="let post of posts">
+    <ion-card-content>
+      <div class="header">
+        <img src="{{ post.prof.img }}" />
+        <div class="titles">
+          <h1>{{ post.prof.name }}</h1>
+          <h4>{{ post.prof.speciality }}</h4>
+        </div>
+      </div>
+      <p class="content" [innerHtml]="post.content"></p>
+    </ion-card-content>
+    <div class="photos" *ngIf="post.images.length > 0">
+      <swiper
+        [slidesPerView]="1"
+        [navigation]="true"
+        [pagination]="{ dynamicBullets: true }"
+        #myswiper
+      >
+        <ng-template *ngFor="let image of post.images" swiperSlide>
+          <ion-img (click)="previewImage(image)" [src]="image"></ion-img>
+        </ng-template>
+      </swiper>
+    </div>
+    <ion-text class="date" *ngIf="post.date">
+      {{ post.date }}
+    </ion-text>
+  </ion-card>
+</div>

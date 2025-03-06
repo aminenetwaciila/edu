@@ -1,0 +1,25 @@
+.remarque{
+    white-space: initial;
+    text-align: justify;
+}
+.remarque-avatar{
+    align-self: start;
+    margin-top: 10px;
+}
+ion-card {
+    padding: 0;
+    margin: 0;
+    text-align: center;
+    ion-icon{
+        padding: 10px 0px;
+    }
+    ion-card-header {
+        padding-top: 0px;
+        padding-bottom: 8px;
+    }
+}
+.remarques{
+    max-height: 200px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}

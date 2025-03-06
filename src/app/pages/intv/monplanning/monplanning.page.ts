@@ -12,6 +12,7 @@ import { CalendarOptions } from '@fullcalendar/core';
 import { FullCalendarComponent } from '@fullcalendar/angular';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
+import listPlugin from '@fullcalendar/list';
 
 @Component({
   selector: 'app-monplanning',
@@ -25,15 +26,18 @@ export class MonplanningPage implements OnInit, OnDestroy {
   calendarOptions: CalendarOptions = {
     initialView: 'timeGridWeek',
     locale: 'fr-FR',
+    slotMinTime: '08:00:00',
+    firstDay: 1,
+    weekends: true, // initial value
     // eventTextColor: "#fff",
     // dateClick: this.handleDateClick.bind(this), // bind is important!
     eventClick: this.eventClick.bind(this),
-    weekends: true, // initial value
     headerToolbar: {
       start: 'title', end: 'prev,next'
     },
+    footerToolbar: { left: 'today', center: '', right: 'dayGridMonth,timeGridWeek,listWeek' },
     events: [],
-    plugins: [dayGridPlugin, timeGridPlugin],
+    plugins: [dayGridPlugin, timeGridPlugin, listPlugin],
   };
   userData: any;
   events: any;
@@ -50,25 +54,25 @@ export class MonplanningPage implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.menu.enable(true);
-    setTimeout(() => {
-      this.calendarOptions = {
-        initialView: 'timeGridWeek',
-        locale: 'fr-FR',
-        slotMinTime: '08:00:00',
-        // eventTextColor: "#fff",
-        // dateClick: this.handleDateClick.bind(this), // bind is important!
-        eventClick: this.eventClick.bind(this),
-        weekends: true, // initial value
-        headerToolbar: {
-          start: 'title', end: 'prev,next'
-        },
-        footerToolbar: { left: 'today', center: '', right: 'dayGridMonth,timeGridWeek,listWeek' },
-        events: [],
-        plugins: [dayGridPlugin, timeGridPlugin],
-      };
-      // this.calendarComponent.getApi().refetchEvents();
+    // setTimeout(() => {
+    //   this.calendarOptions = {
+    //     initialView: 'timeGridWeek',
+    //     locale: 'fr-FR',
+    //     slotMinTime: '08:00:00',
+    //     // eventTextColor: "#fff",
+    //     // dateClick: this.handleDateClick.bind(this), // bind is important!
+    //     eventClick: this.eventClick.bind(this),
+    //     weekends: true, // initial value
+    //     headerToolbar: {
+    //       start: 'title', end: 'prev,next'
+    //     },
+    //     footerToolbar: { left: 'today', center: '', right: 'dayGridMonth,timeGridWeek,listWeek' },
+    //     events: [],
+    //     plugins: [dayGridPlugin, timeGridPlugin],
+    //   };
+    //   // this.calendarComponent.getApi().refetchEvents();
 
-    }, 100);
+    // }, 100);
 
     this.dataServ.seances$
       .pipe(takeUntil(this._unsubscribeAll))

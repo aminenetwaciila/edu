@@ -1,0 +1,114 @@
+<ion-grid style="padding-bottom: 30px;">
+  <ion-row>
+    <ion-col>
+      <ion-card (click)="forward('infos', 'INFOS')" style="cursor: pointer;">
+        <ion-card-content class="info-card-content">
+          <div class="container">
+            <div class="img">
+              <img [src]="enfant?.Pers_Photo??'assets/images/student.png'" />
+              <small> {{ enfant?.Etd_Matricule|lowercase }} </small>
+            </div>
+            <div class="content">
+              <h1>{{ enfant?.Pers_Nom + " " + enfant?.Pers_Prenom }}</h1>
+              <h3>
+                {{ enfant?.semester ?  ("TTR.TAB2.DASHBOARD.SEMESTER"|translate)+" : "+enfant?.semester:"" }}
+              </h3>
+              <h3> 
+                {{ enfant?.specialite ?  enfant?.specialite:"" }}
+              </h3>
+              <h4> 
+                {{ enfant?.ecole ?  enfant?.ecole:"" }}
+              </h4>
+            </div>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </ion-col>
+  </ion-row>
+
+  <ion-row [hidden]="true">
+    <ion-col>
+      <app-stats></app-stats>
+    </ion-col>
+  </ion-row>
+
+  <ion-row>
+    <ion-col>
+      <app-parcours-scolaire></app-parcours-scolaire>
+    </ion-col>
+  </ion-row>
+
+  <ion-row>
+    <ion-col size="6"  [hidden]="true">
+      <ion-card (click)="forward('pedagogy', 'PEDAGOGY')">
+        <ion-icon size="large" name="layers-outline"></ion-icon>
+        <ion-card-header>
+          {{ "TTR.TAB2.DASHBOARD.PEDAGOGY" | translate }}
+        </ion-card-header>
+      </ion-card>
+    </ion-col>
+
+    <ion-col size="6" >
+      <ion-card (click)="forward('planning', 'PLANNING')">
+        <ion-icon size="large" name="calendar-clear-outline"></ion-icon>
+        <ion-card-header>
+          {{ "TTR.TAB2.DASHBOARD.PLANNING" | translate }}
+        </ion-card-header>
+      </ion-card>
+    </ion-col>
+
+    <ion-col size="6">
+      <ion-card (click)="forward('absence', 'ABSENCE')">
+        <ion-icon size="large" name="apps-outline"></ion-icon>
+        <ion-card-header>
+          {{ "TTR.TAB2.DASHBOARD.ABSENCE" | translate }}
+        </ion-card-header>
+      </ion-card>
+    </ion-col>
+
+    <ion-col size="6">
+      <ion-card (click)="forward('notes', 'NOTES')">
+        <ion-icon size="large" name="checkbox-outline"></ion-icon>
+        <ion-card-header>
+          {{ "TTR.TAB2.DASHBOARD.NOTES" | translate }}
+        </ion-card-header>
+      </ion-card>
+    </ion-col>
+
+    <ion-col size="6"  [hidden]="true">
+      <ion-card (click)="forward('encadrants', 'ENCADRANTS')">
+        <ion-icon size="large" name="people-circle-outline"></ion-icon>
+        <ion-card-header>
+          {{ "TTR.TAB2.DASHBOARD.ENCADRANTS" | translate }}
+        </ion-card-header>
+      </ion-card>
+    </ion-col>
+
+    <ion-col size="6" [hidden]="true">
+      <ion-card (click)="forward('incidents', 'INCIDENTS')">
+        <ion-icon size="large" name="flag-outline"></ion-icon>
+        <ion-card-header>
+          {{ "TTR.TAB2.DASHBOARD.INCIDENTS" | translate }}
+        </ion-card-header>
+      </ion-card>
+    </ion-col>
+  </ion-row>
+
+
+  <ion-row [hidden]="true">
+    <ion-col>
+      <app-planning-universitaire></app-planning-universitaire>
+    </ion-col>
+  </ion-row>
+
+  <ion-row [hidden]="true">
+    <ion-col>
+      <app-remarques></app-remarques>
+    </ion-col>
+  </ion-row>
+
+
+
+
+
+</ion-grid>

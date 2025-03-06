@@ -1,0 +1,41 @@
+ion-card {
+    padding: 0;
+    margin: 0;
+    text-align: center;
+    ion-icon{
+        padding: 10px 0px;
+    }
+    ion-card-header {
+        padding-top: 0px;
+        padding-bottom: 8px;
+    }
+}
+
+table{
+    width: 100%;
+    padding: 0px;
+    margin: 0px ;
+    text-align: center;
+    vertical-align: middle;
+    border: 2px solid rgb(110, 110, 110);
+    tbody {
+        border: 1.8px solid rgb(110, 110, 110);
+        tr{
+            td {
+                padding: 7px 5px;
+                border: 0.7px solid rgb(110, 110, 110);
+                font-size: 13px;
+            }
+            .semesterTitle {
+                writing-mode: tb-rl;
+                padding: 0.7em 0.3em;
+                font-size: 14px;
+
+            }
+        }
+    }
+}
+
+.content{
+    padding: 7px 3px !important;
+}

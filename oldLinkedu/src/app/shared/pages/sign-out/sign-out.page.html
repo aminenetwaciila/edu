@@ -1,0 +1,20 @@
+
+<ion-content>
+  <div id="page">
+     <!-- <img src="../../../assets/images/sign-out.png">  -->
+  </div>
+</ion-content>
+
+<ion-footer  class="ion-no-border">
+  <ion-toolbar color="primary">
+    <p>
+      <ng-container *ngIf="countdown > 0">
+        Redirection dans {{countdown | i18nPlural: countdownMapping }}
+      </ng-container>
+  
+      <ng-container *ngIf="countdown === 0">
+          Vous êtes maintenant redirigé !
+      </ng-container>
+    </p>
+  </ion-toolbar>
+</ion-footer>

@@ -1,0 +1,53 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button mode="md" color="light" icon="chevron-back-outline"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Mes attestations</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-item lines="none" color="light" class="ion-text-center bg-none" style="width: 100%;" *ngIf="mesdemandes == null">
+    <ion-spinner style="margin: auto;" color="primary"></ion-spinner>
+  </ion-item>
+
+  <div class="container1" *ngIf="mesdemandes?.length == 0">
+    <div class="vertical-center">
+      <ion-icon name="documents" class="fs-100" color="medium"></ion-icon>
+      <p class="fs-12">
+        <ion-text color="medium">Aucune demande de document pour le moment</ion-text>
+      </p>
+    </div>
+  </div>
+
+  <div class="container1" *ngIf="mesdemandes?.length > 0">
+    <ion-item lines="none" *ngFor="let dem of mesdemandes">
+      <ion-label>
+        <h2>N° {{dem?.DocDemande_Num}}</h2>
+        <p><span>{{dem?.Dem_Date | date: 'EEE dd MMM yyyy'}}</span></p>
+        <p><span *ngFor="let doc of dem?.docs">{{ doc }};&nbsp;</span></p>
+      </ion-label>
+      <ion-text class="fs-10">{{dem?.DocEtatDemande_Nom}}</ion-text>
+    </ion-item>
+
+    <!-- <div class="title text-secondary"><i class="fa fa-calendar"></i> &nbsp; {{dem?.Dem_Date}}</div>
+    <div style="display: flex;" [@enterAnimation]>
+      <div class="h5 info" style="flex: 1; text-align: left;">
+        <span style="float: right" class="text-success"><span>N° {{dem?.DocDemande_Num}}</span><br><span
+            class="text-success">{{dem?.DocEtatDemande_Nom}}</span></span>
+        <p class="info h5"><span *ngFor="let doc of dem?.docs">{{ doc }};&nbsp;</span></p>
+      </div>-->
+  </div>
+
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar color="light" (click)="newAttestation()">
+    <ion-button expand="block" color="primary" fill="clear">
+      Nouveau&nbsp;&nbsp;
+      <ion-icon name="add-circle"></ion-icon>
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>

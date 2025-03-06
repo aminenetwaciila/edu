@@ -1,11 +1,11 @@
-#page 
+#page
 {
   display: flex;
   flex-direction: column;
   width: 100%;
   height: 100%;
   overflow: hidden;
-  // background-color: var(--ion-color-light); 
+  // background-color: var(--ion-color-light);
   border-radius: 10px;
 
 }
@@ -15,8 +15,8 @@
   height: 100%;
   margin: 2%;
   margin-bottom: 0%;
+  background-color: white;
 }
-
 
 full-calendar {
   position: relative;

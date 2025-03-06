@@ -1,0 +1,55 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title> {{ "TTR.TAB3.TITLE"|translate }} </ion-title>    
+    <ion-button fill="clear" slot="end" color="light" style="margin: 0;" routerLink="/menuTtr/tabs/notifs">
+      <ion-icon name="notifications-outline"></ion-icon>
+    </ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <div class="container">
+
+    <div class="avatar">
+      <ion-img class="avatar" [src]="tuteur?.Pers_Photo ?? default_avatar"> </ion-img>
+      <h1>  {{ tuteur?.username }} </h1>
+      <h5 style="font-size: 1rem;"> {{ tuteur?.Crd_AdessCouriel1 }} </h5>
+    </div>
+
+
+    <div class="buttons">
+
+      <ion-item lines="full" class="ion-padding-horizontal">
+        <ion-label > {{ "TTR.TAB3.LANG"|translate }} : </ion-label>
+        <ion-select placeholder="{{ 'TTR.TAB3.'+lang.toUpperCase() | translate }}" #langselect [(ngModel)]="lang"  (ionChange)="changeLang(langselect.value)">
+          <ion-select-option *ngFor="let lango of translate.getLangs()" [value]="lango">
+            {{ "TTR.TAB3."+lango.toUpperCase()|translate }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-button expand="full"  routerDirection="forward" routerLink="mon-compte">
+        <ion-icon slot="start" name="create-outline"></ion-icon>
+        {{ "TTR.TAB3.ACCOUNT_DETAILS"|translate }}
+      </ion-button>
+
+      <ion-button expand="full" color="secondary" routerDirection="forward" routerLink="aide">
+        <ion-icon slot="start" name="information-circle-outline"></ion-icon>
+         {{ "TTR.TAB3.HELP"|translate }}
+      </ion-button>
+
+      <ion-button expand="full" color="secondary" routerDirection="forward" routerLink="support">
+        <ion-icon slot="start" name="call"></ion-icon>
+         {{ "TTR.TAB3.SUPPORT"|translate }}
+      </ion-button>
+
+      <ion-button expand="full"  (click)="logout()" color="danger">
+        <ion-icon slot="start" name="log-out-outline"></ion-icon>
+        {{ "TTR.TAB3.LOGOUT"|translate }}
+      </ion-button>
+    </div>
+
+  </div>
+
+</ion-content>

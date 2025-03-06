@@ -1,0 +1,17 @@
+:host{
+    overflow-y: auto;
+}
+ion-item {
+    padding-top: 0px;
+    padding-bottom: 16px;
+    ion-label {
+        font-weight: 700;
+        padding-top: 0;
+    }
+    ion-input{
+        text-align: center;
+    }
+}
+ion-card-content {
+    padding: 1rem 0.5rem;
+}

@@ -33,4 +33,13 @@ export class HelperService {
   }
 
 
+
+  static getFormattedDate(date: Date) {
+    return ('0' + (date.getDate())).slice(-2) + '/' + ('0' + (date.getMonth() + 1)).slice(-2) + '/' + date.getFullYear();
+  }
+  static getFormattedTime(date: Date) {
+    return ('0' + date.getHours()).slice(-2) + ':' + ('0' + date.getMinutes()).slice(-2);
+  }
+
+
 }

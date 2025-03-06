@@ -1,0 +1,116 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button mode="md" color="light" icon="chevron-back-outline"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Détails</ion-title>
+    <ion-buttons slot="end" *ngIf="demanderevision">
+      <ion-button (click)="annuler()">
+        Annuler
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+    <ion-card  *ngFor="let mdu of semestre?.modules; let i = index;" mode="ios">
+      <ion-item lines="full" color="light">
+        <ion-label class="ion-text-wrap">
+          <span class="fs-10"> {{ mdu?.Mdu_Code }}</span> <span> - <b>{{ mdu?.Mdu_Nom | uppercase }}</b></span>
+          <span *ngIf="mdu?.MduValidation == 'VPC'">(Compensé)</span> <br>
+          Moy: <span class="text-secondary">{{(mdu?.MduMoyenne  != null ? mdu?.MduMoyenne: '-')}}/20 </span> 
+        </ion-label>
+        <ion-icon  name="checkmark-circle" color="primary" *ngIf="mdu?.MduValidation == 'Validé' || mdu?.MduValidation == 'VPC'"></ion-icon>
+        <ion-icon name="remove-circle" color="danger" *ngIf="mdu?.MduValidation == 'Non validé'"></ion-icon>
+      </ion-item>
+        <ng-container>
+          <ng-container *ngFor="let mat of mdu?.matieres;">
+            <ion-item lines="none">
+              <ng-container *ngIf="demanderevision && !mat?.demandeEnCours" >
+                <ion-checkbox slot="start" [disabled]="matchoose.length == this.nbRevRestant && !mat.checked" [(ngModel)]="mat.checked" (ngModelChange)="onMatiereChecked(mat)"></ion-checkbox>
+              </ng-container>
+              <ion-label class="ion-text-wrap">
+                <span class="fs-12">{{mat?.Crs_Code}} - </span> <span class="fs-12"> {{mat?.Crs_Nom | uppercase }}</span>
+                <p class="fs-12">Absences: <span class="under" (click)="(mat?.absences?.length > 0 ? afficherDetAbsences(mat) : '')">{{ mat?.absences?.length }}</span></p>
+              </ion-label>
+              <ion-text class="fs-12 under" (click)="(!isNaN(mat?.EtdCrs_NoteExam) && mat?.EtdCrs_NoteExam != null ? afficherDetNotes(mat) : '')">{{(!isNaN(mat?.EtdCrs_NoteExam) && mat?.EtdCrs_NoteExam != null ? mat?.EtdCrs_NoteExam : '-')}}/20</ion-text>
+            </ion-item>
+          </ng-container>
+        </ng-container>
+    </ion-card>
+
+</ion-content>
+<ion-footer *ngIf="!demanderevision && (etudiant?.ds?.smsActuel?.Sms_Nom === semestre?.Sms_Nom) && hasDemandeActive()">
+  <ion-toolbar>
+    <ion-button expand="block" fill="clear" (click)="demandeRev()" >
+      Demander une révision &nbsp;
+      <ion-icon name="add-circle"></ion-icon>
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>
+
+
+<ion-footer *ngIf="demanderevision && matchoose?.length > 0 ">
+  <ion-toolbar>
+    <ion-button expand="block" fill="clear" (click)="continuer()" >
+     Continuer &nbsp;
+      <ion-icon name="chevron-forward"></ion-icon>
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>
+
+
+<!-- <div class="col-12 col-md-9" *ngIf="semestreActive && semestreActive?.modules?.length > 0" style="flex: 1">
+  <div class="bulletin">
+    <div *ngFor="let mdu of (semestreActive ? semestreActive?.modules : []); let i = index;" [@enterAnimation]>
+      <div class="bg-gradient-default">
+        <div [ngClass]="{'amodule text-sm': true, 'amodulev': true }">
+          <div class="text-secondary" style="flex: 2; text-align: left;">
+            Module: <span (click)="isPhone ? afficher(mdu?.Mdu_Nom): ''" class="code">{{mdu?.Mdu_Code}}</span> <span *ngIf="!isPhone"> - {{mdu?.Mdu_Nom}}</span><span *ngIf="mdu?.MduValidation == 'VPC'">(Compensé)</span> <span style="float: right;">Moy: <span class="text-secondary">{{(mdu?.MduMoyenne  != null ? mdu?.MduMoyenne: '-')}}/20 </span> - <i class="fa fa-check-circle text-success fs-30" *ngIf="mdu?.MduValidation == 'Validé' || mdu?.MduValidation == 'VPC'"></i><i class="fa fa-minus-circle text-danger fs-30" *ngIf="mdu?.MduValidation == 'Non validé'"></i></span>
+          </div>
+        </div>
+        <div class="matiere text-sm">
+            <div class="text-secondary amatiere" *ngFor="let mat of mdu?.matieres; let j = index;" [@enterAnimation]>
+              <div class="curs custom-control custom-checkbox" style="flex: 1; border-right: 1px solid #a4a4a4; text-align: center;" *ngIf="demanderevision && !mat?.demandeEnCours" [@enterAnimation]>
+                <input class="custom-control-input bg-gradient-secondary" [id]="'customCheck' + (mat?.Crs_Code)" type="checkbox" [disabled]="matchoose.length == this.nbRevRestant && !mat.checked" [name]="'customCheckn' + (mat?.Crs_Code)" [(ngModel)]="mat.checked" (ngModelChange)="onMatiereChecked(mat)"> <label class="custom-control-label" [for]="'customCheck'+ (mat?.Crs_Code)"></label>
+              </div>
+              <div style="flex: 2; border-right: 1px solid #a4a4a4; text-transform: capitalize;">
+                <div style="margin-left: 10%;">
+                  <table style="width: 100%;">
+                    <tr>
+                      <td style="width: 75%; padding: 1%;"><strong><span (click)="isPhone ? afficher(mat?.Crs_Nom): ''" *ngIf="!isPhone">{{mat?.Crs_Code}} - </span> <span> {{mat?.Crs_Nom}}</span></strong></td>
+                      <td style="width: 25%;"><span  [ngClass]="{'underl':!isNaN(mat?.EtdCrs_NoteExam) && mat?.EtdCrs_NoteExam != null, 'text-secondary': true}" (click)="(!isNaN(mat?.EtdCrs_NoteExam) && mat?.EtdCrs_NoteExam != null ? afficherDetNotes(mat) : '')">{{(!isNaN(mat?.EtdCrs_NoteExam) && mat?.EtdCrs_NoteExam != null ? mat?.EtdCrs_NoteExam : '-')}}/20</span></td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+              <div class="curs" style="flex: 1; text-align: right;">
+                <br>
+                <table style="float: right;">
+                  <tbody>
+                    <tr><td>Absences&nbsp;&nbsp;&nbsp;</td><td [ngClass]="{'underl': mat?.absences?.length > 0 ,'text-secondary': true}"><span (click)="(mat?.absences?.length > 0 ? afficherDetAbsences(mat) : '')">{{ mat?.absences?.length }}</span></td></tr> 
+                  </tbody>
+                </table>
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container-loader" *ngIf="!semestreActive">
+      <div class="loader">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+  </div>
+</div> -->
+
+

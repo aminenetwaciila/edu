@@ -1,0 +1,93 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button>
+      </ion-menu-button>
+    </ion-buttons>
+    <ion-title> {{ "TTR.TAB1.TITLE"|translate }} </ion-title>
+    <ion-button style="margin: 0;" slot="end" fill="clear" color="light" routerLink="/menu/tabs/notifs">
+      <ion-icon name="notifications-outline"></ion-icon>
+    </ion-button>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content>
+
+  <ng-container *ngIf="!firstLoad">
+    <ion-spinner class="myspinner center-spinner scalled greeny" name="crescent"></ion-spinner>
+  </ng-container>
+
+
+  <ng-container *ngIf="firstLoad">
+
+    <ion-refresher slot="fixed" class="greeny" (ionRefresh)="doRefresh($event)">
+      <ion-refresher-content>
+      </ion-refresher-content>
+    </ion-refresher>
+
+    <ng-container *ngIf="posts.length==0&&firstLoad">
+      <div class="empty">
+        <div>
+          <ion-icon name="alert-circle-outline"></ion-icon>
+        </div>
+        <ion-label>
+          <small class="center-text">{{ "TTR.TAB1.NO_POSTS"|translate }}</small>
+        </ion-label>
+      </div>
+    </ng-container>
+
+    <ion-card *ngFor="let post of posts">
+      <ion-card-header>
+        <ion-card-title class="postTitle"> {{ post.Act_Titre }} </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ng-container *ngIf="post.shortened; else shortPost">
+          <div class="post-body" [innerHTML]="post.Act_contenu">
+          </div>
+          <a (click)="readMore(post.Act_Id,false)" class="post-link"> {{ "TTR.TAB1.READ_MORE"|translate }} ... </a>
+        </ng-container>
+        <ng-template #shortPost>
+          <div class="post-body" [innerHTML]="post.Act_contenu">
+          </div>
+        </ng-template>
+      </ion-card-content>
+
+      <div class="photos" *ngIf="post.medias.length>0">
+        <swiper [slidesPerView]="1" [navigation]="true" [pagination]="{dynamicBullets: true}" #myswiper>
+          <ng-template *ngFor="let media of post.medias" swiperSlide>
+            <ion-img *ngIf="media.ActMed_type=='image'" (click)="previewImage(media.ActMed_adresse)"
+              [src]="media.ActMed_adresse"></ion-img>
+          </ng-template>
+        </swiper>
+      </div>
+      <ion-item lines="none" class="ion-no-padding" style="margin-left: 10px">
+        <ion-buttons slot="start">
+          <ion-button color="medium" (click)="toggleLike(post)">
+            <ion-icon *ngIf="post.liked" slot="start" name="thumbs-up" color="primary"></ion-icon>
+            <ion-icon *ngIf="!post.liked" slot="start" name="thumbs-up-outline"></ion-icon>
+            <small> {{ post.num_likes??0 }} </small>
+          </ion-button>
+          <ion-button color="medium" (click)="readMore(post.Act_Id,true)">
+            <ion-icon slot="start" name="chatbox-outline"></ion-icon>
+            <small> {{ post.num_comments }} </small>
+          </ion-button>
+        </ion-buttons>
+
+        <ion-buttons slot="end">
+          <ion-button color="medium" disabled>
+            <ion-icon size="small" slot="start" name="time-outline"></ion-icon>
+            <small> {{ post.Act_created_at|date }} </small>
+          </ion-button>
+        </ion-buttons>
+      </ion-item>
+    </ion-card>
+
+    <ion-infinite-scroll threshold="100px" #infiniteScroll (ionInfinite)="loadData($event)">
+      <ion-infinite-scroll-content loadingSpinner="crescent" class="greeny"
+        loadingText="{{ 'TTR.TAB1.LOADING_MORE'|translate }}">
+      </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+  </ng-container>
+
+</ion-content>

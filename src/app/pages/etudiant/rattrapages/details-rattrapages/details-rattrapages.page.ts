@@ -10,6 +10,7 @@ import { takeUntil } from 'rxjs/operators';
 import { DataService } from 'src/app/shared/services/data.service';
 import { DbService } from 'src/app/shared/services/db.service';
 import { UserService } from 'src/app/shared/services/user.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-details-rattrapages',
@@ -30,9 +31,9 @@ export class DetailsRattrapagesPage implements OnInit {
   Annees: any[] = [];
   Semestres: {
     Sms_Nom: string, IsOpen: boolean, IsAutreMatieresVisible: boolean,
-    MatieresObligatoire: { EtdCrs_Id: string, Crs_Code: string, Crs_Nom: string, EtdCrs_NoteExam: number, EstConfirme: boolean, EstTraite: boolean, CanEdit: boolean }[],
-    MatieresOptionnelle: { EtdCrs_Id: string, Crs_Code: string, Crs_Nom: string, EtdCrs_NoteExam: number, EstConfirme: boolean, EstTraite: boolean, CanEdit: boolean }[],
-    AutreMatieres: { EtdCrs_Id: string, Crs_Code: string, Crs_Nom: string, EtdCrs_NoteExam: number, EstConfirme: boolean, EstTraite: boolean, CanEdit: boolean }[],
+    MatieresObligatoire: { EtdCrs_Id: string, Crs_Code: string, Crs_Nom: string, EtdCrs_NoteExam: number, EstConfirme: boolean, MatiereOuverte: boolean, EstTraite: boolean, CanEdit: boolean }[],
+    MatieresOptionnelle: { EtdCrs_Id: string, Crs_Code: string, Crs_Nom: string, EtdCrs_NoteExam: number, EstConfirme: boolean, MatiereOuverte: boolean, EstTraite: boolean, CanEdit: boolean }[],
+    AutreMatieres: { EtdCrs_Id: string, Crs_Code: string, Crs_Nom: string, EtdCrs_NoteExam: number, EstConfirme: boolean, MatiereOuverte: boolean, EstTraite: boolean, CanEdit: boolean }[],
   }[] = [];
 
   constructor(
@@ -47,7 +48,7 @@ export class DetailsRattrapagesPage implements OnInit {
     private dataServ: DataService,
     private toast: ToastController) {
 
-    console.log("DetailsRattrapagesPage.constructor")
+    // console.log("DetailsRattrapagesPage.constructor")
 
   }
 
@@ -58,25 +59,32 @@ export class DetailsRattrapagesPage implements OnInit {
     this.route.queryParams.subscribe((params: any) => {
       // console.log("params: ", params);
       this.Annees = JSON.parse(JSON.stringify(params.Annees));
-      this.DataSource = JSON.parse(JSON.stringify(params.DataSource)).map((item) => {
-        item.ValueChanged = false;
-        return item;
-      });
+      this.DataSource = JSON.parse(JSON.stringify(params.DataSource))
+        .map((item) => {
+          item.ValueChanged = false;
+          return item;
+        });
+
+      console.log("DataSource: ", this.DataSource)
+
+      if (environment.production == false) {
+        this.DataSource = this.DataSource.map((item) => {
+          item.Per_DateFinInscpRatt = new Date("2025-03-01T00:00:00");
+
+          return item;
+        });
+      }
+
       this.OrginalDataSource = JSON.parse(JSON.stringify(this.DataSource));
-      // console.log("DataSource: ", this.DataSource)
-      // console.log("Annees: ", this.Annees)
 
-      // if (params.semestre) this.semestre = JSON.parse(params.semestre);
       this.from = params.from;
-
-      // let matieres = this.matieres.map((x) => { return x; });
 
       this.Semestres = [];
 
       this.DataSource.forEach((etdCrs) => {
         if (this.Semestres.find(x => x.Sms_Nom == etdCrs.Sms_Nom) == null) {
           let semestre: any = {
-            Sms_Nom: etdCrs.Sms_Nom, IsOpen: false,
+            Sms_Nom: etdCrs?.Sms_Nom, IsOpen: false,
             IsAutreMatieresVisible: false,
             MatieresObligatoire: [], MatieresOptionnelle: [], AutreMatieres: [],
           };
@@ -166,13 +174,74 @@ export class DetailsRattrapagesPage implements OnInit {
   }
 
   OnMatiereChange(event, etdcrs_id) {
-    // console.log("event: ", event)
-    // console.log("OnMatiereChange: ", etdcrs_id);
+    console.log("event: ", event);
+    console.log("OnMatiereChange: ", etdcrs_id);
+    let item = this.DataSource.find(x => x.EtdCrs_Id == etdcrs_id);
+    console.log("item: ", item);
+
+    if (item.MatiereOuverte == false) {
+      this.presentToast("Cette matière n'est pas ouverte en rattrapage.", null, 5000);
+      setTimeout(() => {
+        this.ResetCheckBoxes(etdcrs_id);
+      }, 250);
+      return;
+    }
+
+
+    if (item.Per_DateFinInscpRatt != null) {
+      if (new Date() > new Date(item.Per_DateFinInscpRatt)) {
+        this.presentToast("La date limite d'inscription aux rattrapages est dépassée.", null, 5000);
+
+        setTimeout(() => {
+          this.ResetCheckBoxes(etdcrs_id);
+        }, 250);
+        return;
+      }
+    }
+
     this.DataSource = this.DataSource.map((item) => {
       if (item.EtdCrs_Id == etdcrs_id)
         item.ValueChanged = true;
       return item;
     })
+  }
+
+  ResetCheckBoxes(etdcrs_id) {
+
+    let originalItem = this.OrginalDataSource.find(x => x.EtdCrs_Id == etdcrs_id)
+    console.log("originalItem: ", originalItem)
+
+    this.Semestres = this.Semestres.map((sms) => {
+
+      // MatieresObligatoire
+      sms.MatieresObligatoire = sms.MatieresObligatoire.map((mat) => {
+        if (mat.EtdCrs_Id == etdcrs_id) {
+          console.log("MatieresObligatoire mat: ", mat);
+          mat.EstConfirme = originalItem.EstConfirme;
+        }
+        return mat;
+      });
+
+      // MatieresOptionnelle
+      sms.MatieresOptionnelle = sms.MatieresOptionnelle.map((mat) => {
+        if (mat.EtdCrs_Id == etdcrs_id) {
+          console.log("MatieresOptionnelle mat: ", mat);
+          mat.EstConfirme = originalItem.EstConfirme;
+        }
+        return mat;
+      });
+
+      // AutreMatieres
+      sms.AutreMatieres = sms.AutreMatieres.map((mat) => {
+        if (mat.EtdCrs_Id == etdcrs_id) {
+          console.log("AutreMatieres mat: ", mat);
+          mat.EstConfirme = originalItem.EstConfirme;
+        }
+        return mat;
+      });
+
+      return sms;
+    });
   }
 
 
@@ -193,9 +262,6 @@ export class DetailsRattrapagesPage implements OnInit {
     this.TotalAPayer = this.EtdCrsAValider
       .filter(x => x.EstConfirme == true)
       .reduce((accumulator, currentValue) => { return accumulator + currentValue.Tarif; }, 0);
-
-    // console.log("EtdCrsAValider: ", this.EtdCrsAValider);
-    // console.log("TotalAPayer: ", this.TotalAPayer);
 
     if (this.EtdCrsAValider.length == 0) {
       try { this.toast.dismiss(); } catch (e) { }

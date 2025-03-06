@@ -1,0 +1,27 @@
+<ion-card class="ion-no-padding">
+  <ion-card-content class="ion-no-padding">
+    <ion-accordion-group>
+      <ion-accordion value="first" >
+        <ion-item slot="header" color="white">
+          <ion-icon name="flash-outline" slot="start"></ion-icon>
+          <ion-label> Dernières remarques </ion-label>
+        </ion-item>
+        <div class="ion-no-padding remarques" slot="content">
+          <ion-list>
+            <ion-item *ngFor="let rmq of remarques; let rmqindex=index"  [lines]="rmqindex!=remarques.length-1?'full':'none'">
+              <ion-avatar class="remarque-avatar" slot="start">
+                <img src="{{ rmq.image }}" />
+              </ion-avatar>
+              <ion-label>
+                <h2> {{ rmq.posterName }} </h2>
+                <p class="remarque">
+                  {{ rmq.content }}
+                </p>
+              </ion-label>
+            </ion-item>
+          </ion-list>
+        </div>
+      </ion-accordion>
+    </ion-accordion-group>
+  </ion-card-content>
+</ion-card>

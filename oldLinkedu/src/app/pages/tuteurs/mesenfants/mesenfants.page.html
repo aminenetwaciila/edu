@@ -1,0 +1,112 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title> {{ "TTR.TAB2.TITLE"|translate }} </ion-title>
+    <ion-button slot="end" color="light" style="margin: 0;" routerDirection="forward" fill="clear"
+      routerLink="/menuTtr/tabs/notifs">
+      <ion-icon name="notifications-outline"></ion-icon>
+    </ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ng-container *ngIf="!firstLoad">
+    <ion-spinner class="myspinner center-spinner scalled greeny" name="crescent"></ion-spinner>
+  </ng-container>
+
+  <ng-container *ngIf="firstLoad">
+
+    <ion-refresher slot="fixed" class="greeny" (ionRefresh)="doRefresh($event)">
+      <ion-refresher-content>
+      </ion-refresher-content>
+    </ion-refresher>
+
+    <div *ngIf="loaded" style="padding-bottom: 1rem;">
+
+      <section class="section1">
+        <ion-button fill="solid" color="secondary" expand="block" routerDirection="forward" routerLink="add-enfant">
+          <ion-icon slot="start" name="add-circle-outline"></ion-icon>
+          {{ "TTR.TAB2.ADD_CHILD"|translate }}
+        </ion-button>
+      </section>
+
+      <section class="section2">
+        <ion-list-header class="Header">
+          <ion-text color="medium">
+            {{ "TTR.TAB2.PROVED"|translate }}
+
+            <span>
+              ( {{enfants.length}} )
+            </span>
+          </ion-text>
+        </ion-list-header>
+
+        <ion-grid class="py-0">
+          <ion-row class="py-0">
+            <ion-col *ngFor="let enfant of enfants; index as i" size="6" class="rowHeight">
+              <ion-card (click)="openChild(i)" class="h-100" style="cursor: pointer; margin: 1rem 0;">
+                <ion-card-content>
+                  <div class="container">
+                    <div class="img">
+                      <img [src]="enfant.Pers_Photo??'assets/images/student.png'" />
+                      <small> {{ enfant.Etd_Matricule }} </small>
+                    </div>
+                    <div class="content">
+                      <h1> {{ enfant.Pers_Nom+" "+enfant.Pers_Prenom }} </h1>
+                    </div>
+                  </div>
+                </ion-card-content>
+              </ion-card>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+
+      </section>
+
+      <section>
+        <ion-accordion-group>
+          <ion-accordion value="colors">
+            <ion-item slot="header">
+              <ion-label class="Header" color="medium">
+                {{ "TTR.TAB2.NOT_PROVED"|translate }}
+                ( {{ nonApprovedChildren.length }} )
+              </ion-label>
+            </ion-item>
+            <ion-list lines="none" slot="content" class="pt-0">
+              <ion-item lines="none" class="py-0">
+                <small style="padding-left: 1rem; padding-right: 1rem;">
+                  <ion-text color="medium">
+                    {{ "TTR.TAB2.NOT_PROVED_DESC"|translate }}
+                  </ion-text>
+                </small>
+              </ion-item>
+              
+
+              <ion-grid class="pt-0">
+                <ion-row class="py-0">
+                  <ion-col class="rowHeight" size="6"  *ngFor="let enfant of nonApprovedChildren">
+                    <ion-card class="not_approved h-100">
+                      <ion-card-content>
+                        <div class="container">
+                          <div class="img">
+                            <img
+                              [src]="enfant.Pers_Photo??'assets/images/student.png'" />
+                            <small> {{ enfant.Etd_Matricule }} </small>
+                          </div>
+                          <div class="content">
+                            <h1> {{ enfant.Pers_Nom+" "+enfant.Pers_Prenom }} </h1>
+                          </div>
+                        </div>
+                      </ion-card-content>
+                    </ion-card>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+            </ion-list>
+          </ion-accordion>
+        </ion-accordion-group>
+      </section>
+    </div>
+
+  </ng-container>
+</ion-content>

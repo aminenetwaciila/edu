@@ -1,0 +1,74 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button mode="md" color="light" icon="chevron-back-outline"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Mes révisions de notes</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-item lines="none"  color="light" class="ion-text-center bg-none" style="width: 100%;" *ngIf="mesrevisions == null">
+    <ion-spinner style="margin: auto;" color="primary"></ion-spinner>
+  </ion-item>
+
+  <div class="container1" *ngIf="mesrevisions?.length == 0">
+    <div class="vertical-center">
+      <ion-icon name="documents" class="fs-100" color="medium"></ion-icon>
+      <p class="fs-12">
+        <ion-text color="medium">Aucune demande de revisions de notes pour le moment</ion-text>
+      </p>
+    </div>
+  </div>
+
+  <ion-list>
+    <ng-container *ngFor="let revision of mesrevisions" >
+      <ion-list-header>
+        <ion-label>
+          {{'Semestre ' + revision?.Sms_Nom}} 
+        </ion-label>
+      </ion-list-header>
+      <ion-card mode="ios" *ngFor="let rev of revision?.revs; let i = index;">
+        <ion-item lines="none" color="light">
+          <ion-label class="ion-text-wrap">
+            <h2><b>{{rev?.Crs_Nom ? rev?.Crs_Nom : 'matiere'}}</b></h2>
+            <p class="fs-12"> <ion-text color="medium">Soumission: {{ rev?.REV_DateSoumission | date: 'EEE dd/MM/yyyy' }}</ion-text></p>
+            <p class="fs-12"><ion-text color="medium">Date traitement: {{rev?.REV_DateTraitement | date: 'EEE dd/MM/yyyy'}}</ion-text></p>
+            <!-- <span><span>Date Soumission: {{ rev?.REV_DateSoumission | date: 'EEE dd/MM/yyyy' }}</span> &nbsp; | &nbsp;<span>Date traitement: {{rev?.REV_DateTraitement | date: 'EEE dd/MM/yyyy'}}</span> </span> -->
+          </ion-label>
+          <ion-text class="fs-10">{{ rev?.REV_Etat }}</ion-text>
+        </ion-item>
+        <ion-grid>
+          <ion-row *ngFor="let crs of rev?.NEL_RevisionEtdCrsEvaluation;">
+            <ion-col class="fs-12" size="3">
+              {{crs?.ElemEval_Nom}}
+            </ion-col>
+            <ion-col class="fs-12 ion-text-center" size="6">
+              <span *ngIf="crs?.REVEVAL_NouvelleNote == null">Ancienne Note: <span [ngClass]="{'underl': crs?.REVEVAL_AncienneNote , 'text-secondary': true}">{{(crs?.REVEVAL_AncienneNote)}}</span></span>
+              <span *ngIf="crs?.REVEVAL_NouvelleNote != null">{{crs?.REVEVAL_NouvelleNote != crs?.REVEVAL_AncienneNote ? 'Accepté' : 'Rejeté'}} <br> Nouvelle Note <span [ngClass]="{'underl': crs?.REVEVAL_NouvelleNote , 'text-secondary': true}">&nbsp; {{(crs?.REVEVAL_NouvelleNote ? crs?.REVEVAL_NouvelleNote : '--' )}} </span></span>
+            </ion-col>
+            <ion-col size="3" class="ion-text-right">
+              <ion-button fill="clear" class="fs-12" (click)="voirdetails(crs)">
+                Détails
+              </ion-button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card>
+
+    </ng-container>
+  </ion-list>
+</ion-content>
+
+<ion-footer >
+  <ion-toolbar>
+    <ion-button expand="block" fill="clear" (click)="demandeRevision()" >
+      Demander une révision &nbsp;
+      <ion-icon name="add-circle"></ion-icon>
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>
+
+
+

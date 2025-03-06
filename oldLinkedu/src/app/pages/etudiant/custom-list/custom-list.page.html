@@ -1,0 +1,36 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-title>{{ title }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="close()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ng-container *ngIf="type == 'notes'">
+    <ion-list>
+      <ion-item *ngFor="let titre of data?.evals"> 
+        <ion-label>
+          <h3>{{ titre?.ElemEval_Dim + '/' + titre?.ElemEval_Pourcentage }}</h3>
+        </ion-label>
+        {{ titre?.EtdCrsEval_Note }}
+      </ion-item>
+    </ion-list>
+  </ng-container>
+
+  <ng-container *ngIf="type == 'absence'">
+    <ion-list>
+      <ion-item *ngFor="let dat of data"> 
+        <ion-label>
+          <h3>{{ dat?.date }}</h3>
+          <p> {{ dat?.heured}} - {{dat?.heuref }}</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </ng-container>
+ 
+</ion-content>

@@ -1,0 +1,14 @@
+<ion-toolbar style="height: auto">
+  <ion-textarea
+    autoGrow
+    rows="1"
+    cols="10"
+    [placeholder]="'message' | translate"
+    class="message-textarea"
+  ></ion-textarea>
+  <ion-buttons slot="end">
+    <ion-button (mousedown)="sendMessage($event)" >
+      <ion-icon slot="icon-only" name="paper-plane-outline" color="primary"></ion-icon>
+    </ion-button>
+  </ion-buttons>
+</ion-toolbar>

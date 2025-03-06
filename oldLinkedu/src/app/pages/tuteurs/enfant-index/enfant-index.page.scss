@@ -1,0 +1,32 @@
+ion-item.active{
+    --background: lightgray;
+    --border-radius: 0px;
+}
+
+
+#notifsBtn {
+	ion-badge {
+		position: absolute;
+		opacity: 0.9;
+        top: 0.1rem;
+        right: 0.2rem;
+		& ~ ion-icon {
+			margin-right: 1.2rem;
+		}
+	}
+}
+
+.my-0 {
+	margin-top: 0;
+	margin-bottom: 0;
+}
+
+.reduce-l {
+	--padding-start: 10px !important;
+	--padding-end: 0px !important;
+}
+
+.reduce-r {
+	--padding-end: 0px !important;
+	--padding-start: 0px !important;
+}

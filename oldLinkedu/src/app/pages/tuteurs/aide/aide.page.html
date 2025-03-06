@@ -1,0 +1,48 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-back-button color="light" slot="start" text=""></ion-back-button>
+    <ion-title>
+      {{ "TTR.TAB3.HELP"|translate }}
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-accordion-group>
+    <ion-accordion value="first">
+      <ion-item slot="header" color="light">
+        <ion-label> Question 1 </ion-label>
+      </ion-item>
+      <div class="ion-padding" slot="content">
+        Réponse 1
+      </div>
+    </ion-accordion>
+    <ion-accordion value="second">
+      <ion-item slot="header" color="light">
+        <ion-label>  Question 2 </ion-label>
+      </ion-item>
+      <div class="ion-padding" slot="content">
+        Réponse 2
+      </div>
+    </ion-accordion>
+    <ion-accordion value="third">
+      <ion-item slot="header" color="light">
+        <ion-label> Question 3 </ion-label>
+      </ion-item>
+      <div class="ion-padding" slot="content">
+        Réponse 3
+      </div>
+    </ion-accordion>
+  </ion-accordion-group>
+
+  <div style="width: 100%; text-align: center; padding: 7px;">
+    <p>
+      <a href="http://google.com" target="_blank"> 
+        <ion-icon name="help-outline"></ion-icon>
+        Plus d'aide en ligne  
+      </a>
+    </p>
+  </div>
+
+</ion-content>

@@ -1,0 +1,88 @@
+
+// global.scss
+
+@import "~swiper/css";
+@import '~@ionic/angular/css/ionic-swiper';
+@import "~swiper/css/pagination";
+@import "~swiper/css/navigation";
+
+
+.swiper {
+  width: 100%;
+  height: 100%;
+}
+
+.swiper-slide {
+  text-align: center;
+  font-size: 18px;
+  background: #fff;
+
+  /* Center slide text vertically */
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+}
+
+.swiper-slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+ion-card {
+    ion-card-content{
+        padding-bottom: 0 !important;
+        text-align: start;
+    }
+    .photos{
+      height: 250px;
+      padding: 0;
+    }
+    .date{
+        text-align: end;
+        display: block;
+        padding-bottom: 8px;
+        padding-inline-end: 6px;
+        padding-inline-start: 6px;
+        color: lightgray;
+    }
+}
+
+.postTitle {
+  font-size: 22px;
+  text-align: start;
+}
+
+ion-content{
+  --background: #cefbf31a;
+}
+
+.greeny{
+  --color : #18b99b;
+}
+
+.myspinner {
+  
+  transform: scale(1.2);
+  &, .center-spinner {
+    display: block;
+    margin: 8% auto;
+  }
+}
+
+.empty{
+  text-align: center;
+  font-size: 1.6rem;
+  color: #51706b;
+  margin-top: 20%;
+}

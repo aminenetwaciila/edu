@@ -1,0 +1,67 @@
+ion-card {
+    padding: 0;
+    margin: 0;
+    text-align: center;
+    ion-icon{
+        padding: 10px 0px;
+    }
+    ion-card-header {
+        padding-top: 0px;
+        padding-bottom: 8px;
+    }
+}
+ion-grid{
+    width: 100%;
+}
+.alignMiddle{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    justify-items: center;
+    align-content: center;
+    ion-icon {
+        color: rgb(34, 181, 31);
+    }
+}
+
+.text-center{
+    text-align: center;
+    justify-self: center;
+    align-self: center;
+}
+
+.notActivated{
+    opacity: 0.4;
+}
+
+.myPadding{
+    padding: 0px 8px;
+}
+.no-x-padding{
+    padding-left: 0px;
+    padding-right: 0px;
+}
+.toggleLabel{
+    font-size: 17px;
+    font-weight: 400;
+    color: rgb(190, 190, 190);
+}
+.semesterLabel{
+    font-size: 16px;
+}
+.Pdetails{
+    font-size: 14px;
+}
+
+.greeny{
+    --color : #18b99b;
+  }
+  
+  .myspinner {
+    
+    transform: scale(1.2);
+    &, .center-spinner {
+      display: block;
+      margin: 8% auto;
+    }
+  }

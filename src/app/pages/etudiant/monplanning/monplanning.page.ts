@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 // import { CalendarOptions, FullCalendarComponent } from '@fullcalendar/angular';
-import { MenuController } from '@ionic/angular';
+import { AlertController, MenuController } from '@ionic/angular';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { DbService } from 'src/app/shared/services/db.service';
@@ -8,7 +8,9 @@ import { UserService } from 'src/app/shared/services/user.service';
 import { FullCalendarComponent } from '@fullcalendar/angular';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
+import listPlugin from '@fullcalendar/list';
 import { CalendarOptions } from '@fullcalendar/core';
+import { HelperService } from 'src/app/shared/services/helper.service';
 
 @Component({
   selector: 'app-monplanning',
@@ -18,51 +20,57 @@ import { CalendarOptions } from '@fullcalendar/core';
 })
 export class MonplanningPage implements OnInit, OnDestroy {
   private _unsubscribeAll: Subject<any> = new Subject<any>();
+
   @ViewChild('calendar') calendarComponent: FullCalendarComponent;
+
   calendarOptions: CalendarOptions = {
     initialView: 'timeGridWeek',
-    locale: 'fr-FR',
+    locale: 'fr',
     slotMinTime: '08:00:00',
+    firstDay: 1,
     // eventTextColor: "#fff",
     // dateClick: this.handleDateClick.bind(this), // bind is important!
     eventClick: this.eventClick.bind(this),
     weekends: true, // initial value
-    headerToolbar: {
-      start: 'title', end: 'prev,next'
-    },
+    headerToolbar: { start: 'title', end: 'prev,next' },
     footerToolbar: { left: 'today', center: '', right: 'dayGridMonth,timeGridWeek,listWeek' },
     events: [],
-    plugins: [dayGridPlugin, timeGridPlugin],
+    plugins: [dayGridPlugin, timeGridPlugin, listPlugin],
   };
+
+
   userData: any;
   events: any;
   dataSource: any = [];
 
-  constructor(private menu: MenuController,
+  constructor(
+    private menu: MenuController,
     private db: DbService,
-    private user: UserService) { }
+    private user: UserService,
+    private alertController: AlertController,
+  ) { }
 
   ngOnInit() {
     this.menu.enable(true);
-    setTimeout(() => {
-      this.calendarOptions = {
-        initialView: 'timeGridWeek',
-        locale: 'fr-FR',
-        // eventTextColor: "#fff",
-        slotMinTime: '08:00:00',
-        // dateClick: this.handleDateClick.bind(this), // bind is important!
-        eventClick: this.eventClick.bind(this),
-        weekends: true, // initial value
-        headerToolbar: {
-          start: 'title', end: 'prev,next'
-        },
-        footerToolbar: { left: 'today', center: '', right: 'dayGridMonth,timeGridWeek,listWeek' },
-        events: [],
-        plugins: [dayGridPlugin, timeGridPlugin],
-      };
-      this.setCalendarEvents(this.dataSource);      // this.calendarComponent.getApi().refetchEvents();
+    // setTimeout(() => {
+    //   this.calendarOptions = {
+    //     initialView: 'timeGridWeek',
+    //     locale: 'fr-FR',
+    //     // eventTextColor: "#fff",
+    //     slotMinTime: '08:00:00',
+    //     // dateClick: this.handleDateClick.bind(this), // bind is important!
+    //     eventClick: this.eventClick.bind(this),
+    //     weekends: true, // initial value
+    //     headerToolbar: {
+    //       start: 'title', end: 'prev,next'
+    //     },
+    //     footerToolbar: { left: 'today', center: '', right: 'dayGridMonth,timeGridWeek,listWeek' },
+    //     events: [],
+    //     plugins: [dayGridPlugin, timeGridPlugin],
+    //   };
+    //   this.setCalendarEvents(this.dataSource);      // this.calendarComponent.getApi().refetchEvents();
 
-    }, 100);
+    // }, 100);
 
     // this.dataServ.seances$
     // .pipe(takeUntil(this._unsubscribeAll))
@@ -100,7 +108,6 @@ export class MonplanningPage implements OnInit, OnDestroy {
           x.id = x.Sea_Id;
 
           // x.title = x.Crs_Code + " | " + x.Sea_Nom + " | " + x.Composante + " | " + (x.SalleEffective ? x.SalleEffective : x.Salle);
-
           // x.title = x.Sea_Nom + " " + x.Crs_Code + " " + x.Composante + " " + x.Section + " " + (x.SalleEffective ? x.SalleEffective : x.Salle);
           x.title = x.Sea_Nom + " " + x.Crs_Code + " " + x.Composante + " " + (x.SalleEffective ? x.SalleEffective : x.Salle);
 
@@ -156,17 +163,44 @@ export class MonplanningPage implements OnInit, OnDestroy {
 
   handleDateClick(arg) {
     this.events = this.dataSource.filter(x => x.start.includes(arg.dateStr))
-
   }
 
-  eventClick(arg) {
+  async eventClick(arg) {
 
-    // console.log(arg.event)
-    // console.log(arg.event?.id)
-    // this.eventAction(arg.event?.id)
+    let sea_id = arg.event.id;
+    let event = this.dataSource.find(x => x.Sea_Id == sea_id);
+    console.log("event: ", event)
+
+
+    let dd = event.Sea_DateDebutPrevu;
+    let df = event.Sea_DateFinPrevu;
+
+    let salle = event.Salle;
+    if (event.SalleEffective != null) salle = event.SalleEffective;
+
+    if (event.Sea_DateDebutEffective != null) {
+      dd = event.Sea_DateDebutEffective;
+      df = event.Sea_DateFinEffeEffective;
+    }
+
+    dd = new Date(dd)
+    df = new Date(df)
+
+    const alert = await this.alertController.create({
+      header: `${event.Composante} - ${event.Crs_Nom} (${event.Crs_Code}) `,
+      subHeader: `Salle: ${salle}`,
+      message: `Seance n°${event.Sea_Nom} le ${HelperService.getFormattedDate(dd)} de ${HelperService.getFormattedTime(dd)} à ${HelperService.getFormattedTime(df)}`,
+      buttons: ['OK'],
+      animated: true,
+      backdropDismiss: true,
+
+    });
+
+    await alert.present();
 
     this.events = this.dataSource.filter(x => x.start.includes(arg.event?.extendedProps?.Sea_DatePrevu.split('T')[0]))
   }
+
 
 
 

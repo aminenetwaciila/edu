@@ -1,0 +1,51 @@
+<div class="main">
+  <ion-list lines="full">
+    <ion-item>
+      <ion-label>Année : </ion-label>
+      <ion-select [value]="'2021-2022'" placeholder="Choisir l'année" okText="Choisir" cancelText="Annuler">
+        <ion-select-option value="2021-2022">2021-2022</ion-select-option>
+        <ion-select-option value="2020-2021">2020-2021</ion-select-option>
+        <ion-select-option value="2019-2020">2019-2020</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Semestre : </ion-label>
+      <ion-select [value]="'1'" placeholder="Choisir le semestre" okText="Choisir" cancelText="Annuler">
+        <ion-select-option value="1">Semestre 1</ion-select-option>
+        <ion-select-option value="2">Semestre 2</ion-select-option>
+      </ion-select>
+    </ion-item>
+  </ion-list>
+
+
+  <ion-list lines="none" class="ion-padding-bottom">
+    <ion-item-sliding>
+      <ion-item button [lines]="'none'" detail="false" (click)="openMessages('encadrantId')">
+        <ion-avatar slot="start">
+          <img [src]="'https://via.placeholder.com/50x50/120'" />
+        </ion-avatar>
+        <ion-label>
+          <h2> Prof. Hamza xxxx </h2>
+          <p> Professeur de Programmation POO en C++ </p>
+          <small> Département informatique </small>
+        </ion-label>
+      </ion-item>
+    </ion-item-sliding>
+
+    <ion-item-sliding>
+      <ion-item button [lines]="'none'" detail="false" (click)="openMessages('encadrantId')">
+        <ion-avatar slot="start">
+          <img [src]="'https://via.placeholder.com/50x50/120'" />
+        </ion-avatar>
+        <ion-label>
+          <h2> Prof. Hamza xxxx </h2>
+          <p> Professeur de Programmation POO en C++ </p>
+          <small> Département informatique </small>
+        </ion-label>
+      </ion-item>
+    </ion-item-sliding>
+  </ion-list>
+
+
+</div>
