@@ -9,6 +9,10 @@
 
 <ion-content>
 
+  <ion-refresher slot="fixed" (ionRefresh)="Refresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
   <ng-container *ngIf="!firstLoad">
     <ion-spinner class="myspinner center-spinner scalled greeny" name="crescent"></ion-spinner>
   </ng-container>

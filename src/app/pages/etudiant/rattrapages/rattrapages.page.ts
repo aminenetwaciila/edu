@@ -45,7 +45,6 @@ export class RattrapagesPage implements OnInit {
   }
 
   GetData() {
-    console.log("RattrapagesPage.GetData")
     this.IsLoading = true;
     this.db.GetEtudiantMatiereRattrapage(this.CurrentUser.Etd_Id)
       .subscribe((response: any[]) => {
@@ -65,13 +64,21 @@ export class RattrapagesPage implements OnInit {
           response.forEach((etdCrs) => {
             if (this.Annees.find(x => x.Ann_Id == etdCrs.Ann_Id) == null) {
               // console.log("Ann_Nom: ", etdCrs.Ann_Nom, " Obligatoire:", etdCrs.Obligatoire)
-              this.Annees.push({ Ann_Id: etdCrs.Ann_Id, Ann_Nom: etdCrs.Ann_Nom, IsOpen: false, NbInscrits: etdCrs.EstConfirme ? 1 : 0, NbARattraper: etdCrs.Obligatoire ? 1 : 0, })
+              this.Annees.push({
+                Ann_Id: etdCrs.Ann_Id,
+                Ann_Nom: etdCrs.Ann_Nom,
+                IsOpen: false,
+                // NbARattraper: etdCrs.Obligatoire ? 1 : 0,
+                NbARattraper: etdCrs.ARattraper ? 1 : 0,
+                NbInscrits: etdCrs.EstConfirme ? 1 : 0,
+              })
             }
             else {
               // console.log("Ann_Nom: ", etdCrs.Ann_Nom, " Obligatoire:", etdCrs.Obligatoire)
               this.Annees = this.Annees.map((ann) => {
                 if (ann.Ann_Id == etdCrs.Ann_Id) {
-                  if (etdCrs.Obligatoire) ann.NbARattraper++;
+                  // if (etdCrs.Obligatoire) ann.NbARattraper++;
+                  if (etdCrs.ARattraper) ann.NbARattraper++;
                   if (etdCrs.EstConfirme) ann.NbInscrits++;
                 }
                 return ann;
@@ -115,9 +122,16 @@ export class RattrapagesPage implements OnInit {
     });
   }
 
-  Refresh(event) {
+
+
+  Refresh(event: CustomEvent) {
+    console.log("Refreshing ............")
     // console.log('Refresh: ', event);
     this.GetData();
+    setTimeout(() => {
+      // Any calls to load data go here
+      (event.target as HTMLIonRefresherElement).complete();
+    }, 2000);
   }
 
   public OpenInscription() {
@@ -171,10 +185,12 @@ export class RattrapagesPage implements OnInit {
   AnneeDetails: string = null;
   OpenDetails(ann_id: string, type: 'aRattraper' | 'inscrits') {
     if (type == 'aRattraper')
-      this.MatieresDetails = this.DataSource.filter(x => x.Ann_Id == ann_id && x.Obligatoire == true);
+      // this.MatieresDetails = this.DataSource.filter(x => x.Ann_Id == ann_id && x.Obligatoire == true);
+      this.MatieresDetails = this.DataSource.filter(x => x.Ann_Id == ann_id && x.ARattraper == true);
 
     else
       this.MatieresDetails = this.DataSource.filter(x => x.Ann_Id == ann_id && x.EstConfirme == true);
+
     this.MatieresDetails = this.MatieresDetails.sort((a, b) => {
       if (a.Sms_Nom.length > b.Sms_Nom.length) return 1;
       if (a.Sms_Nom.length < b.Sms_Nom.length) return -1;
