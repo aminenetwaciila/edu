@@ -68,13 +68,13 @@ export class DetailsRattrapagesPage implements OnInit {
 
       console.log("DataSource: ", this.DataSource)
 
-      if (environment.production == false) {
-        this.DataSource = this.DataSource.map((item) => {
-          item.Per_DateFinInscpRatt = new Date("2025-03-01T00:00:00");
+      // if (environment.production == false) {
+      //   this.DataSource = this.DataSource.map((item) => {
+      //     item.Per_DateFinInscpRatt = new Date("2025-03-01T00:00:00");
 
-          return item;
-        });
-      }
+      //     return item;
+      //   });
+      // }
 
       this.OrginalDataSource = JSON.parse(JSON.stringify(this.DataSource));
 
@@ -202,6 +202,10 @@ export class DetailsRattrapagesPage implements OnInit {
 
 
     if (item.Per_DateFinInscpRatt != null) {
+
+      console.log("item.Per_DateFinInscpRatt: ", item.Per_DateFinInscpRatt)
+      console.log("date fin: ", new Date(item.Per_DateFinInscpRatt))
+      console.log("date now: ", new Date())
       if (new Date() > new Date(item.Per_DateFinInscpRatt)) {
         this.presentToast("La date limite d'inscription aux rattrapages est dépassée.", null, 5000);
 
@@ -230,6 +234,15 @@ export class DetailsRattrapagesPage implements OnInit {
       sms.MatieresObligatoire = sms.MatieresObligatoire.map((mat) => {
         if (mat.EtdCrs_Id == etdcrs_id) {
           console.log("MatieresObligatoire mat: ", mat);
+          mat.EstConfirme = originalItem.EstConfirme;
+        }
+        return mat;
+      });
+
+      // MatieresRecommande
+      sms.MatieresRecommande = sms.MatieresRecommande.map((mat) => {
+        if (mat.EtdCrs_Id == etdcrs_id) {
+          console.log("MatieresRecommande mat: ", mat);
           mat.EstConfirme = originalItem.EstConfirme;
         }
         return mat;
