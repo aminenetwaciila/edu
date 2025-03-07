@@ -14,8 +14,8 @@ export const environment = {
   tuteurApiUrl: 'https://upulse-edu.azurewebsites.net/',
   // tuteurApiUrl : 'http://universiapulse-001-site24.atempurl.com/',
   NumeroSupportTtr: "+212656125472",
-  // upulseEdu: "https://localhost:7017",
-  upulseEdu: "https://upulse-edu.azurewebsites.net",
+  upulseEdu: "https://localhost:7017",
+  // upulseEdu: "https://upulse-edu.azurewebsites.net",
 
   version: '2.3.2',
 };

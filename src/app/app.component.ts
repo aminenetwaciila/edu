@@ -115,30 +115,28 @@ export class AppComponent {
       error: (err) => { }
     })
 
-    this.http.get(`${environment.upulseEdu}/api/Version/Mobile`)
-      .subscribe(async (response: any) => {
-        console.log("response Version: ", response)
+    // this.http.get(`${environment.upulseEdu}/api/Version/Mobile`)
+    //   .subscribe(async (response: any) => {
+    //     console.log("response Version: ", response)
 
-        if (response != null && response != undefined)
-          if (environment.version != response) {
-            this.presentAlert(null, null, "Nouvelle version disponible, veuillez faire la mise à jour", ['Ok'])
-          }
+    //     if (response != null && response != undefined)
+    //       if (environment.version != response) {
+    //         this.presentAlert(null, null, "Nouvelle version disponible, veuillez faire la mise à jour", ['Ok'])
+    //       }
 
-      }, (error: any) => {
-        console.log("Error Version: ", error)
-      })
+    //   }, (error: any) => {
+    //     console.log("Error Version: ", error)
+    //   })
 
 
-    let url = `${environment.upulseEdu}/MobileConfig.json?v=${Math.round(Math.random() * 10000)}`;
-    console.log("----> url: ", url)
-    // this.http.get("./assets/config.json?v=" + Math.round(Math.random() * 10000))
+    let url = `${environment.upulseEdu}/api/Version/GetMobileConfig`;
     this.http.get(url)
       .subscribe((response: any) => {
-        console.log("response config.json: ", response)
-        if (response.version != environment.version)
-          alert("Une nouvelle version du projet est disponible, veuillez faire Ctrl + Shift + R.");
+        console.log("response GetMobileConfig: ", response)
+        if (response.Version != environment.version)
+          this.presentAlert(null, null, "Nouvelle version disponible, veuillez faire la mise à jour", ['Ok'])
       }, (error) => {
-        console.error("Error config.json: ", error)
+        console.error("Error GetMobileConfig: ", error)
       })
 
     this.initializeApp();
