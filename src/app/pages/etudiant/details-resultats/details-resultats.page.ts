@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 // import { NativeStorage } from '@awesome-cordova-plugins/native-storage/ngx';
 import { NativeStorage } from '@ionic-native/native-storage/ngx';
-import { IonRouterOutlet, LoadingController, ModalController, NavController, ToastController } from '@ionic/angular';
+import { AlertController, IonRouterOutlet, LoadingController, ModalController, NavController, ToastController } from '@ionic/angular';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { DataService } from 'src/app/shared/services/data.service';
@@ -42,6 +42,7 @@ export class DetailsResultatsPage implements OnInit {
     private nativeStorage: NativeStorage,
     public etudiantService: EtudiantService,
     private toast: ToastController,
+    private alertController: AlertController,
     private dataServ: DataService) { }
 
   ngOnInit() {
@@ -60,7 +61,7 @@ export class DetailsResultatsPage implements OnInit {
 
     this.dataServ.etudiant$
       .pipe(takeUntil(this._unsubscribeAll))
-      .subscribe((data: any) => {
+      .subscribe(async (data: any) => {
         if (data == null) {
           return;
         }
@@ -81,35 +82,38 @@ export class DetailsResultatsPage implements OnInit {
           }
 
 
-          // console.log("before nativeStorage.getItem");
+          if (this.from == 'revision') {
 
-          // console.log("before nativeStorage.getItem")
-          // console.log("\n this.etudiant: ", this.etudiant);
-          // console.log("\n this.etudiant.ds: ", this.etudiant.ds);
-          // console.log("\n this.etudiant.ds.smsAReviser: ", this.etudiant.ds.smsAReviser);
+            let EtdSpecSms_Id = this.etudiant.ds.smsAReviser;
 
-          let EtdSpecSms_Id = this.etudiant.ds.smsAReviser;
 
-          this.etudiantService.CanEtudiantCreateRevisionNote(EtdSpecSms_Id)
-            .subscribe(
-              async (response: { CanCreateRevision: boolean, Message: string, NbRevisions: number, NbRevisionsMax: number }) => {
-                console.log("response CanEtudiantCreateRevisionNote: ", response);
+            const loading = await this.loadingController.create();
+            await loading.present();
 
-                if (response.CanCreateRevision == false) {
-                  const toast = await this.toast.create({ message: response.Message, duration: 5000, color: 'dark', cssClass: 'toastCss', });
-                  toast.present();
-                  setTimeout(() => {
-                    this.navCtrl.back();
-                  }, 2000);
-                } else {
+            this.etudiantService.CanEtudiantCreateRevisionNote(EtdSpecSms_Id)
+              .subscribe(
+                async (response: { CanCreateRevision: boolean, Message: string, NbRevisions: number, NbRevisionsMax: number }) => {
+                  console.log("response CanEtudiantCreateRevisionNote: ", response);
+                  loading.dismiss();
 
-                  HelperService.GetLocalStorage("Fac_Id")
-                    .then((fac_id) => {
-                      this.fac_id = fac_id;
-                    })
-                    .then(() => {
+                  if (response.CanCreateRevision == false) {
+                    // const toast = await this.toast.create({ message: response.Message, duration: 5000, color: 'dark', cssClass: 'toastCss', });
+                    // toast.present();
 
-                      if (this.from) {
+                    this.presentAlert(null, null, response.Message, ['Ok'])
+
+                    setTimeout(() => {
+                      this.navCtrl.back();
+                    }, 2000);
+                  } else {
+
+                    HelperService.GetLocalStorage("Fac_Id")
+                      .then((fac_id) => {
+                        this.fac_id = fac_id;
+                      })
+                      .then(() => {
+
+
 
                         this.nbRevRestant = response.NbRevisionsMax - response.NbRevisions;
 
@@ -134,22 +138,22 @@ export class DetailsResultatsPage implements OnInit {
                           this.db.presentToast("La fonction demande revision n'est pas disponible pour le moment.");
                           this.navCtrl.back();
                         }
-                      }
-                    });
+                      });
 
-                }
+                  }
 
 
-              },
-              async (error: any) => {
-                console.error("Error CanEtudiantCreateRevisionNote: ", error);
-                const toast = await this.toast.create({ message: "Erreur de verification de la demande de révision", duration: 5000, color: 'dark', cssClass: 'toastCss', });
-                toast.present();
-
-                setTimeout(() => {
-                  this.navCtrl.back();
-                }, 5000);
-              });
+                },
+                async (error: any) => {
+                  console.error("Error CanEtudiantCreateRevisionNote: ", error);
+                  const toast = await this.toast.create({ message: "Erreur de verification de la demande de révision", duration: 5000, color: 'dark', cssClass: 'toastCss', });
+                  toast.present();
+                  loading.dismiss();
+                  setTimeout(() => {
+                    this.navCtrl.back();
+                  }, 5000);
+                });
+          }
 
           return;
 
@@ -463,6 +467,16 @@ export class DetailsResultatsPage implements OnInit {
 
   }
 
+  async presentAlert(header, subHeader, message, buttons: string[]) {
+    const alert = await this.alertController.create({
+      header: header,
+      subHeader: subHeader,
+      message: message,
+      buttons: buttons,
+    });
+
+    await alert.present();
+  }
 
   /**
     * On destroy

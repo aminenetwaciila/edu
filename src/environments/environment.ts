@@ -17,7 +17,7 @@ export const environment = {
   // upulseEdu: "https://localhost:7017",
   upulseEdu: "https://upulse-edu.azurewebsites.net",
 
-  version: '2.3.1',
+  version: '2.3.2',
 };
 
 /*

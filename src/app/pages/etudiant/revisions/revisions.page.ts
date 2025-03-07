@@ -20,6 +20,7 @@ export class RevisionsPage implements OnInit {
   userData: any;
   etudiant: any;
   semestres: any = [];
+
   constructor(
     private db: DbService,
     private user: UserService,

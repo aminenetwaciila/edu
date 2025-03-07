@@ -128,6 +128,19 @@ export class AppComponent {
         console.log("Error Version: ", error)
       })
 
+
+    let url = `${environment.upulseEdu}/MobileConfig.json?v=${Math.round(Math.random() * 10000)}`;
+    console.log("----> url: ", url)
+    // this.http.get("./assets/config.json?v=" + Math.round(Math.random() * 10000))
+    this.http.get(url)
+      .subscribe((response: any) => {
+        console.log("response config.json: ", response)
+        if (response.version != environment.version)
+          alert("Une nouvelle version du projet est disponible, veuillez faire Ctrl + Shift + R.");
+      }, (error) => {
+        console.error("Error config.json: ", error)
+      })
+
     this.initializeApp();
   }
 
