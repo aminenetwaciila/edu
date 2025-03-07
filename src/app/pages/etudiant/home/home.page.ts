@@ -49,7 +49,6 @@ export class HomePage implements OnInit {
           HelperService.SetLocalStorage('specialite', this.etudiant.specialite);
           HelperService.SetLocalStorage('datenaissance', this.etudiant.datenaissance);
 
-
           // this.nativeStorage.setItem('nom', this.etudiant.prenom + ' ' + this.etudiant.nom);
           // this.nativeStorage.setItem('adresse', this.etudiant.adresse);
           // this.nativeStorage.setItem('cursus', JSON.stringify(this.etudiant.ds.smsActuel));

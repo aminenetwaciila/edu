@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 // import { NativeStorage } from '@awesome-cordova-plugins/native-storage/ngx';
 import { NativeStorage } from '@ionic-native/native-storage/ngx';
-import { IonRouterOutlet, LoadingController, ModalController, NavController } from '@ionic/angular';
+import { IonRouterOutlet, LoadingController, ModalController, NavController, ToastController } from '@ionic/angular';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { DataService } from 'src/app/shared/services/data.service';
@@ -10,9 +10,8 @@ import { DbService } from 'src/app/shared/services/db.service';
 import { UserService } from 'src/app/shared/services/user.service';
 import { CustomListPage } from '../custom-list/custom-list.page';
 import { DetailsRevisionsPage } from '../details-revisions/details-revisions.page';
-import { Platform } from '@ionic/angular';
-import { Storage } from '@capacitor/storage';
 import { HelperService } from 'src/app/shared/services/helper.service';
+import { EtudiantService } from 'src/app/shared/services/etudiant.service';
 
 @Component({
   selector: 'app-details-resultats',
@@ -41,16 +40,13 @@ export class DetailsResultatsPage implements OnInit {
     private routerOutlet: IonRouterOutlet,
     private modalCtrl: ModalController,
     private nativeStorage: NativeStorage,
-    private dataServ: DataService,
-    public platform: Platform,
-  ) {
-
-  }
+    public etudiantService: EtudiantService,
+    private toast: ToastController,
+    private dataServ: DataService) { }
 
   ngOnInit() {
-
     this.route.queryParams.subscribe((params: any) => {
-
+      console.log("DetailsResultatsPage.params: ", params)
       if (params.semestre) {
         this.semestre = JSON.parse(params.semestre);
       }
@@ -58,11 +54,13 @@ export class DetailsResultatsPage implements OnInit {
 
     });
 
+
+
+
+
     this.dataServ.etudiant$
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((data: any) => {
-        console.log("details-resultats.page.ts dataServ.Etudiants data: ", data);
-
         if (data == null) {
           return;
         }
@@ -83,58 +81,120 @@ export class DetailsResultatsPage implements OnInit {
           }
 
 
-          console.log("before nativeStorage.getItem")
-          console.log("\n this.etudiant: ", this.etudiant);
-          console.log("\n this.etudiant.ds: ", this.etudiant.ds);
-          console.log("\n this.etudiant.ds.smsAReviser: ", this.etudiant.ds.smsAReviser);
+          // console.log("before nativeStorage.getItem");
+
+          // console.log("before nativeStorage.getItem")
+          // console.log("\n this.etudiant: ", this.etudiant);
+          // console.log("\n this.etudiant.ds: ", this.etudiant.ds);
+          // console.log("\n this.etudiant.ds.smsAReviser: ", this.etudiant.ds.smsAReviser);
 
           let EtdSpecSms_Id = this.etudiant.ds.smsAReviser;
 
+          this.etudiantService.CanEtudiantCreateRevisionNote(EtdSpecSms_Id)
+            .subscribe(
+              async (response: { CanCreateRevision: boolean, Message: string, NbRevisions: number, NbRevisionsMax: number }) => {
+                console.log("response CanEtudiantCreateRevisionNote: ", response);
+
+                if (response.CanCreateRevision == false) {
+                  const toast = await this.toast.create({ message: response.Message, duration: 5000, color: 'dark', cssClass: 'toastCss', });
+                  toast.present();
+                  setTimeout(() => {
+                    this.navCtrl.back();
+                  }, 2000);
+                } else {
+
+                  HelperService.GetLocalStorage("Fac_Id")
+                    .then((fac_id) => {
+                      this.fac_id = fac_id;
+                    })
+                    .then(() => {
+
+                      if (this.from) {
+
+                        this.nbRevRestant = response.NbRevisionsMax - response.NbRevisions;
+
+                        this.semestre = this.semestres.find(x => x.EtdSpecSms_Id == this.etudiant.ds.smsAReviser);
+                        if (this.hasDemandeActive()) {
+
+                          this.db.demandeRevision(this.etudiant.ds.smsActuel.Sms_Nom)
+                            .then((responseCheckRepechage) => {
+                              console.log("responseCheckRepechage demandeRevision: ", responseCheckRepechage)
+                              if (responseCheckRepechage) {
+                                // tslint:disable-next-line:max-line-length
+                                const sna = confirm("Vous avez déjà bénéficié d'un repêchage. Si vous souhaitez poursuivre votre demande de révision, votre repêchage risque d'être annulé. voulez-vous continuer ?");
+                                if (sna) {
+                                  this.demanderevision = true;
+                                }
+                              } else {
+                                this.demanderevision = true;
+                              }
+                            });
+
+                        } else {
+                          this.db.presentToast("La fonction demande revision n'est pas disponible pour le moment.");
+                          this.navCtrl.back();
+                        }
+                      }
+                    });
+
+                }
+
+
+              },
+              async (error: any) => {
+                console.error("Error CanEtudiantCreateRevisionNote: ", error);
+                const toast = await this.toast.create({ message: "Erreur de verification de la demande de révision", duration: 5000, color: 'dark', cssClass: 'toastCss', });
+                toast.present();
+
+                setTimeout(() => {
+                  this.navCtrl.back();
+                }, 5000);
+              });
+
+          return;
 
           // this.nativeStorage.getItem('Fac_Id')
           HelperService.GetLocalStorage("Fac_Id")
             .then((data) => {
               this.fac_id = data;
+              console.log("nativeStorage.getItem 1");
             })
             .then(() => {
+              console.log("nativeStorage.getItem 2 !!!!!!!!!!!! ")
+
               if (this.from) {
                 this.semestre = this.semestres.find(x => x.EtdSpecSms_Id == this.etudiant.ds.smsAReviser);
                 if (this.hasDemandeActive()) {
-                  console.log("hasDemandeActive")
 
-                  this.isRevisionPossible()
-                    .then((data) => {
-                      if (data) {
-                        console.log("Can do revision de note")
-
-                        if (this.fac_id) {
-                          this.db.demandeRevision(this.etudiant.ds.smsActuel.Sms_Nom).then(data => {
-                            if (data) {
-                              // tslint:disable-next-line:max-line-length
-                              const sna = confirm('Vous avez déjà bénéficié d\'un repêchage. Si vous souhaitez poursuivre votre demande de révision, votre repêchage risque d\'être annulé. voulez-vous continuer ?');
-                              if (sna) {
-                                this.demanderevision = true;
-                              }
-                            } else {
+                  this.isRevisionPossible().then((data) => {
+                    if (data) {
+                      if (this.fac_id) {
+                        this.db.demandeRevision(this.etudiant.ds.smsActuel.Sms_Nom).then(data => {
+                          if (data) {
+                            // tslint:disable-next-line:max-line-length
+                            const sna = confirm("Vous avez déjà bénéficié d'un repêchage. Si vous souhaitez poursuivre votre demande de révision, votre repêchage risque d'être annulé. voulez-vous continuer ?");
+                            if (sna) {
                               this.demanderevision = true;
                             }
-                          });
-                        } else {
-                          this.db.presentToast("Un problème est survenue. Veuillez réessayer ultérieurement ou contactez le service support");
-                          console.error("FAC_Id non disponible")
-                          if (this.from) {
-                            this.navCtrl.back();
+                          } else {
+                            this.demanderevision = true;
                           }
-                        }
+                        });
                       } else {
-                        console.log("Vous ne pouvez plus soumettre une nouvelle demande de révision")
-                        this.reinitRev()
-                        this.db.presentToast('Vous ne pouvez plus soumettre une nouvelle demande de révision');
+                        this.db.presentToast("Un problème est survenue. Veuillez réessayer ultérieurement ou contactez le service support");
+                        console.error("FAC_Id non disponible")
                         if (this.from) {
                           this.navCtrl.back();
                         }
                       }
-                    })
+                    } else {
+                      this.reinitRev()
+                      this.db.presentToast('Vous ne pouvez plus soumettre une nouvelle demande de révision');
+                      if (this.from) {
+                        this.navCtrl.back();
+                      }
+                    }
+                  })
                     .catch(() => {
                       this.db.presentToast('Un problème est survenue. Veuillez réessayer');
                       if (this.from) {
@@ -142,13 +202,11 @@ export class DetailsResultatsPage implements OnInit {
                       }
                     })
                 } else {
-                  console.log("no DemandeActive")
-                  this.db.presentToast("La fonction demande revision n'est pas disponible pour le moment.");
+                  this.db.presentToast('La fonction demande revision n\'est pas disponible pour le moment.');
                   this.navCtrl.back();
                 }
               }
             });
-
 
 
         }
@@ -196,22 +254,26 @@ export class DetailsResultatsPage implements OnInit {
 
   public isRevisionPossible() {
     return new Promise((resolve, reject) => {
+      console.log("isRevisionPossible");
+      // resolve(true);
+
       if (this.fac_id) {
         this.nbRevRestant = 2;
-        this.db.getNbRevisionsSms(this.etudiant.matricule, this.etudiant.ds.smsActuel.Sms_Nom, this.fac_id).then((data: any) => {
-          const date = data.datefin.split("-");
-          const datefin = new Date(date[2] + "-" + date[1] + "-" + date[0]);
-          if (new Date() < datefin) {
-            this.nbRevRestant -= data.nb;
-            if (this.nbRevRestant > 0) {
-              resolve(true);
+        this.db.getNbRevisionsSms(this.etudiant.matricule, this.etudiant.ds.smsActuel.Sms_Nom, this.fac_id)
+          .then((data: any) => {
+            const date = data.datefin.split("-");
+            const datefin = new Date(date[2] + "-" + date[1] + "-" + date[0]);
+            if (new Date() < datefin) {
+              this.nbRevRestant -= data.nb;
+              if (this.nbRevRestant > 0) {
+                resolve(true);
+              } else {
+                resolve(false);
+              }
             } else {
               resolve(false);
             }
-          } else {
-            resolve(false);
-          }
-        })
+          })
           .catch(() => {
             reject()
           })

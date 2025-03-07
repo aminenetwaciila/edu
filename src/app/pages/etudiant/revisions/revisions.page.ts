@@ -6,6 +6,7 @@ import { takeUntil } from 'rxjs/operators';
 import { DataService } from 'src/app/shared/services/data.service';
 import { DbService } from 'src/app/shared/services/db.service';
 import { CustomAlertPage } from '../custom-alert/custom-alert.page';
+import { UserService } from 'src/app/shared/services/user.service';
 
 @Component({
   selector: 'app-revisions',
@@ -16,10 +17,12 @@ import { CustomAlertPage } from '../custom-alert/custom-alert.page';
 export class RevisionsPage implements OnInit {
   private _unsubscribeAll: Subject<any> = new Subject<any>();
   mesrevisions: any;
+  userData: any;
   etudiant: any;
   semestres: any = [];
   constructor(
     private db: DbService,
+    private user: UserService,
     private modalController: ModalController,
     private navCtrl: NavController,
     private dataServ: DataService,
@@ -53,6 +56,15 @@ export class RevisionsPage implements OnInit {
 
         }
 
+      });
+
+      this.user.user$
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe((data: any) => {
+
+        this.userData = data;
+        if (this.userData != null && this.etudiant == null)
+          this.db.loadNotesEtudiants();
       });
   }
 
