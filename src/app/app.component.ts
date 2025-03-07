@@ -43,6 +43,8 @@ export class AppComponent {
     evaluation: faChalkboardUser
   }
 
+  version
+
   // [
   //   { title: 'Games', url: '/folder/Inbox', icon: 'mail' },
   //   { title: 'Friends', url: '/folder/Outbox', icon: 'paper-plane' },
@@ -69,6 +71,8 @@ export class AppComponent {
     private alertController: AlertController
 
   ) {
+
+    this.version = environment.version;
 
     this.translate.addLangs(['en', 'fr'])
     this.translate.setDefaultLang('fr');
@@ -97,7 +101,7 @@ export class AppComponent {
           switch (this.userData.Role) {
             case "etudiant":
               this.appPages = menu.etudiants;
-              this.photo = "https://edu.universiapolis.ma/Images/abs_poly1920/" + this.userData.Etd_Matricule + ".jpg"
+              this.photo = "https://edu.universiapolis.ma/Images/abs_poly1920/" + this.userData.Etd_Matricule + ".jpg?v=" + Math.round(Math.random() * 1000)
               menuCtrl.enable(true)
               break;
             case "intervenant":

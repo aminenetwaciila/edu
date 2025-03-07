@@ -8,9 +8,7 @@
 
             <ng-container *ngIf="userData?.Role === 'intervenant';else second">
               <ion-item color="primary" lines="none" class="mb-10" routerDirection="root" detail="false">
-                <!-- <ion-avatar slot="start">
-                  <img [src]="photo">
-                </ion-avatar> -->
+                <!-- <ion-avatar slot="start"><img [src]="photo"></ion-avatar> -->
                 <ion-label class="ion-text-wrap">
                   <h2>{{ userData?.UserName }}</h2>
                   <p>{{ userData?.Email }}</p>
@@ -56,6 +54,17 @@
 
       </ion-content>
       <ion-footer>
+
+        <!-- Version -->
+        <ion-item lines="none">
+          <ion-label>
+            <!-- <ion-icon name="language-outline" slot="start"></ion-icon>&nbsp; -->
+            <ion-text> Version: </ion-text>
+            <ion-text>{{ version }}</ion-text>
+          </ion-label>
+        </ion-item>
+
+        <!-- Lang -->
         <ion-item lines="none">
           <ion-label>
             <ion-icon name="language-outline" slot="start"></ion-icon>&nbsp;
@@ -67,9 +76,9 @@
             </ion-select-option>
           </ion-select>
         </ion-item>
+
       </ion-footer>
     </ion-menu>
     <ion-router-outlet id="main-content"></ion-router-outlet>
   </ion-split-pane>
 </ion-app>
-
