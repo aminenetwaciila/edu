@@ -32,6 +32,7 @@ export class DetailsRattrapagesPage implements OnInit {
   Semestres: {
     Sms_Nom: string, IsOpen: boolean, IsAutreMatieresVisible: boolean,
     MatieresObligatoire: { EtdCrs_Id: string, Crs_Code: string, Crs_Nom: string, EtdCrs_NoteExam: number, EstConfirme: boolean, MatiereOuverte: boolean, EstTraite: boolean, CanEdit: boolean }[],
+    MatieresRecommande: { EtdCrs_Id: string, Crs_Code: string, Crs_Nom: string, EtdCrs_NoteExam: number, EstConfirme: boolean, MatiereOuverte: boolean, EstTraite: boolean, CanEdit: boolean }[],
     MatieresOptionnelle: { EtdCrs_Id: string, Crs_Code: string, Crs_Nom: string, EtdCrs_NoteExam: number, EstConfirme: boolean, MatiereOuverte: boolean, EstTraite: boolean, CanEdit: boolean }[],
     AutreMatieres: { EtdCrs_Id: string, Crs_Code: string, Crs_Nom: string, EtdCrs_NoteExam: number, EstConfirme: boolean, MatiereOuverte: boolean, EstTraite: boolean, CanEdit: boolean }[],
   }[] = [];
@@ -87,6 +88,7 @@ export class DetailsRattrapagesPage implements OnInit {
             Sms_Nom: etdCrs?.Sms_Nom, IsOpen: false,
             IsAutreMatieresVisible: false,
             MatieresObligatoire: [], MatieresOptionnelle: [], AutreMatieres: [],
+            MatieresRecommande: [],
           };
           this.Semestres.push(semestre);
         }
@@ -95,8 +97,15 @@ export class DetailsRattrapagesPage implements OnInit {
             etdCrs.CanEdit = false;
           else etdCrs.CanEdit = true;
 
-          if (etdCrs.Sms_Nom == sms.Sms_Nom)
-            if (etdCrs.ARattraper == true) {
+
+
+          if (etdCrs.Sms_Nom == sms.Sms_Nom) {
+
+            if (etdCrs.EtdCrs_RattrapageOblig == true) {
+
+              sms.MatieresRecommande.push(etdCrs);
+
+            } else if (etdCrs.ARattraper == true) {
               if (etdCrs.Obligatoire == true) {
                 if (etdCrs.EstConfirme == false) {
                   etdCrs.EstConfirme = true;
@@ -113,6 +122,10 @@ export class DetailsRattrapagesPage implements OnInit {
             }
             else
               sms.AutreMatieres.push(etdCrs);
+
+          }
+
+
           return sms;
         })
 

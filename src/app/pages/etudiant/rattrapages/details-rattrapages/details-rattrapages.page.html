@@ -46,11 +46,14 @@
         <ion-item lines="full" *ngIf="sms.IsOpen">
 
           <ion-grid>
+
+
+            <!-- MatieresObligatoire -->
             <ion-row>
               <ion-card class="card-matieres">
                 <ion-card-header>
                   <ion-card-title class="bg-red" *ngIf="sms.MatieresObligatoire.length > 0">Matières Obligatoires</ion-card-title>
-                  <ion-card-subtitle *ngIf="sms.MatieresObligatoire.length == 0"><small><i>Aucun matière obligatoire</i></small></ion-card-subtitle>
+                  <ion-card-subtitle *ngIf="sms.MatieresObligatoire.length == 0"><small><i>Aucune matière obligatoire</i></small></ion-card-subtitle>
                 </ion-card-header>
                 <ion-card-content>
                   <ion-row *ngFor="let crs of sms.MatieresObligatoire;" style="font-size: small;">
@@ -71,11 +74,38 @@
               </ion-card>
             </ion-row>
 
+            <!-- MatieresRecommande -->
+            <ion-row>
+              <ion-card class="card-matieres">
+                <ion-card-header>
+                  <ion-card-title class="bg-orange" *ngIf="sms.MatieresRecommande.length > 0">Matières recommandées</ion-card-title>
+                  <ion-card-subtitle *ngIf="sms.MatieresRecommande.length == 0"><small><i>Aucune matière recommandée</i></small></ion-card-subtitle>
+                </ion-card-header>
+                <ion-card-content>
+                  <ion-row *ngFor="let crs of sms.MatieresRecommande;" style="font-size: small;">
+                    <ion-col>
+                      {{ crs.Crs_Nom }}
+                      <div class="matiere-ouverte" *ngIf="crs.MatiereOuverte == true"><b>ouverte</b></div>
+                      <div class="matiere-pas-ouverte" *ngIf="crs.MatiereOuverte == false"><b>pas ouverte</b></div>
+                    </ion-col>
+                    <ion-col size="auto"><ion-badge [color]="crs.EtdCrs_NoteExam >= 10 ? 'primary' : 'danger'">{{ crs.EtdCrs_NoteExam }}</ion-badge></ion-col>
+                    <ion-col size="auto">
+                      <ion-checkbox [(ngModel)]="crs.EstConfirme" (ionChange)="OnMatiereChange($event, crs.EtdCrs_Id)" aria-label="Toggle task completion" [disabled]="!crs.CanEdit"
+                        class="no-padding no-margin">
+                        <!-- [checked]="crs.EstConfirme" [disabled]="crs.EstTraite" -->
+                      </ion-checkbox>
+                    </ion-col>
+                  </ion-row>
+                </ion-card-content>
+              </ion-card>
+            </ion-row>
+
+            <!-- MatieresOptionnelle -->
             <ion-row>
               <ion-card class="card-matieres">
                 <ion-card-header>
                   <ion-card-title class="bg-green" *ngIf="sms.MatieresOptionnelle.length > 0">Matières Optionnelles</ion-card-title>
-                  <ion-card-subtitle *ngIf="sms.MatieresOptionnelle.length == 0"><small><i>Aucun matière optionnelle</i></small></ion-card-subtitle>
+                  <ion-card-subtitle *ngIf="sms.MatieresOptionnelle.length == 0"><small><i>Aucune matière optionnelle</i></small></ion-card-subtitle>
                 </ion-card-header>
                 <ion-card-content>
                   <ion-row *ngFor="let crs of sms.MatieresOptionnelle;" style="font-size: small;">
@@ -95,11 +125,12 @@
               </ion-card>
             </ion-row>
 
+
+            <!-- AutreMatieres -->
             <ion-row class="ion-justify-content-center" *ngIf="sms.AutreMatieres.length > 0">
               <ion-col size="auto" *ngIf="sms.IsAutreMatieresVisible === false">
                 <ion-button (click)="ShowAutreMatiere(sms.Sms_Nom)">Autres matières</ion-button>
               </ion-col>
-
               <ion-card class="card-matieres" *ngIf="sms.IsAutreMatieresVisible === true">
                 <ion-card-header>
                   <ion-card-title>Autre matières</ion-card-title>
@@ -111,7 +142,6 @@
                       <div class="matiere-ouverte" *ngIf="crs.MatiereOuverte == true"><b>ouverte</b></div>
                       <div class="matiere-pas-ouverte" *ngIf="crs.MatiereOuverte == false"><b>pas ouverte</b></div>
                     </ion-col>
-
                     <ion-col size="auto"><ion-badge [color]="crs.EtdCrs_NoteExam > 10 ? 'primary' : 'danger'">{{ crs.EtdCrs_NoteExam }}</ion-badge></ion-col>
                     <ion-col size="auto">
                       <ion-checkbox [(ngModel)]="crs.EstConfirme" (ionChange)="OnMatiereChange($event, crs.EtdCrs_Id)" aria-label="Toggle task completion"
@@ -122,6 +152,7 @@
                 </ion-card-content>
               </ion-card>
             </ion-row>
+
 
           </ion-grid>
 
