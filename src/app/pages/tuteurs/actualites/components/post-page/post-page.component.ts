@@ -78,6 +78,8 @@ export class PostPageComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
+    console.log("Tuteur.post-page.component.ts ngOnInit");
+
     const tabBar = document.querySelector('ion-tab-bar');
     if (tabBar !== null) {
         tabBar.style.display = 'none';

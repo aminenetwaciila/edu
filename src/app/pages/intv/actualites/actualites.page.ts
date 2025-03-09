@@ -142,7 +142,7 @@ export class ActualitesPage implements OnInit {
   }
 
   readMore(postID, gotoComments: boolean) {
-    this.navCtrl.navigateForward(['/menuTtr/tabs/actualites/post', postID, (gotoComments ? "comments" : '')])
+    this.navCtrl.navigateForward(['/menu/tabs/tab0/post', postID, (gotoComments ? "comments" : '')])
   }
 
   toggleLike(actualite: ActualiteT) {
