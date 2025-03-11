@@ -5,9 +5,9 @@
       </ion-menu-button>
     </ion-buttons>
     <ion-title> {{ "TTR.TAB1.TITLE"|translate }} </ion-title>
-    <ion-button style="margin: 0;" slot="end" fill="clear" color="light" routerLink="/menu/tabs/notifs">
+    <!-- <ion-button style="margin: 0;" slot="end" fill="clear" color="light" routerLink="/menuEtd/tabs/notifs">
       <ion-icon name="notifications-outline"></ion-icon>
-    </ion-button>
+    </ion-button> -->
   </ion-toolbar>
 </ion-header>
 
@@ -26,7 +26,7 @@
       </ion-refresher-content>
     </ion-refresher>
 
-    <ng-container *ngIf="posts.length==0&&firstLoad">
+    <ng-container *ngIf="posts.length === 0 && firstLoad">
       <div class="empty">
         <div>
           <ion-icon name="alert-circle-outline"></ion-icon>
@@ -53,14 +53,23 @@
         </ng-template>
       </ion-card-content>
 
+
+      <!-- <div class="photos" *ngIf="post.medias.length>0">
+        <swiper-container [slidesPerView]="1" [navigation]="true" [pagination]="{dynamicBullets: true}" #myswiper>
+          <swiper-slide *ngFor="let media of post.medias" swiperSlide>
+            <ion-img *ngIf="media.ActMed_type=='image'" (click)="previewImage(media.ActMed_adresse)" [src]="media.ActMed_adresse"></ion-img>
+          </swiper-slide>
+        </swiper-container>
+      </div> -->
+
       <div class="photos" *ngIf="post.medias.length>0">
         <swiper-container [slidesPerView]="1" [navigation]="true" [pagination]="{dynamicBullets: true}" #myswiper>
-          <ng-template *ngFor="let media of post.medias" swiperSlide>
-            <ion-img *ngIf="media.ActMed_type=='image'" (click)="previewImage(media.ActMed_adresse)"
-              [src]="media.ActMed_adresse"></ion-img>
-          </ng-template>
+          <swiper-slide *ngFor="let media of post.medias" swiperSlide>
+            <ion-img *ngIf="media.ActMed_type=='image'" (click)="previewImage(media.ActMed_adresse)" [src]="media.ActMed_adresse"></ion-img>
+          </swiper-slide>
         </swiper-container>
       </div>
+
       <ion-item lines="none" class="ion-no-padding" style="margin-left: 10px">
         <ion-buttons slot="start">
           <ion-button color="medium" (click)="toggleLike(post)">
@@ -84,8 +93,7 @@
     </ion-card>
 
     <ion-infinite-scroll threshold="100px" #infiniteScroll (ionInfinite)="loadData($event)">
-      <ion-infinite-scroll-content loadingSpinner="crescent" class="greeny"
-        loadingText="{{ 'TTR.TAB1.LOADING_MORE'|translate }}">
+      <ion-infinite-scroll-content loadingSpinner="crescent" class="greeny" loadingText="{{ 'TTR.TAB1.LOADING_MORE'|translate }}">
       </ion-infinite-scroll-content>
     </ion-infinite-scroll>
   </ng-container>

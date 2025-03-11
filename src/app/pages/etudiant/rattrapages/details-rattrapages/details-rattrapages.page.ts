@@ -71,7 +71,6 @@ export class DetailsRattrapagesPage implements OnInit {
       // if (environment.production == false) {
       //   this.DataSource = this.DataSource.map((item) => {
       //     item.Per_DateFinInscpRatt = new Date("2025-03-01T00:00:00");
-
       //     return item;
       //   });
       // }
@@ -95,16 +94,15 @@ export class DetailsRattrapagesPage implements OnInit {
         this.Semestres = this.Semestres.map((sms) => {
           if (etdCrs.EstTraite == true)
             etdCrs.CanEdit = false;
-          else etdCrs.CanEdit = true;
+          else
+            etdCrs.CanEdit = true;
 
 
 
           if (etdCrs.Sms_Nom == sms.Sms_Nom) {
 
             if (etdCrs.EtdCrs_RattrapageOblig == true) {
-
               sms.MatieresRecommande.push(etdCrs);
-
             } else if (etdCrs.ARattraper == true) {
               if (etdCrs.Obligatoire == true) {
                 if (etdCrs.EstConfirme == false) {
@@ -203,9 +201,6 @@ export class DetailsRattrapagesPage implements OnInit {
 
     if (item.Per_DateFinInscpRatt != null) {
 
-      console.log("item.Per_DateFinInscpRatt: ", item.Per_DateFinInscpRatt)
-      console.log("date fin: ", new Date(item.Per_DateFinInscpRatt))
-      console.log("date now: ", new Date())
       if (new Date() > new Date(item.Per_DateFinInscpRatt)) {
         this.presentToast("La date limite d'inscription aux rattrapages est dépassée.", null, 5000);
 
@@ -226,14 +221,12 @@ export class DetailsRattrapagesPage implements OnInit {
   ResetCheckBoxes(etdcrs_id) {
 
     let originalItem = this.OrginalDataSource.find(x => x.EtdCrs_Id == etdcrs_id)
-    console.log("originalItem: ", originalItem)
 
     this.Semestres = this.Semestres.map((sms) => {
 
       // MatieresObligatoire
       sms.MatieresObligatoire = sms.MatieresObligatoire.map((mat) => {
         if (mat.EtdCrs_Id == etdcrs_id) {
-          console.log("MatieresObligatoire mat: ", mat);
           mat.EstConfirme = originalItem.EstConfirme;
         }
         return mat;
@@ -242,7 +235,6 @@ export class DetailsRattrapagesPage implements OnInit {
       // MatieresRecommande
       sms.MatieresRecommande = sms.MatieresRecommande.map((mat) => {
         if (mat.EtdCrs_Id == etdcrs_id) {
-          console.log("MatieresRecommande mat: ", mat);
           mat.EstConfirme = originalItem.EstConfirme;
         }
         return mat;
@@ -251,7 +243,6 @@ export class DetailsRattrapagesPage implements OnInit {
       // MatieresOptionnelle
       sms.MatieresOptionnelle = sms.MatieresOptionnelle.map((mat) => {
         if (mat.EtdCrs_Id == etdcrs_id) {
-          console.log("MatieresOptionnelle mat: ", mat);
           mat.EstConfirme = originalItem.EstConfirme;
         }
         return mat;
@@ -260,7 +251,6 @@ export class DetailsRattrapagesPage implements OnInit {
       // AutreMatieres
       sms.AutreMatieres = sms.AutreMatieres.map((mat) => {
         if (mat.EtdCrs_Id == etdcrs_id) {
-          console.log("AutreMatieres mat: ", mat);
           mat.EstConfirme = originalItem.EstConfirme;
         }
         return mat;
