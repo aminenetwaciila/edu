@@ -22,6 +22,8 @@ export class ParticipantsPage implements OnInit {
   step = 0;
   formSubmitted = false;
   PeriodeSalleForm: FormGroup;
+  isEditing: boolean = false;;
+
   constructor(private loadingController: LoadingController,
     public db: DbService,
     private fb: FormBuilder,
@@ -68,12 +70,14 @@ export class ParticipantsPage implements OnInit {
     //   return false;
     // }
     if (!this.isAllowedToChangeAbsence) return false;
+    this.isEditing = true;
+
     let notHandledEtudiants = this.etudiantDs.filter(x => x.isAbsent == null)
     if (notHandledEtudiants.length == 0 || true) {//environment.allowSubmitWithNotHandledEtudiants) {
       let absents = this.etudiantDs.filter(x => x.isAbsent)
       let presents = this.etudiantDs.filter(x => !x.isAbsent)
       //ouvrir le modalPeriodeSalle
-      this.onModalPeriodeSalleOpen(false);//this.openModalPeriodeSalleContent(false)
+      this.onModalPeriodeSalleOpen(true);//this.openModalPeriodeSalleContent(false)
     }
     else {
       this.db.presentToast("Veuillez terminer l'absence afin de pouvoir valider");//alert("Veuillez faire l'absence afin de pouvoir valider");
@@ -105,8 +109,21 @@ export class ParticipantsPage implements OnInit {
       return false;
     }
 
-    if (!this.PeriodeSalleForm.valid)
+    console.log("this.PeriodeSalleForm: ", this.PeriodeSalleForm.value);
+    console.log("this.PeriodeSalleForm.value: ", this.PeriodeSalleForm.value);
+
+
+
+    // if (!this.PeriodeSalleForm.valid)
+    //   this.db.presentToast("Veuillez specifier la période et la salle");//alert("Veuillez specifier la période et la salle");
+
+    if(this.PeriodeSalleForm.value.date_modalPeriodeSalle == null || this.PeriodeSalleForm.value.date_modalPeriodeSalle == "" ||
+      this.PeriodeSalleForm.value.hd_modalPeriodeSalle == null || this.PeriodeSalleForm.value.hd_modalPeriodeSalle == "" ||
+      this.PeriodeSalleForm.value.hf_modalPeriodeSalle == null || this.PeriodeSalleForm.value.hf_modalPeriodeSalle == "" ||
+      this.PeriodeSalleForm.value.salle_modalPeriodeSalle == null || this.PeriodeSalleForm.value.salle_modalPeriodeSalle == "")
+
       this.db.presentToast("Veuillez specifier la période et la salle");//alert("Veuillez specifier la période et la salle");
+
     else {
       const data = this.PeriodeSalleForm.value;
       //this.amc.onModalPeriodeSalleSubmit(this.date, this.hd, this.hf, this.salle, this.remarque, this.seance, this.etudiants, this.compSec, this.isUpdating);
@@ -115,6 +132,8 @@ export class ParticipantsPage implements OnInit {
       data.etudiants_modalPeriodeSalle = this.etudiantDs;
       data.compSec_modalPeriodeSalle = this.selectedCompSec;
 
+      data.isUpdating_modalPeriodeSalle = this.isEditing;
+      console.log("data.isUpdating_modalPeriodeSalle: ", data.isUpdating_modalPeriodeSalle);
       this.onModalPeriodeSalleSubmit(data.date_modalPeriodeSalle, data.hd_modalPeriodeSalle, data.hf_modalPeriodeSalle, data.salle_modalPeriodeSalle, data.remarque_modalPeriodeSalle, data.seance_modalPeriodeSalle, data.etudiants_modalPeriodeSalle, data.compSec_modalPeriodeSalle, data.isUpdating_modalPeriodeSalle);
     }
   }
@@ -138,13 +157,14 @@ export class ParticipantsPage implements OnInit {
   get f() { return this.PeriodeSalleForm.controls; }
 
   async onModalPeriodeSalleOpen(forUpdate) {
+
     const isUpdating_modalPeriodeSalle = forUpdate;
     const param: any = {};
     if (!isUpdating_modalPeriodeSalle) {
       param.hd_modalPeriodeSalle = "";
       param.hf_modalPeriodeSalle = "";
       param.salle_modalPeriodeSalle = "";
-      param. remarque_modalPeriodeSalle = "";
+      param.remarque_modalPeriodeSalle = "";
     }
 
     try {
@@ -170,7 +190,6 @@ export class ParticipantsPage implements OnInit {
     //   this.hf_modalPeriodeSalle = this.selectedSeance.Sea_DateFinPrevu.split("T")[1]
     // } catch (e) { console.warn('Exception: ', e); }
 
-
     this.step = 1;
   }
 
@@ -189,80 +208,80 @@ export class ParticipantsPage implements OnInit {
     const loading = await this.loadingController.create();
     await loading.present().then(async () => {
 
-    //Seance
-    let Seance = seance
-    for (var prop in compSec) {
-      if (!Seance.hasOwnProperty(prop) && prop != "ABS_EtudiantComposantSection" && prop != "ABS_Seance" && prop != "PLS_SeanceEnum") Seance[prop] = compSec[prop]
-    }
+      //Seance
+      let Seance = seance
+      for (var prop in compSec) {
+        if (!Seance.hasOwnProperty(prop) && prop != "ABS_EtudiantComposantSection" && prop != "ABS_Seance" && prop != "PLS_SeanceEnum") Seance[prop] = compSec[prop]
+      }
 
-    let dd = new Date(date);
-    let df = new Date(date);
-    dd.setHours(+hd.split(":")[0], +hd.split(":")[1], 0);
-    df.setHours(+hf.split(":")[0], +hf.split(":")[1], 0);
-    Seance.Sea_DateDebutEffective = this.dateToString(dd);
-    Seance.Sea_DateFinEffective = this.dateToString(df);
-    Seance.Sea_DateFinEffeEffective = this.dateToString(df);
-    Seance.SalleEffective = salle;
-    Seance.Sea_Remarque = remarqueSeance;
-    Seance.Intv_Nom = this.selectedCompSec.Intv_Nom
-    Seance.Intv_Prenom = this.selectedCompSec.Intv_Prenom
+      let dd = new Date(date);
+      let df = new Date(date);
+      dd.setHours(+hd.split(":")[0], +hd.split(":")[1], 0);
+      df.setHours(+hf.split(":")[0], +hf.split(":")[1], 0);
+      Seance.Sea_DateDebutEffective = this.dateToString(dd);
+      Seance.Sea_DateFinEffective = this.dateToString(df);
+      Seance.Sea_DateFinEffeEffective = this.dateToString(df);
+      Seance.SalleEffective = salle;
+      Seance.Sea_Remarque = remarqueSeance;
+      Seance.Intv_Nom = this.selectedCompSec.Intv_Nom
+      Seance.Intv_Prenom = this.selectedCompSec.Intv_Prenom
 
-    //liste de tt les etudiants (absents et presents)
-    let Liste_Absents = etudiants//.filter(x => x.isAbsent)
-      .map(x => {
-        let Justif_Nom = null
-        if (x.isAbsent == true) Justif_Nom = "NonJustifie";
-        return {
-          EtdCompSec_Id: x.EtdCompSec_Id,
-          Sea_Id: seance.Sea_Id,
-          EtdCrs_Id: x.EtdCrs_Id,
-          Sea_Nom: seance.Sea_Nom,
-          Sea_DateDebut: Seance.Sea_DateDebutEffective,//dd
-          Sea_DateFin: Seance.Sea_DateFinEffeEffective,//df
-          Sess_Nom: seance.Sess_Nom,
-          Ann_Nom: seance.Ann_Nom,
-          Sec_Nom: compSec.Section,
-          //CompTyp_Nom : seance.CompTyp_Nom,
-          CompTyp_Id: compSec.CompTyp_Id,
-          CompTyp_Nom: compSec.Composante,
-          Crs_Code: compSec.Crs_Code,
-          Crs_Nom: compSec.Crs_Nom,
-          Crs_Version: compSec.Crs_Version,
-          Intv_Id: compSec.Intv_Id,
-          Intv_NomComplet: this.selectedCompSec.Intv_Nom + " " + this.selectedCompSec.Intv_Prenom,
-          Etd_NomComplet: x.Pers_Nom + " " + x.Pers_Prenom,
-          Etd_Matricule: x.Etd_Matricule,
-          Sms_Nom: x.Sms_Nom,
-          Spec_Name: x.Spec_Name,
-          Fac_Nom: seance.Fac_Nom,
-          Justif_Nom: Justif_Nom,
-          //ABS_Id: this.NewGuid(),
-          Abs_Id: this.db.guid(),
-          ABS_Remarque: x.Remarque,
-          Abs_Remarque: x.Remarque,
-        }
-      });
-    this.db.presentToast("Enregistrement en cours ....");
-    this.SubmitAbsence({ Liste_Absents, Seance, isUpdating })
-      .then(
-        async (response: any) => {
-          console.warn("response SubmitAbsence", response);
-          await loading.dismiss();
-          if (response != null && response.hasError) {
-            this.db.presentToast("Erreur d'enregistrement de l'absence. " + response.message);
-          } else {
-            this.step = 0; //clear modal periode salle
-            this.db.presentToast("Absence enregistré.");
-            this.close(true);
-
+      //liste de tt les etudiants (absents et presents)
+      let Liste_Absents = etudiants//.filter(x => x.isAbsent)
+        .map(x => {
+          let Justif_Nom = null
+          if (x.isAbsent == true) Justif_Nom = "NonJustifie";
+          return {
+            EtdCompSec_Id: x.EtdCompSec_Id,
+            Sea_Id: seance.Sea_Id,
+            EtdCrs_Id: x.EtdCrs_Id,
+            Sea_Nom: seance.Sea_Nom,
+            Sea_DateDebut: Seance.Sea_DateDebutEffective,//dd
+            Sea_DateFin: Seance.Sea_DateFinEffeEffective,//df
+            Sess_Nom: seance.Sess_Nom,
+            Ann_Nom: seance.Ann_Nom,
+            Sec_Nom: compSec.Section,
+            //CompTyp_Nom : seance.CompTyp_Nom,
+            CompTyp_Id: compSec.CompTyp_Id,
+            CompTyp_Nom: compSec.Composante,
+            Crs_Code: compSec.Crs_Code,
+            Crs_Nom: compSec.Crs_Nom,
+            Crs_Version: compSec.Crs_Version,
+            Intv_Id: compSec.Intv_Id,
+            Intv_NomComplet: this.selectedCompSec.Intv_Nom + " " + this.selectedCompSec.Intv_Prenom,
+            Etd_NomComplet: x.Pers_Nom + " " + x.Pers_Prenom,
+            Etd_Matricule: x.Etd_Matricule,
+            Sms_Nom: x.Sms_Nom,
+            Spec_Name: x.Spec_Name,
+            Fac_Nom: seance.Fac_Nom,
+            Justif_Nom: Justif_Nom,
+            //ABS_Id: this.NewGuid(),
+            Abs_Id: this.db.guid(),
+            ABS_Remarque: x.Remarque,
+            Abs_Remarque: x.Remarque,
           }
-        },
-        async (error) => {
-          console.error("Erreur this.intervenantService.SubmitAbsence(): ", error);
-          await loading.dismiss();
-          this.db.presentToast("Erreur d'enregistrement de l'absence");
-        }
-      );
+        });
+      this.db.presentToast("Enregistrement en cours ....");
+      this.SubmitAbsence({ Liste_Absents, Seance, isUpdating })
+        .then(
+          async (response: any) => {
+            console.warn("response SubmitAbsence", response);
+            await loading.dismiss();
+            if (response != null && response.hasError) {
+              this.db.presentToast("Erreur d'enregistrement de l'absence. " + response.message);
+            } else {
+              this.step = 0; //clear modal periode salle
+              this.db.presentToast("Absence enregistré.");
+              this.close(true);
+
+            }
+          },
+          async (error) => {
+            console.error("Erreur this.intervenantService.SubmitAbsence(): ", error);
+            await loading.dismiss();
+            this.db.presentToast("Erreur d'enregistrement de l'absence");
+          }
+        );
 
 
     });
@@ -275,7 +294,7 @@ export class ParticipantsPage implements OnInit {
     if (!params.isUpdating)
       return this.db.postData('/api/ABS_ComposantSectionAPI/SubmitAbsence', params).toPromise()
     else
-      return this.db.postData('/api/ABS_ComposantSectionAPI/UpdateAbsence', params).toPromise()
+      return this.db.putData('/api/ABS_ComposantSectionAPI/UpdateAbsence', params).toPromise()
 
   }
 

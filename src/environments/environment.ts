@@ -7,7 +7,7 @@ export const environment = {
   production: false,
   url: 'https://edu.universiapolis.ma/',
   // celluleWebURL: 'https://edu.universiapolis.ma',
-  celluleWebURL: 'https://edu-universiapolis.azurewebsites.ma',
+  celluleWebURL: 'https://edu-universiapolis.azurewebsites.net',
   allowSubmitWithNotHandledEtudiants: false,
   // tuteurApiUrl: 'http://universiapulse-001-site24.atempurl.com/',
   // tuteurApiUrl: 'https://localhost:7017/',

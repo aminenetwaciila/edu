@@ -187,6 +187,7 @@ export class MonplanningPage implements OnInit, OnDestroy {
     const selectedSeance = this.SeancesDS.find(x => x.Sea_Id == Sea_Id);
     const selectedCompSec = this.ComposantSectionDS.find(x => x.CompSec_Id == selectedSeance.CompSec_Id)
 
+    console.log("selectedSeance: ", selectedSeance);
 
     //si l'absence de la seance est deja validé ==> recuperer l'etat de l'absence de chaque etd.
     if (selectedSeance.Sea_DateEffective != null) {
@@ -203,8 +204,7 @@ export class MonplanningPage implements OnInit, OnDestroy {
       this.GetSeanceAbsents(selectedSeance.Sea_Id)
         .then(
           (response: any) => {
-            console.log("GetSeanceAbsents: ", response)
-            console.log("is.selectedCompSec.ABS_EtudiantComposantSection: ", selectedCompSec.ABS_EtudiantComposantSection)
+            console.log("response GetSeanceAbsents: ", response)
             selectedSeanceAbsents = response;
             //mettre l'etat des etd dans ABS_EtudiantComposantSection par rapport a abs_absence
             let etudiantsDataSource = selectedCompSec.ABS_EtudiantComposantSection
@@ -259,11 +259,12 @@ export class MonplanningPage implements OnInit, OnDestroy {
 
             const filteredEtudiantsDataSource = etudiantsDataSource;
 
-            this.openparticipants(selectedSeance, etudiantsDataSource, filteredEtudiantsDataSource, selectedCompSec, isAllowedToChangeAbsence); //open modal
-            //alert("You can change absence");
-            //else alert("YOU CANT CHANGE ABS");
+            this.openparticipants(selectedSeance, etudiantsDataSource, filteredEtudiantsDataSource, selectedCompSec, isAllowedToChangeAbsence);
           },
-          (error) => console.error("Erreur this.intervenantService.GetSeanceAbsents(" + selectedSeance.Sea_Id + ", " + selectedSeance.CompSec_Id + "): ", error)
+          (error) => {
+            console.error("Erreur this.intervenantService.GetSeanceAbsents(" + selectedSeance.Sea_Id + ", " + selectedSeance.CompSec_Id + "): ", error);
+            this.db.presentToast("Erreur de récupération de l'absence de cette séance.");
+          }
         );
 
     } else {
