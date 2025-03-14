@@ -104,7 +104,7 @@ export class MonplanningPage implements OnInit, OnDestroy {
   }
 
   public GetSeanceAbsents(sea_id) {
-    return this.db.getData('api/ABS_ComposantSectionAPI/GetSeanceAbsents/' + sea_id)
+    return this.db.getData('/api/ABS_ComposantSectionAPI/GetSeanceAbsents/' + sea_id)
   }
 
   setCalendarEvents(ABS_Seances: any[]) {
@@ -187,14 +187,21 @@ export class MonplanningPage implements OnInit, OnDestroy {
     const selectedSeance = this.SeancesDS.find(x => x.Sea_Id == Sea_Id);
     const selectedCompSec = this.ComposantSectionDS.find(x => x.CompSec_Id == selectedSeance.CompSec_Id)
 
-    console.log("selectedSeance: ", selectedSeance);
+    // console.log("selectedSeance: ", selectedSeance);
 
     //si l'absence de la seance est deja validé ==> recuperer l'etat de l'absence de chaque etd.
-    if (selectedSeance.Sea_DateEffective != null) {
+    let dateToCheck = selectedSeance.Sea_TimeStamp;
+    if (dateToCheck == null || dateToCheck == "")
+      dateToCheck = selectedSeance.Sea_DateEffective;
+
+    if (dateToCheck != null) {
 
       //si la date de la seance est la mm que la date du jour, alors autoriser l'intv a modifier l'absence/seance
-      if (new Date(selectedSeance.Sea_DateEffective) < new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 23, 59, 59) &&
-        new Date(selectedSeance.Sea_DateEffective) > new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 0, 0, 0) && selectedCompSec.Composante != "Examen")
+      // if (new Date(selectedSeance.Sea_DateEffective) < new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 23, 59, 59) &&
+      //   new Date(selectedSeance.Sea_DateEffective) > new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 0, 0, 0) && selectedCompSec.Composante != "Examen")
+
+      if (new Date(dateToCheck) < new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 23, 59, 59) &&
+        new Date(dateToCheck) > new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 0, 0, 0) && selectedCompSec.Composante != "Examen")
         isAllowedToChangeAbsence = true;
       else isAllowedToChangeAbsence = false;
       if (isAllowedToChangeAbsence)
@@ -223,7 +230,7 @@ export class MonplanningPage implements OnInit, OnDestroy {
                   Sms_Nom: x.Sms_Nom,
                   Spec_Name: x.Spec_Name,
                   //photo: environment.globalURL + "/Images/abs_poly1920/" + x.Etd_Matricule + ".jpg",
-                  photo: environment.celluleWebURL + "/Images/abs_poly1920/" + x.Etd_Matricule + ".jpg",
+                  photo: environment.edu + "/Images/abs_poly1920/" + x.Etd_Matricule + ".jpg",
                   isRemarqueVisisble: false,
                   Remarque: etdABS_Absence != null ? etdABS_Absence.Abs_Remarque : "",
                   isAbsent: isAbsent,//selectedSeanceAbsents.find(a => a.EtdCompSec_Id == x.EtdCompSec_Id) != null ? true : false,
@@ -245,7 +252,7 @@ export class MonplanningPage implements OnInit, OnDestroy {
                   Etd_NomComplet: abs_absence.Etd_NomComplet,
                   EtdCompSec_Id: abs_absence.EtdCompSec_Id,
                   //photo: environment.globalURL + "/Images/abs_poly1920/" + abs_absence.Etd_Matricule + ".jpg",
-                  photo: environment.celluleWebURL + "/Images/abs_poly1920/" + abs_absence.Etd_Matricule + ".jpg",
+                  photo: environment.edu + "/Images/abs_poly1920/" + abs_absence.Etd_Matricule + ".jpg",
                   Sms_Nom: abs_absence.Sms_Nom,
                   Spec_Name: abs_absence.Spec_Name,
                   isRemarqueVisisble: false,
@@ -274,7 +281,8 @@ export class MonplanningPage implements OnInit, OnDestroy {
           .map(x => {
             return {
               Etd_Id: x.Etd_Id, EtdCrs_Id: x.EtdCrs_Id, Etd_Matricule: x.Etd_Matricule, Pers_Nom: x.Pers_Nom, Pers_Prenom: x.Pers_Prenom,
-              EtdCompSec_Id: x.EtdCompSec_Id, photo: environment.celluleWebURL + "/Images/abs_poly1920/" + x.Etd_Matricule + ".jpg", isRemarqueVisisble: false, Remarque: "",
+              EtdCompSec_Id: x.EtdCompSec_Id,
+              photo: environment.edu + "/Images/abs_poly1920/" + x.Etd_Matricule + ".jpg", isRemarqueVisisble: false, Remarque: "",
               Sms_Nom: x.Sms_Nom,
               Spec_Name: x.Spec_Name,
               isAbsent: null, readOnly: false,

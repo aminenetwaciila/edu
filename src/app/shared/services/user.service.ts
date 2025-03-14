@@ -3,14 +3,12 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, Observable, of, ReplaySubject } from 'rxjs';
 import { Router } from '@angular/router';
 
-import { environment } from 'src/environments/environment';
-
 @Injectable({
     providedIn: 'root'
 })
 export class UserService
 {
-    private _url = environment.url;
+    // private _url = environment.edu;
     private _user: BehaviorSubject<any> = new BehaviorSubject<any>(null);
     private _user_info: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
@@ -86,7 +84,7 @@ export class UserService
           // Store the value
           this._userData.next(value);
       }
-  
+
       get userData$(): Observable<any>
       {
           return this._userData.asObservable();
@@ -96,5 +94,5 @@ export class UserService
     // -----------------------------------------------------------------------------------------------------
     // @ Public methods
     // -----------------------------------------------------------------------------------------------------
-    
+
 }

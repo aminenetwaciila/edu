@@ -136,14 +136,64 @@ export class AppComponent {
     let url = `${environment.upulseEdu}/api/Version/GetMobileConfig`;
     this.http.get(url)
       .subscribe((response: any) => {
-        console.log("response GetMobileConfig: ", response)
+        // console.log("response GetMobileConfig: ", response);
         if (response.Version != environment.version)
           this.presentAlert(null, null, "Nouvelle version disponible, veuillez faire la mise à jour", ['Ok'])
       }, (error) => {
         console.error("Error GetMobileConfig: ", error)
       })
 
-    this.initializeApp();
+
+
+    // if (this.platform.is('android')) {
+    //   console.log("is android")
+    // }
+    // else if (this.platform.is('iphone')) {
+    //   console.log("is iphone")
+    // }
+    // else if (this.platform.is('ios')) {
+    //   console.log("is ios")
+    // }
+    // else if (this.platform.is('ios')) {
+    //   console.log("is ios")
+    // }
+    // else if (this.platform.is('ios')) {
+    //   console.log("is ios")
+    // }
+
+    let os: string = null;
+
+    let platforms = this.platform.platforms().toString();
+    console.log("platforms: ", platforms)
+    if (platforms.includes('android')) {
+      os = "android";
+    }
+    else if (platforms.includes('ios')) {
+      os = "ios";
+    }
+    else if (platforms.includes('web')) {
+      os = "web";
+    }
+
+    console.log("os: ", os);
+
+    // this.platform.platforms()
+    //   .forEach((platform) => {
+    //     console.log("platform: ", platform)
+
+    //   })
+
+
+    if (environment.production == false) {
+      // this.initializeApp();
+      setTimeout(() => {
+        console.log("navigate .............. ")
+        this.router.navigateByUrl('rattrapages');
+      }, 5000);
+    }
+    else{
+      this.initializeApp();
+    }
   }
 
 

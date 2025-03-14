@@ -117,7 +117,7 @@ export class ListesSeancesPage implements OnInit {
                   Sms_Nom: x.Sms_Nom,
                   Spec_Name: x.Spec_Name,
                   //photo: environment.globalURL + "/Images/abs_poly1920/" + x.Etd_Matricule + ".jpg",
-                  photo: environment.celluleWebURL + "/Images/abs_poly1920/" + x.Etd_Matricule + ".jpg",
+                  photo: environment.edu + "/Images/abs_poly1920/" + x.Etd_Matricule + ".jpg",
                   isRemarqueVisisble: false,
                   Remarque: etdABS_Absence != null ? etdABS_Absence.Abs_Remarque : "",
                   isAbsent: isAbsent,//selectedSeanceAbsents.find(a => a.EtdCompSec_Id == x.EtdCompSec_Id) != null ? true : false,
@@ -138,7 +138,7 @@ export class ListesSeancesPage implements OnInit {
                   Etd_NomComplet: abs_absence.Etd_NomComplet,
                   EtdCompSec_Id: abs_absence.EtdCompSec_Id,
                   //photo: environment.globalURL + "/Images/abs_poly1920/" + abs_absence.Etd_Matricule + ".jpg",
-                  photo: environment.celluleWebURL + "/Images/abs_poly1920/" + abs_absence.Etd_Matricule + ".jpg",
+                  photo: environment.edu + "/Images/abs_poly1920/" + abs_absence.Etd_Matricule + ".jpg",
                   Sms_Nom: abs_absence.Sms_Nom,
                   Spec_Name: abs_absence.Spec_Name,
                   isRemarqueVisisble: false,
@@ -165,7 +165,7 @@ export class ListesSeancesPage implements OnInit {
         .map(x => {
           return {
             Etd_Id: x.Etd_Id, EtdCrs_Id: x.EtdCrs_Id, Etd_Matricule: x.Etd_Matricule, Pers_Nom: x.Pers_Nom, Pers_Prenom: x.Pers_Prenom,
-            EtdCompSec_Id: x.EtdCompSec_Id, photo: environment.celluleWebURL + "/Images/abs_poly1920/" + x.Etd_Matricule + ".jpg", isRemarqueVisisble: false, Remarque: "",
+            EtdCompSec_Id: x.EtdCompSec_Id, photo: environment.edu + "/Images/abs_poly1920/" + x.Etd_Matricule + ".jpg", isRemarqueVisisble: false, Remarque: "",
             Sms_Nom: x.Sms_Nom,
             Spec_Name: x.Spec_Name,
             isAbsent: null, readOnly: false,

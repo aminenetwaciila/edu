@@ -9,7 +9,7 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class DataService {
-  url = environment.url;
+  // url = environment.edu;
   private _matiere: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   private _seances: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   private _mesmatieres: BehaviorSubject<any> = new BehaviorSubject<any>(null);

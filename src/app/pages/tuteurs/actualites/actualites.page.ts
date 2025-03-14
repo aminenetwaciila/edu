@@ -15,7 +15,7 @@ import { TranslateService } from '@ngx-translate/core';
 // SwiperCore.use([Pagination, Navigation]);
 
 @Component({
-  selector: 'app-actualites',
+  selector: 'app-actualites-tuteur',
   templateUrl: './actualites.page.html',
   styleUrls: ['./actualites.page.scss'],
   encapsulation: ViewEncapsulation.None,

@@ -1,10 +1,10 @@
 /* eslint-disable */
 export const environment = {
   production: true,
-  url: 'https://edu.universiapolis.ma/',
-  celluleWebURL: 'https://edu.universiapolis.ma',
+  url: 'https://edu.universiapolis.ma',
+  // celluleWebURL: 'https://edu.universiapolis.ma',
   allowSubmitWithNotHandledEtudiants: false,
-  tuteurApiUrl: 'https://upulse-edu.azurewebsites.net/',
+  // tuteurApiUrl: 'https://upulse-edu.azurewebsites.net/',
   // tuteurApiUrl: 'https://localhost:7017/',
   NumeroSupportTtr: "+212656125472",
 

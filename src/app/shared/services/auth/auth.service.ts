@@ -3,13 +3,13 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, switchMap } from 'rxjs/operators';
 import { UserService } from '../user.service';
-import { AuthUtils } from './auth.utils';
+// import { AuthUtils } from './auth.utils';
 import { environment } from 'src/environments/environment';
 
 @Injectable()
 export class AuthService
 {
-    private _url: any = environment.url;
+    private _url: any = environment.edu;
     private _authenticated: boolean = false;
 
     /**
@@ -39,7 +39,7 @@ export class AuthService
         return localStorage.getItem('accessToken') ?? '';
     }
 
-    
+
     // -----------------------------------------------------------------------------------------------------
     // @ Public methods
     // -----------------------------------------------------------------------------------------------------
@@ -51,7 +51,7 @@ export class AuthService
      */
     forgotPassword(email: string): Observable<any>
     {
-        return this._httpClient.post(this._url + 'api/auth/forgot-password', email);
+        return this._httpClient.post(environment.edu + '/api/auth/forgot-password', email);
     }
 
     /**
@@ -61,14 +61,14 @@ export class AuthService
      */
     resetPassword(password: string): Observable<any>
     {
-        return this._httpClient.post(this._url + 'api/auth/reset-password', password);
+        return this._httpClient.post(environment.edu + '/api/auth/reset-password', password);
     }
 
     /**
      * Sign in
      *
      * @param credentials
-     */ 
+     */
     signIn(credentials: { Login: string; Password: string }): Observable<any>
     {
         // Throw error, if the user is already logged in
@@ -77,7 +77,7 @@ export class AuthService
             return throwError('User is already logged in.');
         }
 
-        return this._httpClient.post(this._url + 'api/AccountAPI/Login', credentials).pipe(
+        return this._httpClient.post(environment.edu + '/api/AccountAPI/Login', credentials).pipe(
             switchMap((response: any) => {
 
                 if (response == null) {
@@ -110,7 +110,7 @@ export class AuthService
         }
         return;
         // Renew token
-        return this._httpClient.post(this._url + 'api/auth/refresh-access-token', {
+        return this._httpClient.post(environment.edu + '/api/auth/refresh-access-token', {
             accessToken: this.accessToken
         }).pipe(
             catchError(() =>
@@ -158,7 +158,7 @@ export class AuthService
      */
     signUp(user: { name: string; email: string; password: string; company: string }): Observable<any>
     {
-        return this._httpClient.post(this._url + 'api/auth/sign-up', user);
+        return this._httpClient.post(environment.edu + '/api/auth/sign-up', user);
     }
 
     /**
@@ -168,7 +168,7 @@ export class AuthService
      */
     unlockSession(credentials: { email: string; password: string }): Observable<any>
     {
-        return this._httpClient.post(this._url + 'api/auth/unlock-session', credentials);
+        return this._httpClient.post(environment.edu + '/api/auth/unlock-session', credentials);
     }
 
     /**
@@ -210,14 +210,14 @@ export class AuthService
      */
       check_no_auth(): Observable<any>
       {
-  
-  
+
+
           // Check if the user is logged in
           if ( this._authenticated )
           {
               return of({ authenticated: true, intro: this._userService.intro});
           }
-  
+
           // Check the access token availability
           if ( this._userService.user_value )
           {
@@ -231,18 +231,18 @@ export class AuthService
               }
             return of({ authenticated: true, intro: this._userService.intro});
           }
-  
+
           // return of(false);
-  
+
           // Check the access token expire date
           // if ( AuthUtils.isTokenExpired(this.accessToken) )
           // {
           //     return of(false);
           // }
-  
+
           // If the access token exists and it didn't expire, sign in using it
           return of({ authenticated: false, intro: this._userService.intro});
-  
+
           // return this.signInUsingToken();
       }
 }

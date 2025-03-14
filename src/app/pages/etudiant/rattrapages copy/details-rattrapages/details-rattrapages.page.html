@@ -1,0 +1,233 @@
+<!-- eslint-disable -->
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button mode="md" color="light" icon="chevron-back-outline"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Détails</ion-title>
+    <ion-buttons slot="end">
+      <ion-button id="open-modal" (click)="OpenConfirmation()" title="Completer inscription" shape="round">
+        <ion-icon name="cart"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <!-- <ion-fab-button >
+      <ion-icon name="cart"></ion-icon>
+    </ion-fab-button> -->
+  </ion-toolbar>
+</ion-header>
+
+
+
+<ion-content>
+  <!-- <ion-refresher slot="fixed" (ionRefresh)="Refresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher> -->
+
+  <ion-list>
+
+    <ion-item lines="none" color="light" class="ion-text-center bg-none" style="width: 100%;" *ngIf="IsLoading === true">
+      <ion-spinner style="margin: auto;" color="primary"></ion-spinner>
+    </ion-item>
+
+    <span>
+      <ng-container *ngFor="let sms of Semestres; let i = index;">
+
+        <!-- <ion-list-header mode="md" button (click)="sms.IsOpen = !sms?.IsOpen"> -->
+        <ion-list-header mode="md" button (click)="OnSemestreSelected(sms.Sms_Nom)">
+          <ion-label>Semestre {{sms?.Sms_Nom}}</ion-label>
+          <!-- - {{ sms.Matieres.length }} -->
+          <ion-button shape="round" color="primary">
+            <!-- <ion-icon name="chevron-up"></ion-icon> -->
+            <ion-icon *ngIf="sms.IsOpen === true" name="chevron-forward-outline"></ion-icon>
+            <ion-icon *ngIf="sms.IsOpen === false" name="chevron-down-outline"></ion-icon>
+          </ion-button>
+        </ion-list-header>
+
+        <ion-item lines="full" *ngIf="sms.IsOpen">
+
+          <ion-grid>
+
+
+            <!-- MatieresObligatoire -->
+            <ion-row>
+              <ion-card class="card-matieres">
+                <ion-card-header>
+                  <ion-card-title class="bg-red" *ngIf="sms.MatieresObligatoire.length > 0">Matières Obligatoires</ion-card-title>
+                  <ion-card-subtitle *ngIf="sms.MatieresObligatoire.length == 0"><small><i>Aucune matière obligatoire</i></small></ion-card-subtitle>
+                </ion-card-header>
+                <ion-card-content>
+                  <ion-row *ngFor="let crs of sms.MatieresObligatoire;" style="font-size: small;">
+                    <ion-col>
+                      {{ crs.Crs_Nom }}
+                      <div class="matiere-ouverte" *ngIf="crs.MatiereOuverte == true"><b>ouverte</b></div>
+                      <div class="matiere-pas-ouverte" *ngIf="crs.MatiereOuverte == false"><b>pas ouverte</b></div>
+                    </ion-col>
+                    <ion-col size="auto"><ion-badge [color]="crs.EtdCrs_NoteExam > 10 ? 'primary' : 'danger'">{{ crs.EtdCrs_NoteExam }}</ion-badge></ion-col>
+                    <ion-col size="auto">
+                      <ion-checkbox [(ngModel)]="crs.EstConfirme" (ionChange)="OnMatiereChange($event, crs.EtdCrs_Id)" aria-label="Toggle task completion" [disabled]="!crs.CanEdit"
+                        class="no-padding no-margin">
+                        <!-- [checked]="crs.EstConfirme" [disabled]="crs.EstTraite" -->
+                      </ion-checkbox>
+                    </ion-col>
+                  </ion-row>
+                </ion-card-content>
+              </ion-card>
+            </ion-row>
+
+            <!-- MatieresRecommande -->
+            <ion-row>
+              <ion-card class="card-matieres">
+                <ion-card-header>
+                  <ion-card-title class="bg-orange" *ngIf="sms.MatieresRecommande.length > 0">Matières recommandées</ion-card-title>
+                  <ion-card-subtitle *ngIf="sms.MatieresRecommande.length == 0"><small><i>Aucune matière recommandée</i></small></ion-card-subtitle>
+                </ion-card-header>
+                <ion-card-content>
+                  <ion-row *ngFor="let crs of sms.MatieresRecommande;" style="font-size: small;">
+                    <ion-col>
+                      {{ crs.Crs_Nom }}
+                      <div class="matiere-ouverte" *ngIf="crs.MatiereOuverte == true"><b>ouverte</b></div>
+                      <div class="matiere-pas-ouverte" *ngIf="crs.MatiereOuverte == false"><b>pas ouverte</b></div>
+                    </ion-col>
+                    <ion-col size="auto"><ion-badge [color]="crs.EtdCrs_NoteExam >= 10 ? 'primary' : 'danger'">{{ crs.EtdCrs_NoteExam }}</ion-badge></ion-col>
+                    <ion-col size="auto">
+                      <ion-checkbox [(ngModel)]="crs.EstConfirme" (ionChange)="OnMatiereChange($event, crs.EtdCrs_Id)" aria-label="Toggle task completion" [disabled]="!crs.CanEdit"
+                        class="no-padding no-margin">
+                        <!-- [checked]="crs.EstConfirme" [disabled]="crs.EstTraite" -->
+                      </ion-checkbox>
+                    </ion-col>
+                  </ion-row>
+                </ion-card-content>
+              </ion-card>
+            </ion-row>
+
+            <!-- MatieresOptionnelle -->
+            <ion-row>
+              <ion-card class="card-matieres">
+                <ion-card-header>
+                  <ion-card-title class="bg-green" *ngIf="sms.MatieresOptionnelle.length > 0">Matières Optionnelles</ion-card-title>
+                  <ion-card-subtitle *ngIf="sms.MatieresOptionnelle.length == 0"><small><i>Aucune matière optionnelle</i></small></ion-card-subtitle>
+                </ion-card-header>
+                <ion-card-content>
+                  <ion-row *ngFor="let crs of sms.MatieresOptionnelle;" style="font-size: small;">
+                    <ion-col>
+                      {{ crs.Crs_Nom }}
+                      <div class="matiere-ouverte" *ngIf="crs.MatiereOuverte == true"><b>ouverte</b></div>
+                      <div class="matiere-pas-ouverte" *ngIf="crs.MatiereOuverte == false"><b>pas ouverte</b></div>
+                    </ion-col>
+                    <ion-col size="auto"><ion-badge [color]="crs.EtdCrs_NoteExam > 10 ? 'primary' : 'danger'">{{ crs.EtdCrs_NoteExam }}</ion-badge></ion-col>
+                    <ion-col size="auto">
+                      <ion-checkbox [(ngModel)]="crs.EstConfirme" (ionChange)="OnMatiereChange($event, crs.EtdCrs_Id)" aria-label="Toggle task completion"
+                        [disabled]="crs.EstTraite" class="no-padding no-margin">
+                      </ion-checkbox>
+                    </ion-col>
+                  </ion-row>
+                </ion-card-content>
+              </ion-card>
+            </ion-row>
+
+
+            <!-- AutreMatieres -->
+            <ion-row class="ion-justify-content-center" *ngIf="sms.AutreMatieres.length > 0">
+              <ion-col size="auto" *ngIf="sms.IsAutreMatieresVisible === false">
+                <ion-button (click)="ShowAutreMatiere(sms.Sms_Nom)">Autres matières</ion-button>
+              </ion-col>
+              <ion-card class="card-matieres" *ngIf="sms.IsAutreMatieresVisible === true">
+                <ion-card-header>
+                  <ion-card-title>Autre matières</ion-card-title>
+                </ion-card-header>
+                <ion-card-content>
+                  <ion-row *ngFor="let crs of sms.AutreMatieres;" style="font-size: small;">
+                    <ion-col>
+                      {{ crs.Crs_Nom }}
+                      <div class="matiere-ouverte" *ngIf="crs.MatiereOuverte == true"><b>ouverte</b></div>
+                      <div class="matiere-pas-ouverte" *ngIf="crs.MatiereOuverte == false"><b>pas ouverte</b></div>
+                    </ion-col>
+                    <ion-col size="auto"><ion-badge [color]="crs.EtdCrs_NoteExam > 10 ? 'primary' : 'danger'">{{ crs.EtdCrs_NoteExam }}</ion-badge></ion-col>
+                    <ion-col size="auto">
+                      <ion-checkbox [(ngModel)]="crs.EstConfirme" (ionChange)="OnMatiereChange($event, crs.EtdCrs_Id)" aria-label="Toggle task completion"
+                        [disabled]="crs.EstTraite" class="no-padding no-margin">
+                      </ion-checkbox>
+                    </ion-col>
+                  </ion-row>
+                </ion-card-content>
+              </ion-card>
+            </ion-row>
+
+
+          </ion-grid>
+
+        </ion-item>
+
+      </ng-container>
+    </span>
+  </ion-list>
+
+  <!-- <ion-fab slot="fixed" vertical="bottom" horizontal="end" *ngIf="IsLoading === false">
+    <ion-fab-button id="open-modal" (click)="OpenConfirmation()" title="Completer inscription">
+      <ion-icon name="cart"></ion-icon>
+    </ion-fab-button>
+  </ion-fab> -->
+
+  <!-- trigger="open-modal" -->
+  <ion-modal #modal [isOpen]="isModalOpen" [presentingElement]="presentingElement" (willDismiss)="onWillDismiss($event)">
+    <ng-template>
+
+      <ion-header>
+        <ion-toolbar>
+          <ion-buttons slot="start">
+            <!-- <ion-button (click)="modal.dismiss()">Cancel</ion-button> -->
+            <ion-button (click)="CloseConfirmation()" mode="md" color="dark" icon="chevron-back-outline">
+              <ion-icon name="chevron-back-outline"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+          <ion-title>Matières à payer</ion-title>
+        </ion-toolbar>
+      </ion-header>
+
+      <ion-content>
+        <ion-list>
+          <ion-item *ngFor="let crs of GetMatieresAConfirmer();">
+            <ion-label>
+              <h2>{{ crs.Crs_Nom }}</h2>
+              <p>{{ crs.Tarif }} Dhs</p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-content>
+
+      <ion-footer>
+
+        <!-- <ion-toolbar>
+          <ion-title slot="start" *ngIf="TotalAPayer != null && TotalAPayer > 0">Total à payer: <b>{{ TotalAPayer }} dhs</b></ion-title>
+          <ion-title slot="end">
+            <ion-button (click)="SaveConfirmation()" color="dark" icon="chevron-back-outline">
+              Confirmer
+            </ion-button>
+          </ion-title>
+        </ion-toolbar> -->
+
+        <ion-row class="ion-justify-content-between">
+          <ion-col align="left">
+            <div *ngIf="TotalAPayer != null && TotalAPayer > 0">Total à payer: <b>{{ TotalAPayer }} dhs</b></div>
+          </ion-col>
+          <ion-col align="right">
+            <ion-button (click)="SaveConfirmation()" color="dark" icon="chevron-back-outline">
+              Confirmer
+            </ion-button>
+          </ion-col>
+        </ion-row>
+
+      </ion-footer>
+
+    </ng-template>
+  </ion-modal>
+
+</ion-content>
+
+
+<!-- <ion-footer *ngIf="!demanderevision && (etudiant?.ds?.smsActuel?.Sms_Nom === semestre?.Sms_Nom) && hasDemandeActive()">
+  <ion-button expand="block" fill="clear" (click)="demandeRev()">
+    Demander une révision &nbsp;
+    <ion-icon name="add-circle"></ion-icon>
+  </ion-button>
+</ion-footer> -->

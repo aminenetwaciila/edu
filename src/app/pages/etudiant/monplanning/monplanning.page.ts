@@ -144,7 +144,7 @@ export class MonplanningPage implements OnInit, OnDestroy {
 
 
   public GetSeanceAbsents(sea_id) {
-    return this.db.getData('api/ABS_ComposantSectionAPI/GetSeanceAbsents/' + sea_id)
+    return this.db.getData('/api/ABS_ComposantSectionAPI/GetSeanceAbsents/' + sea_id)
   }
 
   doRefresh(event) {

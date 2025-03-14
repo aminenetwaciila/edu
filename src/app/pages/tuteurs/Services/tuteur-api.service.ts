@@ -10,8 +10,6 @@ import { GenderListItem } from '../../etudiant/Types/GenderListItem.type';
 import { SemesterNotes } from '../../etudiant/Types/NotesPageTypes.types';
 import { SemesterAbsences } from '../../etudiant/Types/AbsencesPageTypes.types';
 import { EnfantParcoursSms } from '../../etudiant/Types/ParcourNiveau.type';
-import { ToastController } from '@ionic/angular';
-import { TranslateService } from '@ngx-translate/core';
 import { TuteurType } from '../../etudiant/Types/TuteurType.type';
 import { ActualiteComment, ActualitePage, ActualiteT, CreateCommentRequest } from '../../etudiant/Types/ActualitePageTypes.type';
 import { Enfant } from '../../etudiant/Types/Enfant.type';
@@ -19,7 +17,7 @@ import { Enfant } from '../../etudiant/Types/Enfant.type';
 @Injectable()
 export class TuteurApiService implements OnDestroy {
 
-  private readonly baseApiUrl = environment.tuteurApiUrl;
+  // private readonly baseApiUrl = environment.upulseEdu;
   // private readonly env_p = environment.production;
   tuteurSubj: Subject<TuteurType> = new Subject<TuteurType>();
   tuteurObject: TuteurType;
@@ -134,7 +132,7 @@ export class TuteurApiService implements OnDestroy {
 
   paginerActualites(size: number, skip: number) {
     const user_id = this.tuteurObject?.user_id;
-    let url = `${environment.tuteurApiUrl}linkedu-api/tuteurAPI/GetTuteurActualites/${user_id}/${skip}/${size}`;
+    let url = `${environment.upulseEdu}/linkedu-api/tuteurAPI/GetTuteurActualites/${user_id}/${skip}/${size}`;
     // if (user_id)
     return this.httpClient.get<ActualitePage>(url)
 
@@ -143,50 +141,50 @@ export class TuteurApiService implements OnDestroy {
     //   return user_id
     // }),
     //   switchMap((user_id) => {
-    //     return this.httpClient.get<ActualitePage>(this.baseApiUrl + `linkedu-api/tuteurAPI/GetTuteurActualites/${user_id}/${skip}/${size}`)
+    //     return this.httpClient.get<ActualitePage>(environment.upulseEdu + `linkedu-api/tuteurAPI/GetTuteurActualites/${user_id}/${skip}/${size}`)
     //   }))
   }
 
   // get actualite by id
   getActualite(act_id: string) {
-    return this.httpClient.get<ActualiteT>(this.baseApiUrl + `linkedu-api/tuteurAPI/GetTuteurActualites/${act_id}`)
+    return this.httpClient.get<ActualiteT>(environment.upulseEdu + `/linkedu-api/tuteurAPI/GetTuteurActualites/${act_id}`)
   }
 
   createCommentOnActualite(comment: CreateCommentRequest) {
     comment.ActCom_User_Id = this.tuteurObject.user_id;
-    return this.httpClient.post<ActualiteComment>(this.baseApiUrl + `linkedu-api/tuteurAPI/AddActualiteComment`, comment);
+    return this.httpClient.post<ActualiteComment>(environment.upulseEdu + `/linkedu-api/tuteurAPI/AddActualiteComment`, comment);
   }
 
   getTuteurAccountDetails(ttr_id: string) {
-    return this.httpClient.get<TuteurType>(this.baseApiUrl + `linkedu-api/tuteurAPI/GetTuteur/${ttr_id}`)
+    return this.httpClient.get<TuteurType>(environment.upulseEdu + `/linkedu-api/tuteurAPI/GetTuteur/${ttr_id}`)
   }
 
   toggleActualiteLike(act_id: string) {
     const user_id = this.tuteurObject.user_id;
-    return this.httpClient.post<boolean>(this.baseApiUrl + `linkedu-api/tuteurAPI/TuteurSubmitActualiteLike`, {
+    return this.httpClient.post<boolean>(environment.upulseEdu + `/linkedu-api/tuteurAPI/TuteurSubmitActualiteLike`, {
       user_id, act_id
     });
   }
 
   submitChildrenMatricules(matricules: string[]) {
     const ttr_id = this.TTR_ID;
-    return this.httpClient.post<SubmitChildrenMatriculesResponse[]>(this.baseApiUrl + `linkedu-api/tuteurAPI/addEnfantsByMatricules/${ttr_id}`, { matricules })
+    return this.httpClient.post<SubmitChildrenMatriculesResponse[]>(environment.upulseEdu + `/linkedu-api/tuteurAPI/addEnfantsByMatricules/${ttr_id}`, { matricules })
   }
 
   geTuteurApprovedChildren() {
     const ttr_id = this.TTR_ID;
-    return this.httpClient.get<Enfant[]>(this.baseApiUrl + `linkedu-api/tuteurAPI/GetTuteursEnfants/${ttr_id}`);
+    return this.httpClient.get<Enfant[]>(environment.upulseEdu + `/linkedu-api/tuteurAPI/GetTuteursEnfants/${ttr_id}`);
   }
 
   geTuteurNonApprovedChildren() {
     const ttr_id = this.TTR_ID;
-    return this.httpClient.get<NonApprovedEnfant[]>(this.baseApiUrl + `linkedu-api/tuteurAPI/GetTuteursEnfantsNonApprouves/${ttr_id}`);
+    return this.httpClient.get<NonApprovedEnfant[]>(environment.upulseEdu + `/linkedu-api/tuteurAPI/GetTuteursEnfantsNonApprouves/${ttr_id}`);
   }
 
 
   getEtudiantAnneesAndSemesters(etd_id: string) {
     const ttr_id = this.TTR_ID;
-    return this.httpClient.post<EtudiantAnneesEtSemesters[]>(this.baseApiUrl + `linkedu-api/etudiantAPI/getEtudiantAnneesAndSemestersLists`, {
+    return this.httpClient.post<EtudiantAnneesEtSemesters[]>(environment.upulseEdu + `/linkedu-api/etudiantAPI/getEtudiantAnneesAndSemestersLists`, {
       ttr_id, etd_id
     });
   }
@@ -194,13 +192,13 @@ export class TuteurApiService implements OnDestroy {
 
   // shared apis
   getGendersList() {
-    return this.httpClient.get<GenderListItem[]>(this.baseApiUrl + `linkedu-api/tuteurAPI/getSexes`);
+    return this.httpClient.get<GenderListItem[]>(environment.upulseEdu + `/linkedu-api/tuteurAPI/getSexes`);
   }
 
 
   getEtudiantNotes(etd_id: string, annee_id: string, semestre_id: string) {
     const ttr_id = this.TTR_ID;
-    return this.httpClient.post<SemesterNotes>(this.baseApiUrl + `linkedu-api/etudiantAPI/getEtudiantMarksByYearAndSemester`, {
+    return this.httpClient.post<SemesterNotes>(environment.upulseEdu + `/linkedu-api/etudiantAPI/getEtudiantMarksByYearAndSemester`, {
       ttr_id, etd_id, year_id: annee_id, semester_id: semestre_id
     });
   }
@@ -208,18 +206,18 @@ export class TuteurApiService implements OnDestroy {
 
   getEtudiantAbsences(etd_id: string, annee_id: string, semestre_id: string) {
     const ttr_id = this.TTR_ID;
-    return this.httpClient.post<SemesterAbsences>(this.baseApiUrl + `linkedu-api/etudiantAPI/getEtudiantAbsencesByYearAndSemester`, {
+    return this.httpClient.post<SemesterAbsences>(environment.upulseEdu + `/linkedu-api/etudiantAPI/getEtudiantAbsencesByYearAndSemester`, {
       ttr_id, etd_id, year_id: annee_id, semester_id: semestre_id
     });
   }
 
 
   public getEnfantEmploi(etd_matricule: string) {
-    return this.httpClient.get(environment.url + '/api/ABS_SeanceAPI/GetEtdAgenda1/' + etd_matricule)
+    return this.httpClient.get(environment.edu + '/api/ABS_SeanceAPI/GetEtdAgenda1/' + etd_matricule)
   }
 
   public getEnfantParcours(etd_matricule: string) {
-    return this.httpClient.get<EnfantParcoursSms[]>(this.baseApiUrl + 'linkedu-api/etudiantAPI/GetEtudiantParcours/' + etd_matricule)
+    return this.httpClient.get<EnfantParcoursSms[]>(environment.upulseEdu + '/linkedu-api/etudiantAPI/GetEtudiantParcours/' + etd_matricule)
   }
 
 }

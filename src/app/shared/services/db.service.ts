@@ -14,7 +14,7 @@ import { HelperService } from './helper.service';
   providedIn: 'root'
 })
 export class DbService {
-  url = environment.url;
+  // url = environment.url;
   private _data: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   userData: any;
   // private _games: BehaviorSubject<any> = new BehaviorSubject<any>(games);
@@ -51,24 +51,24 @@ export class DbService {
   postData(url, params): Observable<any> {
     let headers = new HttpHeaders()
     headers = headers.set('Content-Type', 'application/json');
-    return this.httpClient.post(this.url + url, params, { headers })
+    return this.httpClient.post(environment.edu + url, params, { headers })
   }
 
   getData(url) {
     console.log("getData: ", url)
     let headers = new HttpHeaders()
-    return this.httpClient.get(this.url + url)
+    return this.httpClient.get(environment.edu + url)
       .toPromise()
   }
 
   putData(url, params) {
     let headers = {};
-    return this.httpClient.put(this.url + url, params, headers)
+    return this.httpClient.put(environment.edu + url, params, headers)
   }
 
   deleteData(url) {
     let headers = {};
-    return this.httpClient.delete(this.url + url, headers)
+    return this.httpClient.delete(environment.edu + url, headers)
   }
 
 

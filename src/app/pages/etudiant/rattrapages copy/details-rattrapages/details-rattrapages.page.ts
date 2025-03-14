@@ -26,31 +26,16 @@ export class DetailsRattrapagesPage implements OnInit {
   presentingElement = null;
 
   IsLoading: boolean = true;
-
-  IsOpen: boolean = null;
   DataSource: any[] = [];
   OrginalDataSource: any[] = [];
-
-
-  // Annees: any[] = [];
-  // Semestres: {
-  //   Sms_Nom: string, IsOpen: boolean, IsAutreMatieresVisible: boolean,
-  //   MatieresObligatoire: { EtdCrs_Id: string, Crs_Code: string, Crs_Nom: string, EtdCrs_NoteExam: number, EstConfirme: boolean, MatiereOuverte: boolean, EstTraite: boolean, CanEdit: boolean }[],
-  //   MatieresRecommande: { EtdCrs_Id: string, Crs_Code: string, Crs_Nom: string, EtdCrs_NoteExam: number, EstConfirme: boolean, MatiereOuverte: boolean, EstTraite: boolean, CanEdit: boolean }[],
-  //   MatieresOptionnelle: { EtdCrs_Id: string, Crs_Code: string, Crs_Nom: string, EtdCrs_NoteExam: number, EstConfirme: boolean, MatiereOuverte: boolean, EstTraite: boolean, CanEdit: boolean }[],
-  //   AutreMatieres: { EtdCrs_Id: string, Crs_Code: string, Crs_Nom: string, EtdCrs_NoteExam: number, EstConfirme: boolean, MatiereOuverte: boolean, EstTraite: boolean, CanEdit: boolean }[],
-  // }[] = [];
-
-  Sections: {
-    Id: number,
-    Title: string, NoDataTitle: string, BgColor?: string, Class: string,
-    Matieres: any[]
-  }[] = [
-      { Id: 0, Title: "Matières Obligatoires", NoDataTitle: "Aucune matière obligatoire", Class: "bg-red", Matieres: [] },
-      { Id: 1, Title: "Matières recommandées", NoDataTitle: "Aucune matière recommandée", Class: "bg-orange", Matieres: [] },
-      { Id: 2, Title: "Matières Optionnelles", NoDataTitle: "Aucune matière optionnelle", Class: "bg-green", Matieres: [] },
-      { Id: 3, Title: "Autres matières", NoDataTitle: "Aucune autre matière", Class: "", Matieres: [] },
-    ];
+  Annees: any[] = [];
+  Semestres: {
+    Sms_Nom: string, IsOpen: boolean, IsAutreMatieresVisible: boolean,
+    MatieresObligatoire: { EtdCrs_Id: string, Crs_Code: string, Crs_Nom: string, EtdCrs_NoteExam: number, EstConfirme: boolean, MatiereOuverte: boolean, EstTraite: boolean, CanEdit: boolean }[],
+    MatieresRecommande: { EtdCrs_Id: string, Crs_Code: string, Crs_Nom: string, EtdCrs_NoteExam: number, EstConfirme: boolean, MatiereOuverte: boolean, EstTraite: boolean, CanEdit: boolean }[],
+    MatieresOptionnelle: { EtdCrs_Id: string, Crs_Code: string, Crs_Nom: string, EtdCrs_NoteExam: number, EstConfirme: boolean, MatiereOuverte: boolean, EstTraite: boolean, CanEdit: boolean }[],
+    AutreMatieres: { EtdCrs_Id: string, Crs_Code: string, Crs_Nom: string, EtdCrs_NoteExam: number, EstConfirme: boolean, MatiereOuverte: boolean, EstTraite: boolean, CanEdit: boolean }[],
+  }[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -74,15 +59,12 @@ export class DetailsRattrapagesPage implements OnInit {
     console.log("DetailsRattrapagesPage.ngOnInit")
     this.route.queryParams.subscribe((params: any) => {
       // console.log("params: ", params);
-      // this.Annees = JSON.parse(JSON.stringify(params.Annees));
-      this.IsOpen = params.IsOpen;
-      console.log("IsOpen: ", this.IsOpen);
+      this.Annees = JSON.parse(JSON.stringify(params.Annees));
       this.DataSource = JSON.parse(JSON.stringify(params.DataSource))
         .map((item) => {
           item.ValueChanged = false;
           return item;
         });
-      this.OrginalDataSource = JSON.parse(JSON.stringify(this.DataSource));
 
       console.log("DataSource: ", this.DataSource)
 
@@ -93,54 +75,75 @@ export class DetailsRattrapagesPage implements OnInit {
       //   });
       // }
 
+      this.OrginalDataSource = JSON.parse(JSON.stringify(this.DataSource));
 
-      // this.Semestres = [];
+      this.from = params.from;
 
-      this.DataSource
-        .forEach((etdCrs: any) => {
+      this.Semestres = [];
 
-
-          if (params.IsOpen == false || etdCrs.CanEdit == false || etdCrs.EstTraite == true)
-            etdCrs.CanEditMatiere = false;
+      this.DataSource.forEach((etdCrs) => {
+        if (this.Semestres.find(x => x.Sms_Nom == etdCrs.Sms_Nom) == null) {
+          let semestre: any = {
+            Sms_Nom: etdCrs?.Sms_Nom, IsOpen: false,
+            IsAutreMatieresVisible: false,
+            MatieresObligatoire: [], MatieresOptionnelle: [], AutreMatieres: [],
+            MatieresRecommande: [],
+          };
+          this.Semestres.push(semestre);
+        }
+        this.Semestres = this.Semestres.map((sms) => {
+          if (etdCrs.EstTraite == true)
+            etdCrs.CanEdit = false;
           else
-            etdCrs.CanEditMatiere = true;
-          console.log("etdCrs: ", etdCrs);
+            etdCrs.CanEdit = true;
 
 
-          if (etdCrs.Obligatoire == true) {
-            // MatieresObligatoire
-            this.Sections[0].Matieres.push(etdCrs);
+
+          if (etdCrs.Sms_Nom == sms.Sms_Nom) {
+
+            if (etdCrs.EtdCrs_RattrapageOblig == true) {
+              sms.MatieresRecommande.push(etdCrs);
+            } else if (etdCrs.ARattraper == true) {
+              if (etdCrs.Obligatoire == true) {
+                if (etdCrs.EstConfirme == false) {
+                  etdCrs.EstConfirme = true;
+                  etdCrs.EstTraite = false;
+                  etdCrs.CanEdit = false;
+                  setTimeout(() => {
+                    this.OnMatiereChange(null, etdCrs.EtdCrs_Id);
+                  }, 100);
+                }
+                sms.MatieresObligatoire.push(etdCrs);
+              }
+              else
+                sms.MatieresOptionnelle.push(etdCrs);
+            }
+            else
+              sms.AutreMatieres.push(etdCrs);
+
           }
-          else if (etdCrs.EtdCrs_RattrapageOblig == true) {
-            // MatieresRecommande
-            this.Sections[1].Matieres.push(etdCrs);
-          } else if (etdCrs.ARattraper == true) {
-            // MatieresOptionnelle
-            this.Sections[2].Matieres.push(etdCrs);
-          } else {
-            // AutreMatieres
-            this.Sections[3].Matieres.push(etdCrs);
-          }
 
+
+          return sms;
         })
 
-      this.Sections = this.Sections.map((item) => {
+      })
 
-        item.Matieres = item.Matieres.sort((a, b) => {
-          if (a.Sms_Nom > b.Sms_Nom) return -1;
-          if (a.Sms_Nom < b.Sms_Nom) return 1;
-
-          if (a.Crs_Nom > b.Crs_Nom) return 1;
-          if (a.Crs_Nom < b.Crs_Nom) return -1;
-
-          if (a.Crs_Code > b.Crs_Code) return 1;
-          if (a.Crs_Code < b.Crs_Code) return -1;
-          return 0;
-        })
-        return item;
+      this.Semestres = this.Semestres.sort((a, b) => {
+        if (a.Sms_Nom.length > b.Sms_Nom.length) return -1;
+        if (a.Sms_Nom.length < b.Sms_Nom.length) return 1;
+        if (a.Sms_Nom > b.Sms_Nom) return -1;
+        if (a.Sms_Nom < b.Sms_Nom) return 1;
+        return 0;
       });
+      this.Semestres = this.Semestres.map((sms) => {
+        if (sms.MatieresObligatoire.length > 0)
+          sms.IsOpen = true;
+        return sms;
+      })
 
-      console.log("Sections: ", this.Sections)
+      console.log("Semestres: ", this.Semestres)
+
       this.IsLoading = false;
     });
 
@@ -161,18 +164,34 @@ export class DetailsRattrapagesPage implements OnInit {
   }
 
   Refresh(event) {
+    // console.log("DetailsRattrapagesPage.refresh")
+    // console.log("Refresh: ", event);
   }
 
+  OnSemestreSelected(sms_nom: string) {
+    this.Semestres = this.Semestres.map((sms) => {
+      if (sms.Sms_Nom == sms_nom)
+        sms.IsOpen = !sms.IsOpen;
+      return sms;
+    });
+  }
 
-  OnMatiereChange(event, etdcrs_id, isDirectlyCheck) {
-    // console.log("event: ", event);
-    // console.log("OnMatiereChange: ", etdcrs_id);
+  ShowAutreMatiere(sms_nom: string) {
+    this.Semestres = this.Semestres.map((sms) => {
+      if (sms.Sms_Nom == sms_nom)
+        sms.IsAutreMatieresVisible = true;
+      return sms;
+    })
+  }
+
+  OnMatiereChange(event, etdcrs_id) {
+    console.log("event: ", event);
+    console.log("OnMatiereChange: ", etdcrs_id);
     let item = this.DataSource.find(x => x.EtdCrs_Id == etdcrs_id);
-    console.log("OnMatiereChange item: ", item);
+    console.log("item: ", item);
 
     if (item.MatiereOuverte == false) {
-      if (isDirectlyCheck == true)
-        this.presentToast("Cette matière n'est pas ouverte en rattrapage.", null, 2500);
+      this.presentToast("Cette matière n'est pas ouverte en rattrapage.", null, 5000);
       setTimeout(() => {
         this.ResetCheckBoxes(etdcrs_id);
       }, 250);
@@ -183,8 +202,7 @@ export class DetailsRattrapagesPage implements OnInit {
     if (item.Per_DateFinInscpRatt != null) {
 
       if (new Date() > new Date(item.Per_DateFinInscpRatt)) {
-        if (isDirectlyCheck == true)
-          this.presentToast("La date limite d'inscription aux rattrapages est dépassée.", null, 2500);
+        this.presentToast("La date limite d'inscription aux rattrapages est dépassée.", null, 5000);
 
         setTimeout(() => {
           this.ResetCheckBoxes(etdcrs_id);
@@ -201,64 +219,50 @@ export class DetailsRattrapagesPage implements OnInit {
   }
 
   ResetCheckBoxes(etdcrs_id) {
+
     let originalItem = this.OrginalDataSource.find(x => x.EtdCrs_Id == etdcrs_id)
-    this.Sections = this.Sections.map((section) => {
-      section.Matieres = section.Matieres.map((mat) => {
+
+    this.Semestres = this.Semestres.map((sms) => {
+
+      // MatieresObligatoire
+      sms.MatieresObligatoire = sms.MatieresObligatoire.map((mat) => {
         if (mat.EtdCrs_Id == etdcrs_id) {
           mat.EstConfirme = originalItem.EstConfirme;
-          // mat.EstDemande = originalItem.EstDemande;
         }
         return mat;
       });
-      return section;
+
+      // MatieresRecommande
+      sms.MatieresRecommande = sms.MatieresRecommande.map((mat) => {
+        if (mat.EtdCrs_Id == etdcrs_id) {
+          mat.EstConfirme = originalItem.EstConfirme;
+        }
+        return mat;
+      });
+
+      // MatieresOptionnelle
+      sms.MatieresOptionnelle = sms.MatieresOptionnelle.map((mat) => {
+        if (mat.EtdCrs_Id == etdcrs_id) {
+          mat.EstConfirme = originalItem.EstConfirme;
+        }
+        return mat;
+      });
+
+      // AutreMatieres
+      sms.AutreMatieres = sms.AutreMatieres.map((mat) => {
+        if (mat.EtdCrs_Id == etdcrs_id) {
+          mat.EstConfirme = originalItem.EstConfirme;
+        }
+        return mat;
+      });
+
+      return sms;
     });
   }
 
-  // ResetCheckBoxes0(etdcrs_id) {
-
-  //   let originalItem = this.OrginalDataSource.find(x => x.EtdCrs_Id == etdcrs_id)
-
-  //   this.Semestres = this.Semestres.map((sms) => {
-
-  //     // MatieresObligatoire
-  //     sms.MatieresObligatoire = sms.MatieresObligatoire.map((mat) => {
-  //       if (mat.EtdCrs_Id == etdcrs_id) {
-  //         mat.EstConfirme = originalItem.EstConfirme;
-  //       }
-  //       return mat;
-  //     });
-
-  //     // MatieresRecommande
-  //     sms.MatieresRecommande = sms.MatieresRecommande.map((mat) => {
-  //       if (mat.EtdCrs_Id == etdcrs_id) {
-  //         mat.EstConfirme = originalItem.EstConfirme;
-  //       }
-  //       return mat;
-  //     });
-
-  //     // MatieresOptionnelle
-  //     sms.MatieresOptionnelle = sms.MatieresOptionnelle.map((mat) => {
-  //       if (mat.EtdCrs_Id == etdcrs_id) {
-  //         mat.EstConfirme = originalItem.EstConfirme;
-  //       }
-  //       return mat;
-  //     });
-
-  //     // AutreMatieres
-  //     sms.AutreMatieres = sms.AutreMatieres.map((mat) => {
-  //       if (mat.EtdCrs_Id == etdcrs_id) {
-  //         mat.EstConfirme = originalItem.EstConfirme;
-  //       }
-  //       return mat;
-  //     });
-
-  //     return sms;
-  //   });
-  // }
-
 
   EtdCrsAValider: any[] = [];
-  TotalAPayer: number = 0;
+  TotalAPayer: number = null;
   isModalOpen: boolean = false;
 
 
@@ -277,7 +281,7 @@ export class DetailsRattrapagesPage implements OnInit {
 
     if (this.EtdCrsAValider.length == 0) {
       try { this.toast.dismiss(); } catch (e) { }
-      this.presentToast("Veuillez confirmer l'inscription aux rattrapages.", null, 2500);
+      this.presentToast("Veuillez confirmer l'inscription aux rattrapages.", null, 5000);
     }
     else
       this.isModalOpen = true;
@@ -293,7 +297,8 @@ export class DetailsRattrapagesPage implements OnInit {
     this.isModalOpen = false;
   }
 
-  async SaveConfirmation() {
+  SaveConfirmation() {
+    // console.log("SaveConfirmation", this.EtdCrsAValider)
     let data = this.EtdCrsAValider.map((item) => {
       let e = {
         EtdCrs_Id: item.EtdCrs_Id,
@@ -304,16 +309,12 @@ export class DetailsRattrapagesPage implements OnInit {
     })
     console.log("Save: ", data)
     this.IsLoading = true;
-    const loading = await this.loadingController.create({ message: 'Enregistrement en cours...', });
-    loading.present();
     this.db.UpdateEtudiantMatiereRattrapageConfirmeDemande(data)
       .subscribe((response) => {
-        console.log("response UpdateEtudiantMatiereRattrapageConfirmeDemande: ", response);
-        loading.dismiss();
-
+        console.log("response UpdateEtudiantMatiereRattrapageConfirmeDemande: ", response)
         this.IsLoading = false;
         if (response == null || response == false)
-          this.presentToast("Erreur d'enregistrement", null, 2500);
+          this.presentToast("", null, 5000);
         else {
           this.presentToast("Enregitstrement réussi.", null, 2500);
           this.CloseConfirmation();
@@ -325,8 +326,7 @@ export class DetailsRattrapagesPage implements OnInit {
 
       }, (error: any) => {
         console.error("error UpdateEtudiantMatiereRattrapageConfirmeDemande: ", error)
-        this.IsLoading = false;
-        loading.dismiss();
+        this.IsLoading = false;;
       })
   }
 
@@ -370,9 +370,8 @@ export class DetailsRattrapagesPage implements OnInit {
 
     this.DataSource = [];
     this.OrginalDataSource = [];
-    this.IsOpen = null;
-    // this.Annees = [];
-    // this.Semestres = [];
+    this.Annees = [];
+    this.Semestres = [];
     this.EtdCrsAValider = [];
 
     // Unsubscribe from all subscriptions

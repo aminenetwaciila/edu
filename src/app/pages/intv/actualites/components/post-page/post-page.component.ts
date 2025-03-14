@@ -11,7 +11,7 @@ import { ActualiteT, CreateCommentRequest } from '../../../Types/ActualitePageTy
 import { v4 as uuidv4 } from 'uuid';
 
 @Component({
-  selector: 'app-post-page',
+  selector: 'app-post-page-intervenant',
   templateUrl: './post-page.component.html',
   styleUrls: ['./post-page.component.scss'],
   standalone: false,

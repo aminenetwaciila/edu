@@ -7,6 +7,7 @@
   </ion-toolbar>
 </ion-header>
 
+
 <ion-content>
 
   <ion-refresher slot="fixed" (ionRefresh)="Refresh($event)">
@@ -18,72 +19,53 @@
   </ng-container>
 
 
-  <ion-list *ngIf="firstLoad">
 
-    <!-- <ion-refresher slot="fixed" class="greeny" (ionRefresh)="Refresh($event)">
-      <ion-refresher-content></ion-refresher-content>
-    </ion-refresher> -->
+  <ion-grid *ngIf="IsLoading == true">
 
-    <ion-item lines="none" color="light" class="ion-text-center bg-none" style="width: 100%;" *ngIf="IsLoading === true">
-      <ion-spinner style="margin: auto;" color="primary"></ion-spinner>
-    </ion-item>
+    <ion-row style="margin-top: 30px;">
+      <ion-col size="12" class="centerCol"><i>Chargement en cours ...</i></ion-col>
+    </ion-row>
+  </ion-grid>
 
-    <ion-item lines="none" color="light" float="center" class="ion-text-center bg-none" style="width: 100%;"
-      *ngIf="IsLoading === false && (Annees === null || Annees?.length === 0)">
-      <ion-grid>
-        <ion-row class="ion-justify-content-center" *ngIf="Annees === null">
-          <ion-col size="auto"><i>Erreur de récuperation des rattrapages</i></ion-col>
-        </ion-row>
-        <ion-row class="ion-justify-content-center" *ngIf="Annees?.length === 0">
-          <ion-col size="auto"><i>Aucun rattrapage disponible</i></ion-col>
-        </ion-row>
-      </ion-grid>
-    </ion-item>
-  </ion-list>
+  <ion-grid *ngIf="IsLoading == false">
 
-  <ion-list>
-    <ng-container *ngFor="let annee of Annees; let i = index;">
+    <ion-row class="periode">
+      <ion-col size="6" class="centerCol">Nbre à rattraper: {{ NbARattraper }}</ion-col>
+      <ion-col size="6" class="centerCol" style="background-color: orange;" (click)="OpenInscription(null)" >Details</ion-col>
+    </ion-row>
 
-      <ion-list-header mode="md" button (click)="annee.IsOpen = !annee?.IsOpen">
-        <ion-label>{{annee?.Ann_Nom}}</ion-label>
-        <ion-button shape="round" color="primary">
-          <!-- <ion-icon name="chevron-up"></ion-icon> -->
-          <ion-icon *ngIf="annee.IsOpen === true" name="chevron-forward-outline"></ion-icon>
-          <ion-icon *ngIf="annee.IsOpen === false" name="chevron-down-outline"></ion-icon>
-        </ion-button>
-      </ion-list-header>
 
-      <ion-item lines="none" *ngIf="annee.IsOpen">
+    <div class="periode" *ngFor="let periode of data;">
+      <ion-row style="border-bottom: solid 1px #000;">
+        <ion-col size="12" class="centerCol" [style.background-color]="periode.IsOpen ? 'yellow' : 'red'">
+          <b>{{ periode.Ann_Nom }} {{ periode.Sess_Nom }}: {{ periode.IsOpen ? "Inscriptions ouvertes" : "Inscriptions cloturés" }}</b>
+        </ion-col>
+      </ion-row>
 
-        <div class="bg-white b-radius" style="width: 100%;">
-          <ion-item detail="false" [lines]="'full'" color="white" button (click)="$event.stopPropagation();">
-            <ion-label>
-              <small>Nombre de matières à rattraper:
-                <span *ngIf="annee.NbARattraper > 0" style="font-weight: bolder; color: red; ">{{ annee.NbARattraper }}</span>
-                <span *ngIf="annee.NbARattraper === 0" style="font-weight: bolder;">{{ annee.NbARattraper }}</span>
-              </small>
-            </ion-label>
-            <ion-button shape="round" color="primary" float="right" *ngIf="annee.NbARattraper > 0" (click)="OpenDetails(annee.Ann_Id, 'aRattraper')">Détails</ion-button>
-            <!-- <ion-button class="fs-10" fill="clear" color="dark" mode="ios" *ngIf="annee.NbARattraper > 0">Détails</ion-button> -->
-          </ion-item>
-          <ion-item detail="false" [lines]="'full'" color="white" button (click)="$event.stopPropagation();">
-            <ion-label>
-              <small>Nombre de matières inscrites:
-                <span style="font-weight: bolder;">{{ annee.NbInscrits }}</span>
-              </small>
-            </ion-label>
-            <ion-button shape="round" color="primary" float="right" *ngIf="annee.NbInscrits > 0" (click)="OpenDetails(annee.Ann_Id, 'inscrits')">Détails</ion-button>
-            <!-- <ion-button class="fs-10" fill="clear" color="dark" mode="ios" ></ion-button> -->
-          </ion-item>
-        </div>
+      <ion-row>
+        <ion-col size="6" class="centerCol">Nbre inscriptions: {{ periode.NbInscriptions }}</ion-col>
 
-      </ion-item>
+        <ion-col size="6" class="centerCol" style="background-color: orange;" (click)="OpenInscription(periode.id)" *ngIf="periode.IsOpen == false">
+          Details
+        </ion-col>
+        <ion-col size="6" class="centerCol" style="background-color: #9ab6f3;" (click)="OpenInscription(periode.id)" *ngIf="periode.IsOpen == true && periode.NbInscriptions > 0">
+          Modifier mon inscription
+        </ion-col>
+        <ion-col size="6" class="centerCol" style="background-color: #9ab6f3;" (click)="OpenInscription(periode.id)" *ngIf="periode.IsOpen == true && periode.NbInscriptions == 0">
+          M'inscrire
+        </ion-col>
 
-    </ng-container>
-  </ion-list>
+      </ion-row>
+    </div>
+
+
+  </ion-grid>
 
 
 </ion-content>
+
+
+
 
 <!-- [presentingElement]="presentingElement" -->
 <ion-modal #modal [isOpen]="isModalOpen">
@@ -116,11 +98,11 @@
 </ion-modal>
 
 
-<ion-footer>
-  <!-- <ion-toolbar> -->
-  <ion-button expand="block" fill="clear" (click)="OpenInscription()" [disabled]="Annees === null || Annees.length === 0">
-    S'inscrire &nbsp;
-    <!-- <ion-icon name="add-circle"></ion-icon> -->
-  </ion-button>
-  <!-- </ion-toolbar> -->
-</ion-footer>
+<!-- <ion-footer>
+  <ion-toolbar>
+    <ion-button expand="block" fill="clear" (click)="OpenInscription()" [disabled]="Annees === null || Annees.length === 0">
+      S'inscrire &nbsp;
+      <ion-icon name="add-circle"></ion-icon>
+    </ion-button>
+  </ion-toolbar>
+</ion-footer> -->

@@ -5,17 +5,23 @@
 
 export const environment = {
   production: false,
-  url: 'https://edu.universiapolis.ma/',
+  edu: 'https://edu-universiapolis.azurewebsites.net',
+  allowSubmitWithNotHandledEtudiants: true,
+
+
+  // url: 'https://edu-universiapolis.azurewebsites.net/',
+  // url: 'https://edu.universiapolis.ma/',
   // celluleWebURL: 'https://edu.universiapolis.ma',
-  celluleWebURL: 'https://edu-universiapolis.azurewebsites.net',
-  allowSubmitWithNotHandledEtudiants: false,
+  // celluleWebURL: 'https://edu-universiapolis.azurewebsites.net',
   // tuteurApiUrl: 'http://universiapulse-001-site24.atempurl.com/',
   // tuteurApiUrl: 'https://localhost:7017/',
-  tuteurApiUrl: 'https://upulse-edu.azurewebsites.net/',
+  // tuteurApiUrl: 'https://upulse-edu.azurewebsites.net/',
   // tuteurApiUrl : 'http://universiapulse-001-site24.atempurl.com/',
+
   NumeroSupportTtr: "+212656125472",
-  // upulseEdu: "https://localhost:7017",
-  upulseEdu: "https://upulse-edu.azurewebsites.net",
+
+  upulseEdu: "https://localhost:7017",
+  // upulseEdu: "https://upulse-edu.azurewebsites.net",
 
   version: '2.3.3',
 };
